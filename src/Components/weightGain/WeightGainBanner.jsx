@@ -1,10 +1,14 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { motion } from 'framer-motion';
 import { FaCheck, FaDumbbell, FaPlus } from 'react-icons/fa';
 import { useNavigate } from 'react-router-dom';
 
 const WeightGainBanner = () => {
   const navigate = useNavigate();
+
+  useEffect(()=>{
+     window.scrollTo()
+  },[])
 
   return (
     <motion.div 
