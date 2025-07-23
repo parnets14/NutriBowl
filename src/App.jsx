@@ -1,11 +1,16 @@
 import { BrowserRouter as Router, Routes, Route } from 'react-router-dom';
-import StayFit from './Pages/StayFit';
+
 import Navbar from './Components/NavBar';
 import Footer from './Components/Footer';
 import Home from './Pages/Home';
 import AboutUs from './Pages/About';
 import WeightLossMealPlan from './Components/weightLoss/WeightLossTable'
 import WeightLossHome from './Components/weightLoss/WeightLossHome';
+import { StayFitHome } from './Components/stayFit/stayFitHome';
+import StayFitMealPlan from './Components/stayFit/StayFitMealPlan';
+import WeightGainMealPlan from './Components/weightGain/WeightGainMealPlan';
+import { WeightGainHome } from './Components/weightGain/WeightGainHome';
+import BMICalculator from './Components/bmiCalculator';
 
 
 function App() {
@@ -18,10 +23,14 @@ function App() {
             <Route path="/" element={<Home />} />
             {/* <Route path="/weight-loss" element={<WeightLoss />} />
             <Route path="/weight-gain" element={<WeightGain />} /> */}
-            <Route path="/stay-fit" element={<StayFit />} />
+            <Route path="/stay-fit" element={<StayFitHome />} />
             <Route path="/about-us" element={<AboutUs />} />
-             <Route path="/weight-loss" element={<WeightLossHome />} />
-             <Route path="/mealPlan" element={<WeightLossMealPlan />} />
+            <Route path="/weight-loss" element={<WeightLossHome />} />
+             <Route path="/weight-gain" element={<WeightGainHome />} />
+            <Route path="/bmi-calculator" element={<BMICalculator />} />
+            <Route path="/meal-plans/weight-loss" element={<WeightLossMealPlan />} />
+            <Route path="/meal-plans/stay-fit" element={<StayFitMealPlan />} />
+             <Route path="/meal-plans/weight-gain" element={<WeightGainMealPlan />} />
             {/* <Route path="/contact" element={<Contact />} /> */}
           </Routes>
         </main>

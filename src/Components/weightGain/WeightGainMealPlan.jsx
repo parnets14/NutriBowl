@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const WeightLossMealPlan = () => {
+const WeightGainMealPlan = () => {
   const [selectedDay, setSelectedDay] = useState("DAY - 1");
   const [selectedMealType, setSelectedMealType] = useState("VEG MEAL");
 
@@ -303,8 +303,8 @@ const WeightLossMealPlan = () => {
   const dinnerTotals = calculateMealTotals(dinnerMeals);
 
   const renderMealTable = (meals, mealTime, totals) => (
-    <div className="rounded-xl shadow-lg overflow-hidden mb-6 bg-white">
-      <div className={`p-4 ${mealTime === 'Lunch' ? 'bg-green-600' : 'bg-green-700'}`}>
+    <div className="rounded-xl shadow-lg overflow-hidden mb-6 bg-white bg-opacity-90 backdrop-blur-sm border border-green-100">
+      <div className={`p-4 ${mealTime === 'Lunch' ? 'bg-gradient-to-r from-green-600 to-green-700' : 'bg-gradient-to-r from-green-700 to-green-800'}`}>
         <h3 className="text-xl font-semibold text-white">{mealTime}</h3>
       </div>
       <div className="overflow-x-auto">
@@ -323,7 +323,7 @@ const WeightLossMealPlan = () => {
           </thead>
           <tbody className="bg-white divide-y divide-gray-200">
             {meals.map((item, index) => (
-              <tr key={index}>
+              <tr key={index} className="hover:bg-green-50 transition-colors">
                 <td className="px-4 py-4 whitespace-nowrap">
                   <span className={`inline-flex px-2 py-1 text-xs font-semibold rounded-full 
                     ${item.Course === 'Starter' ? 'bg-green-100 text-green-800' : 
@@ -356,15 +356,20 @@ const WeightLossMealPlan = () => {
   );
 
   return (
-    <div className="min-h-screen bg-green-50 py-8">
+    <div className="min-h-screen py-8" style={{
+      backgroundImage: "backdrop-blur-sm url('https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&auto=format&fit=crop&w=1350&q=80')",
+      backgroundSize: "cover",
+      backgroundPosition: "center",
+      backgroundAttachment: "fixed"
+    }}>
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Header */}
         <div className="text-center mb-10">
-          <div className="bg-white rounded-xl shadow-lg p-8">
-            <h1 className="text-4xl font-bold text-green-800 mb-4">weight loss meal plan</h1>
-            <p className="text-lg text-green-600 mb-8">Complete nutrition guide with detailed meal breakdowns</p>
+          <div className="bg-inherit bg-opacity-90 backdrop-blur-xl rounded-xl shadow-lg p-8 bg-opacity-90 backdrop-blur-sm border border-green-100">
+            <h1 className="text-4xl font-bold text-green-800 mb-4">Weight Gain Meal Plans</h1>
+            <p className="text-lg text-green-600 mb-8">High-calorie nutrition for healthy weight gain and muscle building</p>
             
-            {/* Improved Day and Meal Type Selectors */}
+            {/* Day and Meal Type Selectors */}
             <div className="flex flex-col items-center gap-6 mb-8">
               <div className="w-full max-w-md">
                 <h3 className="text-sm font-medium text-green-700 mb-2 text-left">Select Day</h3>
@@ -405,7 +410,7 @@ const WeightLossMealPlan = () => {
               </div>
             </div>
 
-            {/* Current Selection Display - Improved */}
+            {/* Current Selection Display */}
             <div className="flex flex-wrap justify-center gap-3 mt-4">
               <span className="px-4 py-2 bg-green-600 text-white rounded-full font-medium shadow-sm flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -429,8 +434,8 @@ const WeightLossMealPlan = () => {
           {renderMealTable(dinnerMeals, 'Dinner', dinnerTotals)}
         </div>
 
-        {/* Daily Summary - Enhanced */}
-        <div className="rounded-xl shadow-lg p-6 mb-10 bg-white">
+        {/* Daily Summary */}
+        <div className="rounded-xl shadow-lg p-6 mb-10 bg-inherit bg-opacity-90 backdrop-blur-xl border border-green-100">
           <h3 className="text-2xl font-semibold text-green-800 mb-6 text-center">Daily Nutrition Summary</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
             {[
@@ -439,7 +444,7 @@ const WeightLossMealPlan = () => {
               { label: "Total Carbs", value: lunchTotals.carbs + dinnerTotals.carbs, unit: "g", icon: "🌾" },
               { label: "Total Fat", value: lunchTotals.fat + dinnerTotals.fat, unit: "g", icon: "🥑" }
             ].map((item, index) => (
-              <div key={index} className="bg-green-50 p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow">
+              <div key={index} className=" bg-inherit  p-5 rounded-lg shadow-sm hover:shadow-md transition-shadow border border-green-100">
                 <div className="flex items-center justify-between">
                   <h4 className="text-lg font-medium text-green-700">{item.label}</h4>
                   <span className="text-xl">{item.icon}</span>
@@ -452,11 +457,11 @@ const WeightLossMealPlan = () => {
           </div>
         </div>
 
-        {/* Pricing Section - Enhanced */}
-        <div className="rounded-xl shadow-lg overflow-hidden mb-10 bg-white">
+        {/* Pricing Section */}
+        <div className="rounded-xl shadow-lg overflow-hidden mb-10 bg-white bg-opacity-90 backdrop-blur-sm border border-green-100">
           <div className="p-6 bg-gradient-to-r from-green-600 to-green-700">
             <h2 className="text-3xl font-semibold text-white text-center">Meal Plan Pricing</h2>
-            <p className="text-green-100 text-center mt-2">Choose the plan that fits your lifestyle</p>
+            <p className="text-green-100 text-center mt-2">Choose the plan that fits your weight gain goals</p>
           </div>
           <div className="overflow-x-auto">
             <table className="min-w-full divide-y divide-green-200">
@@ -469,7 +474,7 @@ const WeightLossMealPlan = () => {
                   <th className="px-6 py-4 text-center text-sm font-medium text-green-700 uppercase tracking-wider">Non-Veg (2 Meals)</th>
                 </tr>
               </thead>
-              <tbody className="bg-white divide-y divide-green-200">
+              <tbody className=" bg-inherit  divide-y divide-green-200">
                 {pricingData.map((row, index) => (
                   <tr key={index} className={index % 2 === 0 ? 'bg-white' : 'bg-green-50'}>
                     <td className="px-6 py-4 whitespace-nowrap font-semibold text-gray-900">{row.duration}</td>
@@ -484,7 +489,7 @@ const WeightLossMealPlan = () => {
           </div>
           <div className="p-6 bg-green-50 border-t border-green-200">
             <button className="w-full py-3 bg-green-600 hover:bg-green-700 text-white font-semibold rounded-lg shadow-md transition-all duration-200 transform hover:scale-[1.01]">
-              Get Started with Your Meal Plan
+              Get Started with Your Weight Gain Plan
             </button>
           </div>
         </div>
@@ -493,4 +498,4 @@ const WeightLossMealPlan = () => {
   );
 };
 
-export default WeightLossMealPlan;
+export default WeightGainMealPlan;

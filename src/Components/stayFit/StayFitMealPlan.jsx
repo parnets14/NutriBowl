@@ -1,6 +1,6 @@
 import React, { useEffect, useState } from 'react';
 
-const WeightLossMealPlan = () => {
+const StayFitMealPlan = () => {
   const [selectedDay, setSelectedDay] = useState("DAY - 1");
   const [selectedMealType, setSelectedMealType] = useState("VEG MEAL");
 
@@ -14,65 +14,65 @@ const WeightLossMealPlan = () => {
         "Lunch": [
           {
             "Course": "Starter",
-            "Item": "Methi Tomato Clear Soup",
-            "Calories": "90 kcal",
-            "Protein": "3g",
-            "Carbs": "10g",
-            "Fat": "2g",
-            "Ingredients": "Tomato – 60g, methi – 20g, garlic – 2g, pepper – pinch, oil – 1 tsp",
-            "Benefits": "Antioxidant-rich and cooling; supports digestion and appetite control."
+            "Item": "Steamed Veg Momos (Wheat Wrapper)",
+            "Calories": "180 kcal",
+            "Protein": "6g",
+            "Carbs": "24g",
+            "Fat": "4g",
+            "Ingredients": "Cabbage – 40g, carrot – 30g, wheat flour – 40g, ginger – 2g, garlic – 2g, lemon – 1 tsp",
+            "Benefits": "Low-fat starter; good fiber and digestive support."
           },
           {
             "Course": "Main",
-            "Item": "Oats Vegetable Pulao",
-            "Calories": "260 kcal",
-            "Protein": "6g",
-            "Carbs": "42g",
-            "Fat": "7g",
-            "Ingredients": "Rolled oats – 60g, carrot – 30g, peas – 30g, onion – 20g, oil – 1 tsp",
-            "Benefits": "Soluble fiber-rich; reduces cholesterol and supports satiety."
+            "Item": "Brown Rice Vegetable Pulao",
+            "Calories": "390 kcal",
+            "Protein": "8g",
+            "Carbs": "50g",
+            "Fat": "12g",
+            "Ingredients": "Brown rice – 60g, peas – 30g, carrot – 30g, onion – 20g, oil – 1 tsp, cumin – ½ tsp",
+            "Benefits": "Balanced energy meal with fiber, vitamins, and steady carbs."
           },
           {
             "Course": "Salad",
-            "Item": "Cabbage Peanut Lemon Slaw",
-            "Calories": "100 kcal",
-            "Protein": "4g",
-            "Carbs": "10g",
-            "Fat": "5g",
-            "Ingredients": "Cabbage – 50g, roasted peanuts – 10g, lemon – 1 tsp, salt – pinch",
-            "Benefits": "Adds crunch, protein, and healthy fat; improves gut health."
+            "Item": "Sprouted Moong & Pomegranate Salad",
+            "Calories": "150 kcal",
+            "Protein": "7g",
+            "Carbs": "18g",
+            "Fat": "4g",
+            "Ingredients": "Sprouted moong – 50g, pomegranate – 30g, mint – 5g, lemon – 1 tsp",
+            "Benefits": "Rich in iron, antioxidants, and protein; improves immunity and digestion."
           }
         ],
         "Dinner": [
           {
             "Course": "Starter",
-            "Item": "Palak Ginger Soup",
-            "Calories": "85 kcal",
-            "Protein": "3g",
-            "Carbs": "9g",
-            "Fat": "3g",
-            "Ingredients": "Spinach – 50g, ginger – 2g, garlic – 1 clove, oil – 1 tsp",
-            "Benefits": "Detoxifying and iron-rich; boosts immunity and gut health."
+            "Item": "Paneer Tikka (Grilled, Low Oil)",
+            "Calories": "200 kcal",
+            "Protein": "14g",
+            "Carbs": "6g",
+            "Fat": "10g",
+            "Ingredients": "Paneer – 60g, capsicum – 30g, curd – 1 tbsp, lemon – 1 tsp, spices – ½ tsp",
+            "Benefits": "High-quality vegetarian protein; helps recovery and satiety."
           },
           {
             "Course": "Main",
-            "Item": "Broken Wheat Veg Upma",
-            "Calories": "240 kcal",
-            "Protein": "7g",
-            "Carbs": "35g",
-            "Fat": "6g",
-            "Ingredients": "Broken wheat – 60g, beans – 30g, carrot – 30g, mustard – ½ tsp, oil – 1 tsp",
-            "Benefits": "Fiber-rich; controls blood sugar and aids digestion."
+            "Item": "Ragi Roti + Palak Dal",
+            "Calories": "390 kcal",
+            "Protein": "13g",
+            "Carbs": "38g",
+            "Fat": "11g",
+            "Ingredients": "Ragi flour – 60g, moong dal – 40g, spinach – 30g, garlic – 2g, ghee – 1 tsp",
+            "Benefits": "High in calcium, fiber, and plant protein; supports bone and muscle health."
           },
           {
             "Course": "Salad",
-            "Item": "Grated Carrot with Curd",
-            "Calories": "90 kcal",
-            "Protein": "3g",
-            "Carbs": "8g",
-            "Fat": "3g",
-            "Ingredients": "Carrot – 50g, curd – 80g, roasted cumin – pinch",
-            "Benefits": "Cooling, probiotic-rich; supports digestion and metabolism."
+            "Item": "Cucumber Mint Yogurt Salad",
+            "Calories": "160 kcal",
+            "Protein": "5g",
+            "Carbs": "12g",
+            "Fat": "7g",
+            "Ingredients": "Cucumber – 40g, curd – 100g, mint – 5g, black salt – pinch",
+            "Benefits": "Hydrating and gut-friendly; promotes digestion and skin health."
           }
         ]
       },
@@ -80,65 +80,65 @@ const WeightLossMealPlan = () => {
         "Lunch": [
           {
             "Course": "Starter",
-            "Item": "Lemon Chicken Clear Soup",
-            "Calories": "100 kcal",
-            "Protein": "12g",
+            "Item": "Chicken Veg Lettuce Wraps",
+            "Calories": "190 kcal",
+            "Protein": "16g",
             "Carbs": "4g",
-            "Fat": "2g",
-            "Ingredients": "Chicken breast – 60g, garlic – 2g, lemon – 1 tsp, coriander – 5g",
-            "Benefits": "Lean protein and vitamin C; boosts immunity and metabolic rate."
+            "Fat": "8g",
+            "Ingredients": "Minced chicken – 60g, onion – 20g, bell peppers – 30g, lettuce – 3 leaves, lemon – 1 tsp",
+            "Benefits": "Lean protein & fiber-rich starter; promotes satiety and lean mass."
           },
           {
             "Course": "Main",
-            "Item": "Chicken Brown Rice Pulao",
-            "Calories": "270 kcal",
-            "Protein": "20g",
-            "Carbs": "28g",
-            "Fat": "6g",
-            "Ingredients": "Chicken – 80g, brown rice – 60g, onion – 20g, peas – 20g, oil – 1 tsp",
-            "Benefits": "Balanced protein + complex carbs; supports steady energy and satiety."
+            "Item": "Brown Rice + Chicken Curry (Low Oil)",
+            "Calories": "400 kcal",
+            "Protein": "24g",
+            "Carbs": "42g",
+            "Fat": "10g",
+            "Ingredients": "Chicken – 100g, brown rice – 60g, onion – 30g, tomato – 30g, spices – 1 tsp, oil – 1 tsp",
+            "Benefits": "Balanced macros; high satiety and muscle recovery meal."
           },
           {
             "Course": "Salad",
-            "Item": "Boiled Egg Lettuce Mix",
-            "Calories": "90 kcal",
-            "Protein": "8g",
-            "Carbs": "3g",
-            "Fat": "4g",
-            "Ingredients": "Boiled egg – 1, lettuce – 30g, lemon – 1 tsp, black pepper – pinch",
-            "Benefits": "Light and protein-rich; improves digestion and reduces cravings."
+            "Item": "Egg White Mint Salad",
+            "Calories": "150 kcal",
+            "Protein": "12g",
+            "Carbs": "5g",
+            "Fat": "6g",
+            "Ingredients": "Egg whites – 3, mint – 5g, cucumber – 30g, lemon – 1 tsp, olive oil – 1 tsp",
+            "Benefits": "Low-fat protein salad; supports metabolism, recovery, and gut health."
           }
         ],
         "Dinner": [
           {
             "Course": "Starter",
-            "Item": "Spinach Chicken Soup",
-            "Calories": "90 kcal",
-            "Protein": "10g",
+            "Item": "Tandoori Grilled Fish Cubes",
+            "Calories": "210 kcal",
+            "Protein": "18g",
             "Carbs": "3g",
-            "Fat": "2g",
-            "Ingredients": "Chicken – 60g, spinach – 40g, garlic – 1 clove, pepper – pinch",
-            "Benefits": "High in iron and protein; supports recovery and blood health."
+            "Fat": "10g",
+            "Ingredients": "Fish – 80g, curd – 1 tbsp, tandoori spice – ½ tsp, lemon – 1 tsp",
+            "Benefits": "High-protein & omega-3; improves endurance and heart health."
           },
           {
             "Course": "Main",
-            "Item": "Stir-Fried Chicken + Ragi Roti",
-            "Calories": "250 kcal",
-            "Protein": "22g",
-            "Carbs": "20g",
-            "Fat": "6g",
-            "Ingredients": "Chicken – 80g, capsicum – 30g, onion – 30g, spices – ½ tsp, ragi flour – 40g",
-            "Benefits": "High-protein and fiber-rich; helps muscle retention and satiety."
+            "Item": "Egg Bhurji + Jowar Roti",
+            "Calories": "390 kcal",
+            "Protein": "20g",
+            "Carbs": "30g",
+            "Fat": "14g",
+            "Ingredients": "Eggs – 2, onion – 30g, tomato – 30g, green chilli – 1, jowar flour – 60g",
+            "Benefits": "Supports muscle growth + complex carbs keep energy stable."
           },
           {
             "Course": "Salad",
-            "Item": "Cucumber Egg Yogurt Bowl",
-            "Calories": "90 kcal",
-            "Protein": "8g",
-            "Carbs": "4g",
-            "Fat": "3g",
-            "Ingredients": "Boiled egg white – 2, cucumber – 30g, curd – 50g, cumin – pinch",
-            "Benefits": "Probiotic and protein boost; improves gut health and controls hunger."
+            "Item": "Chicken & Tomato Yogurt Mix",
+            "Calories": "170 kcal",
+            "Protein": "13g",
+            "Carbs": "6g",
+            "Fat": "7g",
+            "Ingredients": "Boiled chicken – 50g, tomato – 30g, curd – 100g, mint – 5g",
+            "Benefits": "Probiotics + lean protein = gut and muscle recovery."
           }
         ]
       }
@@ -148,65 +148,65 @@ const WeightLossMealPlan = () => {
         "Lunch": [
           {
             "Course": "Starter",
-            "Item": "Carrot Coconut Soup",
-            "Calories": "90 kcal",
-            "Protein": "2g",
-            "Carbs": "10g",
-            "Fat": "4g",
-            "Ingredients": "Carrot – 60g, coconut – 10g, garlic – 1 clove, pepper – pinch, oil – 1 tsp",
-            "Benefits": "Vitamin A + healthy fats; aids eye health and fullness."
+            "Item": "Oats Veg Cutlets (Air-Fried)",
+            "Calories": "190 kcal",
+            "Protein": "6g",
+            "Carbs": "20g",
+            "Fat": "6g",
+            "Ingredients": "Oats – 30g, carrot – 30g, peas – 30g, green chilli – 1, coriander – 5g, oil – 1 tsp",
+            "Benefits": "High fiber and slow-release carbs; helps in digestion and satiety."
           },
           {
             "Course": "Main",
-            "Item": "Moong Dal Pulao (Brown Rice)",
-            "Calories": "260 kcal",
-            "Protein": "8g",
-            "Carbs": "40g",
-            "Fat": "6g",
-            "Ingredients": "Brown rice – 60g, moong dal – 30g, spices – ½ tsp, oil – 1 tsp",
-            "Benefits": "High fiber and protein combo; supports digestion and energy."
+            "Item": "Vegetable Masala Khichdi (Brown Rice)",
+            "Calories": "390 kcal",
+            "Protein": "10g",
+            "Carbs": "45g",
+            "Fat": "11g",
+            "Ingredients": "Brown rice – 60g, moong dal – 30g, mixed vegetables – 60g, cumin – ½ tsp, ghee – 1 tsp",
+            "Benefits": "Protein + complex carbs = sustained energy and satiety."
           },
           {
             "Course": "Salad",
-            "Item": "Cucumber Mint Peanut Salad",
-            "Calories": "100 kcal",
-            "Protein": "4g",
-            "Carbs": "9g",
-            "Fat": "4g",
-            "Ingredients": "Cucumber – 50g, mint – 5g, roasted peanuts – 10g, lemon – 1 tsp",
-            "Benefits": "Cooling + crunchy; helps digestion and adds plant-based protein."
+            "Item": "Beetroot & Curd Salad",
+            "Calories": "140 kcal",
+            "Protein": "5g",
+            "Carbs": "12g",
+            "Fat": "6g",
+            "Ingredients": "Boiled beetroot – 40g, curd – 100g, lemon – 1 tsp",
+            "Benefits": "Rich in iron and probiotics; supports gut health and blood flow."
           }
         ],
         "Dinner": [
           {
             "Course": "Starter",
-            "Item": "Bottle Gourd Soup",
-            "Calories": "85 kcal",
-            "Protein": "3g",
-            "Carbs": "9g",
-            "Fat": "3g",
-            "Ingredients": "Bottle gourd – 70g, garlic – 2g, black pepper – pinch, oil – 1 tsp",
-            "Benefits": "Cooling and high water content; supports liver health and hydration."
+            "Item": "Grilled Veg Tikka Skewers (Low Oil)",
+            "Calories": "200 kcal",
+            "Protein": "7g",
+            "Carbs": "10g",
+            "Fat": "9g",
+            "Ingredients": "Bell peppers – 30g, paneer – 30g, mushroom – 30g, curd – 1 tbsp, spices – ½ tsp, oil – 1 tsp",
+            "Benefits": "Antioxidants + protein combo; supports recovery and satiety."
           },
           {
             "Course": "Main",
-            "Item": "Ragi Roti + Aloo Methi Sabzi",
-            "Calories": "240 kcal",
-            "Protein": "6g",
+            "Item": "Palak Tofu Curry + Ragi Roti",
+            "Calories": "400 kcal",
+            "Protein": "15g",
             "Carbs": "34g",
-            "Fat": "5g",
-            "Ingredients": "Ragi flour – 40g, potato – 60g, methi – 20g, oil – 1 tsp, spices",
-            "Benefits": "Complex carbs + iron-rich greens; supports fullness and bone health."
+            "Fat": "13g",
+            "Ingredients": "Tofu – 60g, spinach – 50g, onion – 30g, spices – 1 tsp, ragi flour – 60g",
+            "Benefits": "Plant protein + iron + fiber; ideal for muscle tone and bone health."
           },
           {
             "Course": "Salad",
-            "Item": "Tomato Curd Salad",
-            "Calories": "90 kcal",
-            "Protein": "3g",
-            "Carbs": "8g",
-            "Fat": "3g",
-            "Ingredients": "Tomato – 40g, curd – 80g, roasted cumin – pinch",
-            "Benefits": "Probiotic and low-cal; improves digestion and balances acidity."
+            "Item": "Apple & Peanut Lemon Salad",
+            "Calories": "160 kcal",
+            "Protein": "4g",
+            "Carbs": "16g",
+            "Fat": "8g",
+            "Ingredients": "Apple – 40g, roasted peanuts – 10g, lemon – 1 tsp, mint – 5g",
+            "Benefits": "Natural sugar + healthy fat; great for post-meal satisfaction and immunity."
           }
         ]
       },
@@ -214,65 +214,65 @@ const WeightLossMealPlan = () => {
         "Lunch": [
           {
             "Course": "Starter",
-            "Item": "Chicken Tomato Shorba",
-            "Calories": "100 kcal",
-            "Protein": "12g",
+            "Item": "Boiled Egg Pepper Toss",
+            "Calories": "200 kcal",
+            "Protein": "13g",
             "Carbs": "4g",
-            "Fat": "2g",
-            "Ingredients": "Chicken – 60g, tomato – 50g, garlic – 1 clove, coriander – 5g, pepper – pinch",
-            "Benefits": "Rich in lean protein and lycopene; supports immunity and digestion."
+            "Fat": "10g",
+            "Ingredients": "Boiled egg – 1, onion – 30g, green chilli – 1, pepper – ¼ tsp, oil – 1 tsp",
+            "Benefits": "High-quality protein with metabolism-boosting spices; supports satiety."
           },
           {
             "Course": "Main",
-            "Item": "Foxtail Millet Chicken Bowl",
-            "Calories": "270 kcal",
-            "Protein": "22g",
-            "Carbs": "26g",
-            "Fat": "5g",
-            "Ingredients": "Chicken – 80g, foxtail millet – 60g, capsicum – 30g, onion – 20g, oil – 1 tsp",
-            "Benefits": "Balanced protein + fiber combo; aids in fat burn and sustained energy."
+            "Item": "Chicken Spinach Millet Bowl",
+            "Calories": "420 kcal",
+            "Protein": "25g",
+            "Carbs": "35g",
+            "Fat": "13g",
+            "Ingredients": "Chicken – 100g, spinach – 40g, foxtail millet – 60g, spices – 1 tsp, ghee – 1 tsp",
+            "Benefits": "Clean lean protein + iron + complex carbs; promotes muscle recovery and energy."
           },
           {
             "Course": "Salad",
-            "Item": "Boiled Egg Tomato Mix",
-            "Calories": "90 kcal",
-            "Protein": "8g",
-            "Carbs": "4g",
-            "Fat": "3g",
-            "Ingredients": "Boiled egg – 1, tomato – 40g, curd – 40g, salt – pinch",
-            "Benefits": "High in protein and vitamins; promotes satiety and gut health."
+            "Item": "Yogurt Apple Chicken Salad",
+            "Calories": "160 kcal",
+            "Protein": "13g",
+            "Carbs": "8g",
+            "Fat": "6g",
+            "Ingredients": "Boiled chicken – 50g, apple – 30g, curd – 100g, lemon – 1 tsp",
+            "Benefits": "Combines protein, probiotics, and fiber; supports gut and immune health."
           }
         ],
         "Dinner": [
           {
             "Course": "Starter",
-            "Item": "Ginger Fish Broth",
-            "Calories": "95 kcal",
-            "Protein": "12g",
-            "Carbs": "3g",
-            "Fat": "2g",
-            "Ingredients": "White fish – 60g, ginger – 2g, garlic – 1 clove, lemon – 1 tsp",
-            "Benefits": "Rich in omega-3 and anti-inflammatory; promotes heart health and metabolism."
+            "Item": "Grilled Fish Skewers (Tandoori Spice)",
+            "Calories": "210 kcal",
+            "Protein": "18g",
+            "Carbs": "2g",
+            "Fat": "9g",
+            "Ingredients": "Fish – 80g, curd – 1 tbsp, lemon – 1 tsp, spices – ½ tsp, oil – 1 tsp",
+            "Benefits": "High-protein & omega-3 rich; supports endurance and brain health."
           },
           {
             "Course": "Main",
-            "Item": "Chicken Curry + Multigrain Roti",
-            "Calories": "250 kcal",
+            "Item": "Egg Masala Curry + Jowar Roti",
+            "Calories": "400 kcal",
             "Protein": "20g",
-            "Carbs": "20g",
-            "Fat": "7g",
-            "Ingredients": "Chicken – 80g, onion – 30g, tomato – 30g, spices – ½ tsp, multigrain flour – 40g",
-            "Benefits": "Lean protein + whole grains; builds muscle and supports digestion."
+            "Carbs": "32g",
+            "Fat": "13g",
+            "Ingredients": "Eggs – 2, onion – 30g, tomato – 30g, spices – 1 tsp, jowar flour – 60g",
+            "Benefits": "Balanced complex carbs + clean protein; supports sustained energy and muscle health."
           },
           {
             "Course": "Salad",
-            "Item": "Lettuce Yogurt Chicken Salad",
-            "Calories": "90 kcal",
-            "Protein": "8g",
-            "Carbs": "3g",
-            "Fat": "3g",
-            "Ingredients": "Boiled chicken – 50g, lettuce – 30g, curd – 50g, pepper – pinch",
-            "Benefits": "Low-carb + probiotic; keeps you full and improves gut health."
+            "Item": "Chicken Lettuce Olive Oil Salad",
+            "Calories": "160 kcal",
+            "Protein": "12g",
+            "Carbs": "5g",
+            "Fat": "7g",
+            "Ingredients": "Boiled chicken – 50g, lettuce – 40g, olive oil – 1 tsp, lemon – 1 tsp",
+            "Benefits": "Light evening protein + good fats; ideal for post-dinner satiety without heaviness."
           }
         ]
       }
@@ -361,10 +361,10 @@ const WeightLossMealPlan = () => {
         {/* Header */}
         <div className="text-center mb-10">
           <div className="bg-white rounded-xl shadow-lg p-8">
-            <h1 className="text-4xl font-bold text-green-800 mb-4">weight loss meal plan</h1>
-            <p className="text-lg text-green-600 mb-8">Complete nutrition guide with detailed meal breakdowns</p>
+            <h1 className="text-4xl font-bold text-green-800 mb-4">Stay Fit Meal Plans</h1>
+            <p className="text-lg text-green-600 mb-8">Balanced nutrition for maintaining fitness and energy</p>
             
-            {/* Improved Day and Meal Type Selectors */}
+            {/* Day and Meal Type Selectors */}
             <div className="flex flex-col items-center gap-6 mb-8">
               <div className="w-full max-w-md">
                 <h3 className="text-sm font-medium text-green-700 mb-2 text-left">Select Day</h3>
@@ -405,7 +405,7 @@ const WeightLossMealPlan = () => {
               </div>
             </div>
 
-            {/* Current Selection Display - Improved */}
+            {/* Current Selection Display */}
             <div className="flex flex-wrap justify-center gap-3 mt-4">
               <span className="px-4 py-2 bg-green-600 text-white rounded-full font-medium shadow-sm flex items-center">
                 <svg xmlns="http://www.w3.org/2000/svg" className="h-4 w-4 mr-1" fill="none" viewBox="0 0 24 24" stroke="currentColor">
@@ -429,7 +429,7 @@ const WeightLossMealPlan = () => {
           {renderMealTable(dinnerMeals, 'Dinner', dinnerTotals)}
         </div>
 
-        {/* Daily Summary - Enhanced */}
+        {/* Daily Summary */}
         <div className="rounded-xl shadow-lg p-6 mb-10 bg-white">
           <h3 className="text-2xl font-semibold text-green-800 mb-6 text-center">Daily Nutrition Summary</h3>
           <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-4">
@@ -452,7 +452,7 @@ const WeightLossMealPlan = () => {
           </div>
         </div>
 
-        {/* Pricing Section - Enhanced */}
+        {/* Pricing Section */}
         <div className="rounded-xl shadow-lg overflow-hidden mb-10 bg-white">
           <div className="p-6 bg-gradient-to-r from-green-600 to-green-700">
             <h2 className="text-3xl font-semibold text-white text-center">Meal Plan Pricing</h2>
@@ -493,4 +493,4 @@ const WeightLossMealPlan = () => {
   );
 };
 
-export default WeightLossMealPlan;
+export default StayFitMealPlan;

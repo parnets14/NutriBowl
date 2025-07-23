@@ -1,7 +1,10 @@
+
+import { Benefits } from "../Benifits";
 import NutriBowl from "../MealPlanSelector";
+import { Specialization } from "../Specialization";
 import ImportanceOfHealthyWeightLoss from "./ImportanceOfHealthyWeightLoss";
 import WeightLossProblems from "./ProblemCard";
-import OurSpecialization from "./SpecializationCard";
+
 import WeightLossBanner from "./WeightLossBanner";
 import WeightLossMealPlan from "./WeightLossTable";
 
@@ -13,9 +16,9 @@ const WeightLossHome = () => (
      
 <WeightLossBanner/>
      <WeightLossProblems/>
-     <NutriBowl/>
+    <Benefits/>
      <ImportanceOfHealthyWeightLoss/>
-     <OurSpecialization/>
+     <Specialization/>
      <WeightLossMealPlan/>
      
   </div>

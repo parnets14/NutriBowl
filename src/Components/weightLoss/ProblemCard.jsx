@@ -2,6 +2,7 @@ import React, { useState } from "react";
 import { FaFire, FaHeartbeat, FaBalanceScale, FaUserMd, FaUsers, FaChartLine, FaLeaf, FaCalendarAlt, FaUtensils } from "react-icons/fa";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import { Solution } from "../Solution";
 
 const ProblemCard = ({ icon, title, description, image, index, hoveredCard, setHoveredCard }) => {
   return (
@@ -39,20 +40,7 @@ const ProblemCard = ({ icon, title, description, image, index, hoveredCard, setH
   );
 };
 
-const SolutionCard = ({ icon, title, description, color }) => {
-  return (
-    <motion.div 
-      className="bg-white border border-gray-200 rounded-xl p-6 shadow-sm hover:shadow-md transition-shadow"
-      whileHover={{ y: -5 }}
-    >
-      <div className={`text-3xl mb-4 ${color}`}>
-        {icon}
-      </div>
-      <h3 className="text-xl font-bold text-gray-800 mb-3">{title}</h3>
-      <p className="text-gray-600">{description}</p>
-    </motion.div>
-  );
-};
+
 
 const WeightLossProblems = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
@@ -136,7 +124,7 @@ const WeightLossProblems = () => {
   };
 
   return (
-    <section className="relative py-16 md:py-20 bg-gradient-to-b from-green-50 to-white">
+    <section className="relative pt-10  bg-gradient-to-b from-green-50 to-white">
       <div className="relative z-10 container mx-auto px-5 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div 
@@ -183,49 +171,8 @@ const WeightLossProblems = () => {
         </motion.div>
 
         {/* NutriBowl Solution Section */}
-        <div className="text-center mb-16">
-          <motion.div
-            initial={{ opacity: 0 }}
-            whileInView={{ opacity: 1 }}
-            transition={{ duration: 0.6 }}
-            viewport={{ once: true }}
-          >
-            <span className="inline-block px-4 py-2 mb-4 text-sm font-semibold text-green-600 bg-green-100 rounded-full">
-              WE ARE NUTRIBOWL
-            </span>
-            <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-6 leading-tight">
-              The <span className="text-green-600">Solution</span>
-            </h2>
-            <p className="text-xl text-gray-600 max-w-4xl mx-auto mb-12 leading-relaxed">
-              At NutriBowl, we solve the real struggles people face with food, weight management, and consistency.
-              More than food — it's your partner in sustainable health and transformation.
-            </p>
-          </motion.div>
-
-          {/* Solution Cards */}
-          <motion.div
-            variants={containerVariants}
-            initial="hidden"
-            whileInView="visible"
-            viewport={{ once: true }}
-            className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6"
-          >
-            {solutions.map((solution, index) => (
-              <motion.div
-                key={index}
-                variants={itemVariants}
-              >
-                <SolutionCard 
-                  icon={solution.icon}
-                  title={solution.title}
-                  description={solution.description}
-                  color={solution.color}
-                />
-              </motion.div>
-            ))}
-          </motion.div>
-        </div>
-
+  
+     <Solution/>
         {/* CTA Section */}
         <motion.div
           initial={{ opacity: 0, y: 20 }}
@@ -234,13 +181,7 @@ const WeightLossProblems = () => {
           viewport={{ once: true }}
           className="text-center"
         >
-          <button 
-            onClick={() => navigate("/mealPlan")} 
-            className="relative overflow-hidden group bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-10 rounded-full text-md transition-all duration-500 transform hover:scale-105 shadow-lg hover:shadow-xl"
-          >
-            <span className="relative z-10">Our Meal Plans</span>
-            <span className="absolute inset-0 bg-gradient-to-r from-green-600 to-green-700 opacity-0 group-hover:opacity-100 transition-opacity duration-500"></span>
-          </button>
+
         </motion.div>
       </div>
     </section>
