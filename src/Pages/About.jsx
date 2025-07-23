@@ -1,6 +1,9 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 
 const AboutUs = () => {
+  useEffect(()=>{
+   window.scrollTo(0,0)
+  },[])
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black overflow-hidden">
       {/* Background Layer */}
