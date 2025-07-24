@@ -7,7 +7,7 @@ const WeightGainBanner = () => {
   const navigate = useNavigate();
 
   useEffect(()=>{
-     window.scrollTo()
+     window.scrollTo(0,0)
   },[])
 
   return (
