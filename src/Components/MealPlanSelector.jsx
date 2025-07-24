@@ -1,58 +1,61 @@
-import React from "react";
+import React from 'react';
+import { useNavigate } from 'react-router-dom';
 
-const NutriBowlBanner = () => {
+const MealPlanNavigator = () => {
+  const navigate = useNavigate();
+
   return (
-    <div 
-      className="relative w-full bg-cover bg-center text-white"
-      style={{ 
-        backgroundImage: "url('plate-with.avif')",
-        minHeight: "400px" // Added minimum height for better display
-      }}
-    >
-      {/* Overlay for better text readability */}
-      <div className="absolute inset-0 bg-black bg-opacity-30"></div>
+    <div className="w-full p-6 bg-white rounded-lg shadow-md">
+      <h2 className="text-3xl font-bold text-gray-800 mb-6">Choose Your <span className='text-green-600 '> Meal Plan</span></h2>
       
-      <div className="relative z-10 w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-16 flex flex-col md:flex-row items-center justify-between">
-        {/* Left Text Section */}
-        <div className="w-full md:w-1/2 space-y-4 md:space-y-6 text-center md:text-left">
-          <div className="flex flex-col md:flex-row items-center justify-center md:justify-start space-y-4 md:space-y-0 md:space-x-4">
-            <img
-              src="/logo.png"
-              alt="NutriBowl Logo"
-              className="w-16 h-16 md:w-20 md:h-20" // Responsive logo sizing
-            />
-            <div>
-              <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white">
-                Nutri<span className="text-green-500">Bowl</span>
-              </h1>
-              <p className="text-xs sm:text-sm md:text-base text-gray-200 mt-1 tracking-wide">
-                HEALTHY EATS, TASTY TREATS!
-              </p>
-            </div>
-          </div>
-
-          <div className="mt-6 md:mt-8">
-            <p className="text-lg sm:text-xl md:text-2xl font-semibold leading-tight">
-              Want to achieve your <br className="hidden sm:block" />
-              <span className="text-green-500 font-bold">WEIGHT LOSS</span>{" "}
-              <br className="hidden sm:block" />
-              goals without giving up tasty food?
-            </p>
-          </div>
-
-          {/* Optional CTA Button */}
-          <button className="mt-6 px-6 py-3 bg-green-600 hover:bg-green-700 rounded-full font-medium text-white transition duration-300 transform hover:scale-105">
-            Discover Our Menu
+      <div className="flex gap-4">
+        {/* Stay Fit Plan */}
+        <div className="bg-green-50 p-6 rounded-lg border border-green-100">
+          <h3 className="text-xl font-bold text-green-700 mb-2">Stay Fit Meal Plan</h3>
+          <p className="text-gray-600 mb-4">Balanced meals to maintain your ideal weight</p>
+          <button 
+            onClick={() => navigate('/meal-plans/stay-fit')}
+            className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg transition-colors flex items-center"
+          >
+            View Stay Fit Plan
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
           </button>
         </div>
 
-        {/* Right Section - Could add an image or form here */}
-        <div className="w-full md:w-1/2 mt-8 md:mt-0">
-          {/* Placeholder for additional content */}
+        {/* Weight Loss Plan */}
+        <div className="bg-green-50 p-6 rounded-lg border border-blue-100">
+          <h3 className="text-xl font-bold text-green-700  mb-2">Weight Loss Plan</h3>
+          <p className="text-gray-600 mb-4">Healthy meals for sustainable weight loss</p>
+          <button 
+            onClick={() => navigate('/meal-plans/weight-loss')}
+            className="bg-green-500 hover:bg-green-600 text-white font-medium py-2 px-6 rounded-lg transition-colors flex items-center"
+          >
+            View Weight Loss Plan
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
+        </div>
+
+        {/* Weight Gain Plan */}
+        <div className="bg-green-50 p-6 rounded-lg border border-orange-100">
+          <h3 className="text-xl font-bold text-green-700  mb-2">Weight Gain Plan</h3>
+          <p className="text-gray-600 mb-4">Nutrient-dense meals for healthy weight gain</p>
+          <button 
+            onClick={() => navigate('/meal-plans/weight-gain')}
+            className="bg-green-500 hover:bg-green-600 text-white text-white font-medium py-2 px-6 rounded-lg transition-colors flex items-center"
+          >
+            View Weight Gain Plan
+            <svg xmlns="http://www.w3.org/2000/svg" className="h-5 w-5 ml-2" viewBox="0 0 20 20" fill="currentColor">
+              <path fillRule="evenodd" d="M10.293 5.293a1 1 0 011.414 0l4 4a1 1 0 010 1.414l-4 4a1 1 0 01-1.414-1.414L12.586 11H5a1 1 0 110-2h7.586l-2.293-2.293a1 1 0 010-1.414z" clipRule="evenodd" />
+            </svg>
+          </button>
         </div>
       </div>
     </div>
   );
 };
 
-export default NutriBowlBanner;
+export default MealPlanNavigator;

@@ -28,14 +28,25 @@ const NutriBowlBanner = () => {
             </div>
           </div>
 
-          <div className="mt-6 md:mt-8">
-            <p className="text-lg sm:text-xl md:text-2xl font-semibold">
-              Want to achieve your <br className="hidden sm:block" />
-              <span className="text-green-500 font-bold">WEIGHT LOSS</span>{" "}
-              <br className="hidden sm:block" />
-              goals without giving up tasty food?
-            </p>
-          </div>
+   <div className="mt-6 md:mt-8 space-y-4">
+  <p className="text-lg sm:text-xl md:text-2xl font-semibold">
+    Achieve your health goals with tasty food:
+  </p>
+  <ul className="space-y-2 text-left pl-5">
+    <li className="flex items-center gap-2">
+      <span className="text-green-500 font-bold mr-2">•</span>
+      <span className="font-medium">Weight Loss</span> without starvation
+    </li>
+    <li className="flex items-center gap-2">
+      <span className="text-green-500 font-bold mr-2">•</span>
+      <span className="font-medium">Weight Gain</span> the healthy way
+    </li>
+    <li className="flex items-center gap-2">
+      <span className="text-green-500 font-bold mr-2">•</span>
+      <span className="font-medium">Stay Fit </span>  <span> while enjoying every bite</span>
+    </li>
+  </ul>
+</div>
 
           {/* Optional CTA Button */}
           <button className="mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full text-sm sm:text-base transition duration-300 transform hover:scale-105">
