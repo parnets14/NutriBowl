@@ -1,14 +1,17 @@
-import React from 'react';
+import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const MealPlanNavigator = () => {
   const navigate = useNavigate();
+  useEffect(()=>{
+    window.scrollTo(0,0)
+  })
 
   return (
     <div className="w-full p-6 bg-white rounded-lg shadow-md">
       <h2 className="text-3xl font-bold text-gray-800 mb-6">Choose Your <span className='text-green-600 '> Meal Plan</span></h2>
       
-      <div className="flex gap-4">
+      <div className="flex flex-col md:flex-row gap-4">
         {/* Stay Fit Plan */}
         <div className="bg-green-50 p-6 rounded-lg border border-green-100">
           <h3 className="text-xl font-bold text-green-700 mb-2">Stay Fit Meal Plan</h3>

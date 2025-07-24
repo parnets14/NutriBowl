@@ -1,8 +1,11 @@
 import React, { useEffect } from 'react';
+import { useNavigate } from 'react-router-dom';
 
 const AboutUs = () => {
+    const navigate=useNavigate()
   useEffect(()=>{
    window.scrollTo(0,0)
+ 
   },[])
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black overflow-hidden">
@@ -38,12 +41,12 @@ const AboutUs = () => {
             wellness journey, we make it easy to eat right without the hassle of meal prep or guesswork.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-8 animate-fade-in-up delay-400">
-            <button className="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <button 
+            onClick={()=>navigate("/allmealPlan")}
+            className="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               Explore Meal Plans
             </button>
-            <button className="px-6 py-3 bg-transparent border-2 border-green-400 text-green-400 font-medium rounded-full hover:bg-green-400/10 transition-all duration-300">
-              Meet Our Team
-            </button>
+        
           </div>
         </div>
 

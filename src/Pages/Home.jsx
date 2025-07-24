@@ -1,3 +1,4 @@
+
 import NutriBowlBanner from "../Components/Banner";
 import BMICalculator from "../Components/bmiCalculator";
 import HealthGoalsSection from "../Components/HealthGoalsSection";

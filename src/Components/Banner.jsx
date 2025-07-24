@@ -3,7 +3,7 @@ import React from "react";
 const NutriBowlBanner = () => {
   return (
     <div
-      className="relative w-full bg-cover bg-center text-white min-h-[400px] md:min-h-[500px]"
+      className="relative w-full bg-cover bg-center text-white min-h-[300px] md:min-h-[200px]"
       style={{ backgroundImage: "url('plate-with.avif')" }}
     >
       {/* Overlay for better text readability */}
@@ -48,10 +48,7 @@ const NutriBowlBanner = () => {
   </ul>
 </div>
 
-          {/* Optional CTA Button */}
-          <button className="mt-6 bg-green-600 hover:bg-green-700 text-white font-bold py-3 px-6 rounded-full text-sm sm:text-base transition duration-300 transform hover:scale-105">
-            Discover Our Menu
-          </button>
+        
         </div>
 
         {/* Right Section - Could add an image or form here */}

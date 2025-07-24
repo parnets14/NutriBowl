@@ -11,6 +11,7 @@ import StayFitMealPlan from './Components/stayFit/StayFitMealPlan';
 import WeightGainMealPlan from './Components/weightGain/WeightGainMealPlan';
 import { WeightGainHome } from './Components/weightGain/WeightGainHome';
 import BMICalculator from './Components/bmiCalculator';
+import MealPlanNavigator from './Components/MealPlanSelector';
 
 
 function App() {
@@ -31,7 +32,7 @@ function App() {
             <Route path="/meal-plans/weight-loss" element={<WeightLossMealPlan />} />
             <Route path="/meal-plans/stay-fit" element={<StayFitMealPlan />} />
              <Route path="/meal-plans/weight-gain" element={<WeightGainMealPlan />} />
-            {/* <Route path="/contact" element={<Contact />} /> */}
+            <Route path="/allmealPlan" element={<MealPlanNavigator />} />
           </Routes>
         </main>
         <Footer />
