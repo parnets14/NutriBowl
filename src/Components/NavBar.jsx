@@ -112,9 +112,12 @@ const Navbar = () => {
                 className='h-12'
                 alt="Company Logo"
               />
-              <span className="ml-3 text-xl font-bold text-gray-800 hidden md:block">
-                Nutri<span className="text-green-500">Bowl</span>
-              </span>
+              {/* <span className="">
+                Nutri<span className="text-green-500"> Bowl</span>
+              </span> */}
+              <h1 className="text-2xl ml-2 font-bold text-green-600 tracking-wide [font-family:'Baloo_Bhai_2',cursive]">
+  Nutri BOWL
+</h1>
             </Link>
           </motion.div>
 

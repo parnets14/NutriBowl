@@ -8,7 +8,7 @@ const NutriBowlBanner = () => {
     >
       {/* Overlay for better text readability */}
       {/* <div className="absolute inset-0 bg-black bg-opacity-40"></div> */}
-      
+
       <div className="relative w-full max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 py-10 md:py-20 flex flex-col md:flex-row items-center justify-between">
         {/* Left Text Section */}
         <div className="w-full md:w-1/2 space-y-4 md:space-y-6 text-center md:text-left">
@@ -20,7 +20,9 @@ const NutriBowlBanner = () => {
             />
             <div>
               <h1 className="text-3xl sm:text-4xl md:text-5xl font-extrabold text-white">
-                Nutri<span className="text-green-500">Bowl</span>
+                <h1 className=" ml-2 font-bold text-green-600 tracking-wide [font-family:'Baloo_Bhai_2',cursive]">
+                  Nutri BOWL
+                </h1>
               </h1>
               <p className="text-sm sm:text-base text-gray-200 mt-1 tracking-wide">
                 HEALTHY EATS, TASTY TREATS!
@@ -28,27 +30,27 @@ const NutriBowlBanner = () => {
             </div>
           </div>
 
-   <div className="mt-6 md:mt-8 space-y-4">
-  <p className="text-lg sm:text-xl md:text-2xl font-semibold">
-    Achieve your health goals with tasty food:
-  </p>
-  <ul className="space-y-2 text-left pl-5">
-    <li className="flex items-center gap-2">
-      <span className="text-green-500 font-bold mr-2">•</span>
-      <span className="font-medium">Weight Loss</span> without starvation
-    </li>
-    <li className="flex items-center gap-2">
-      <span className="text-green-500 font-bold mr-2">•</span>
-      <span className="font-medium">Weight Gain</span> the healthy way
-    </li>
-    <li className="flex items-center gap-2">
-      <span className="text-green-500 font-bold mr-2">•</span>
-      <span className="font-medium">Stay Fit </span>  <span> while enjoying every bite</span>
-    </li>
-  </ul>
-</div>
+          <div className="mt-6 md:mt-8 space-y-4">
+            <p className="text-lg sm:text-xl md:text-2xl font-semibold">
+              Achieve your health goals with tasty food:
+            </p>
+            <ul className="space-y-2 text-left pl-5">
+              <li className="flex items-center gap-2">
+                <span className="text-green-500 font-bold mr-2">•</span>
+                <span className="font-medium">Weight Loss</span> without starvation
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-500 font-bold mr-2">•</span>
+                <span className="font-medium">Weight Gain</span> the healthy way
+              </li>
+              <li className="flex items-center gap-2">
+                <span className="text-green-500 font-bold mr-2">•</span>
+                <span className="font-medium">Stay Fit </span>  <span> while enjoying every bite</span>
+              </li>
+            </ul>
+          </div>
 
-        
+
         </div>
 
         {/* Right Section - Could add an image or form here */}

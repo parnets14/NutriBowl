@@ -1,8 +1,10 @@
 import React from "react";
 import { FaBrain, FaShieldAlt, FaMeh, FaBolt } from "react-icons/fa";
 import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
 
 const BenefitCard = ({ icon, title, description, index }) => {
+
   return (
     <motion.div
       className="h-full bg-white border border-green-50 rounded-xl p-6 shadow-sm hover:shadow-md transition-all"
@@ -22,6 +24,7 @@ const BenefitCard = ({ icon, title, description, index }) => {
 };
 
 const ImportanceOfHealthyWeightLoss = () => {
+    const navigate=useNavigate()
   const benefits = [
     {
       icon: <FaBrain />,
@@ -127,8 +130,10 @@ const ImportanceOfHealthyWeightLoss = () => {
               </div>
             </div>
             <div className="md:w-1/3">
-              <button className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-6 rounded-full transition-all shadow-md hover:shadow-lg">
-                Start Your Journey
+              <button
+              onClick={()=>navigate("/meal-plans/weight-loss")}
+               className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-6 rounded-full transition-all shadow-md hover:shadow-lg">
+              View Weight loss Meal plan
               </button>
             </div>
           </div>

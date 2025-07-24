@@ -48,7 +48,7 @@ const HealthGoalsSection = () => {
       <div className="container mx-auto px-4">
         <div className="text-center mb-12">
           <span className="inline-block px-4 py-2 mb-4 text-sm font-semibold text-green-600 bg-green-100 rounded-full">
-            OUR PROGRAMS
+            ELEVATE YOUR HEALTH
           </span>
           <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-4">
             Achieve Your <span className="text-green-600">Health Goals</span>

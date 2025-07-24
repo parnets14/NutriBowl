@@ -2,11 +2,12 @@ import React, { useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 
 const AboutUs = () => {
-    const navigate=useNavigate()
-  useEffect(()=>{
-   window.scrollTo(0,0)
- 
-  },[])
+  const navigate = useNavigate();
+
+  useEffect(() => {
+    window.scrollTo(0, 0);
+  }, []);
+
   return (
     <div className="relative min-h-screen flex items-center justify-center bg-gradient-to-br from-gray-800 via-gray-900 to-black overflow-hidden">
       {/* Background Layer */}
@@ -19,12 +20,12 @@ const AboutUs = () => {
       <div className="relative z-10 flex flex-col md:flex-row items-center justify-center p-6 md:p-12 max-w-6xl mx-auto">
         {/* Text Section */}
         <div className="md:w-3/5 p-6 md:p-8 transform transition duration-700 hover:scale-[1.02]">
-          <h2 className="text-4xl md:text-5xl font-bold uppercase text-green-900  mb-6 animate-fade-in-down bg-gradient-to-r from-green-400 to-green-500 bg-clip-text text-transparent">
+          <h2 className="text-4xl md:text-5xl font-bold uppercase text-green-900 mb-6 animate-fade-in-down bg-gradient-to-r from-green-400 to-green-500 bg-clip-text text-transparent">
             Your Nutrition Journey Starts Here
           </h2>
           <p className="text-gray-200 text-base md:text-lg leading-relaxed mb-4 animate-fade-in-up delay-100">
-            At NutriBowl, we believe healthy eating should be simple, satisfying, and sustainable. 
-            Founded in 2018 by nutritionist Sarah Chen and chef Michael Rodriguez, we've helped 
+            At NutriBowl, we believe healthy eating should be simple, satisfying, and sustainable.
+            Founded in 2018 by nutritionist Sarah Chen and chef Michael Rodriguez, we've helped
             over 50,000 customers achieve their health goals through personalized meal plans.
           </p>
           <p className="text-gray-200 text-base md:text-lg leading-relaxed mb-4 animate-fade-in-up delay-200">
@@ -37,30 +38,42 @@ const AboutUs = () => {
             </ul>
           </p>
           <p className="text-gray-200 text-base md:text-lg leading-relaxed animate-fade-in-up delay-300">
-            Whether you're a busy professional, fitness enthusiast, or someone just starting their 
+            Whether you're a busy professional, fitness enthusiast, or someone just starting their
             wellness journey, we make it easy to eat right without the hassle of meal prep or guesswork.
           </p>
           <div className="flex flex-col sm:flex-row gap-4 mt-8 animate-fade-in-up delay-400">
-            <button 
-            onClick={()=>navigate("/allmealPlan")}
-            className="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
+            <button
+              onClick={() => navigate("/allmealPlan")}
+              className="px-6 py-3 bg-gradient-to-r from-green-500 to-blue-600 text-white font-medium rounded-full hover:shadow-lg transition-all duration-300 hover:-translate-y-1">
               Explore Meal Plans
             </button>
-        
           </div>
         </div>
 
-        {/* Image Section */}
-        <div className="md:w-2/5 p-4 transform transition duration-700 hover:scale-[1.02] flex justify-center">
+        {/* Image Section - Now with two images */}
+        <div className="md:w-2/5 p-4 transform transition duration-700 hover:scale-[1.02] flex flex-col gap-8">
           <div className="relative">
             <img
-              src="https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80"
+              src="https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
               alt="Nutritionist consulting a client"
               className="w-full h-auto rounded-xl shadow-2xl border-4 border-white/10 animate-fade-in-right"
             />
             <div className="absolute -bottom-5 -right-5 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-lg">
               <p className="text-sm font-semibold text-gray-800">Sarah Chen</p>
               <p className="text-xs text-gray-600">Co-Founder & Head Nutritionist</p>
+            </div>
+          </div>
+
+          {/* Second Image */}
+          <div className="relative">
+            <img
+              src="https://images.unsplash.com/photo-1606787366850-de6330128bfc?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1170&q=80"
+              alt="Chef preparing healthy food"
+              className="w-full h-auto rounded-xl shadow-2xl border-4 border-white/10 animate-fade-in-right delay-100"
+            />
+            <div className="absolute -bottom-5 -right-5 bg-white/90 backdrop-blur-sm p-3 rounded-lg shadow-lg">
+              <p className="text-sm font-semibold text-gray-800">Michael Rodriguez</p>
+              <p className="text-xs text-gray-600">Co-Founder & Executive Chef</p>
             </div>
           </div>
         </div>
