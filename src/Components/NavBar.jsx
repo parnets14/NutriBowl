@@ -1,21 +1,14 @@
 import React, { useState, useEffect } from 'react';
-import { 
-  FaBars, 
-  FaTimes, 
-  FaUtensils, 
-  FaInfoCircle, 
-  FaHome,
-  FaChevronDown,
-  FaArrowRight
+import {
+  FaBars, FaTimes, FaUtensils, FaInfoCircle, FaHome,
+  FaChevronDown, FaArrowRight, FaShoppingCart, FaUser
 } from 'react-icons/fa';
-import { 
-  GiWeightScale,
-  GiMuscleUp,
-  GiRunningShoe
-} from 'react-icons/gi';
+import { GiWeightScale, GiMuscleUp, GiRunningShoe } from 'react-icons/gi';
+import { CgCalculator } from 'react-icons/cg';
 import { motion, AnimatePresence } from 'framer-motion';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
-import { CgCalculator } from 'react-icons/cg';
+import { useAuth } from '../hooks/useAuth';
+import { useCart } from '../hooks/useCart';
 
 const Navbar = () => {
   const [isOpen, setIsOpen] = useState(false);
@@ -24,12 +17,19 @@ const Navbar = () => {
   const location = useLocation();
   const navigate = useNavigate();
 
+  const { user, logout } = useAuth();
+  const { cartItems } = useCart();
+  const cartItemCount = cartItems.reduce((sum, item) => sum + item.quantity, 0);
+
   const getActiveItem = () => {
     const path = location.pathname;
     if (path === '/') return 'Home';
-    if (path.includes('/meal-plans')) return 'Meal Plans';
+    if (path.startsWith('/meal-plans')) return 'Meal Plans';
     if (path === '/about-us') return 'About Us';
-    return 'Home';
+    if (path === '/bmi-calculator') return 'BMI calculator';
+    if (path === '/menu') return 'Menu';
+    if (path === '/cart') return 'Cart';
+    return '';
   };
 
   const [activeItem, setActiveItem] = useState(getActiveItem());
@@ -39,30 +39,37 @@ const Navbar = () => {
   }, [location]);
 
   useEffect(() => {
-    const handleScroll = () => {
-      setScrolled(window.scrollY > 10);
-    };
+    const handleScroll = () => setScrolled(window.scrollY > 10);
     window.addEventListener('scroll', handleScroll);
     return () => window.removeEventListener('scroll', handleScroll);
   }, []);
 
+  const handleNavigation = (path) => {
+    navigate(path);
+    setIsOpen(false);
+    setShowMealPlans(false);
+  };
+const handleLogout = () => {
+    logout()
+    navigate("/") // ✅ No error here
+  }
   const mealPlanOptions = [
-    { 
-      name: 'Weight Loss', 
+    {
+      name: 'Weight Loss',
       icon: <GiWeightScale className="text-blue-500 text-xl" />,
       path: '/meal-plans/weight-loss',
       desc: 'Shed pounds healthily',
       color: 'from-blue-50 to-white'
     },
-    { 
-      name: 'Weight Gain', 
+    {
+      name: 'Weight Gain',
       icon: <GiMuscleUp className="text-orange-500 text-xl" />,
       path: '/meal-plans/weight-gain',
       desc: 'Build muscle mass',
       color: 'from-orange-50 to-white'
     },
-    { 
-      name: 'Stay Fit', 
+    {
+      name: 'Stay Fit',
       icon: <GiRunningShoe className="text-green-500 text-xl" />,
       path: '/meal-plans/stay-fit',
       desc: 'Maintain your physique',
@@ -72,28 +79,20 @@ const Navbar = () => {
 
   const navItems = [
     { name: 'Home', icon: <FaHome className="mr-2" />, path: '/' },
-    { 
-      name: 'Meal Plans', 
-      icon: <FaUtensils className="mr-2" />, 
+    {
+      name: 'Meal Plans',
+      icon: <FaUtensils className="mr-2" />,
       path: '/meal-plans',
       subItems: mealPlanOptions
-    },{ name: 'BMI calculator', icon: <CgCalculator className="mr-2" />, path: '/bmi-calculator' },
+    },
+    { name: 'Menu', icon: <FaUtensils className="mr-2" />, path: '/menu' },
+    { name: 'BMI calculator', icon: <CgCalculator className="mr-2" />, path: '/bmi-calculator' },
     { name: 'About Us', icon: <FaInfoCircle className="mr-2" />, path: '/about-us' },
+    { name: 'Cart', icon: <FaShoppingCart className="mr-2" />, path: '/cart' }
   ];
 
-  const handleNavigation = (path) => {
-    navigate(path);
-    setIsOpen(false);
-    setShowMealPlans(false);
-  };
-
-  const toggleMealPlans = () => {
-    setShowMealPlans(!showMealPlans);
-  };
-
   return (
-    <motion.nav 
-      className={`sticky top-0 w-full z-50 ${scrolled ? 'bg-white shadow-md' : 'bg-gradient-to-b from-green-50 to-white'}`}
+    <motion.nav className={`sticky top-0 w-full z-50 ${scrolled ? 'bg-white shadow-md' : 'bg-gradient-to-b from-green-50 to-white'}`}
       initial={{ y: -100 }}
       animate={{ y: 0 }}
       transition={{ duration: 0.5, ease: "easeOut" }}
@@ -101,25 +100,10 @@ const Navbar = () => {
       <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div className="flex justify-between h-20 items-center">
           {/* Logo */}
-          <motion.div 
-            className="flex items-center"
-            whileHover={{ scale: 1.05 }}
-            whileTap={{ scale: 0.95 }}
-          >
-            <Link to="/" className="flex-shrink-0 flex items-center group cursor-pointer">
-              <motion.img 
-                src="/logo.png" 
-                className='h-12'
-                alt="Company Logo"
-              />
-              {/* <span className="">
-                Nutri<span className="text-green-500"> Bowl</span>
-              </span> */}
-              <h1 className="text-2xl ml-2 font-bold text-green-600 tracking-wide [font-family:'Baloo_Bhai_2',cursive]">
-  Nutri BOWL
-</h1>
-            </Link>
-          </motion.div>
+          <Link to="/" className="flex items-center group">
+            <motion.img src="/logo.png" className='h-12' alt="Company Logo" />
+            <h1 className="text-2xl ml-2 font-bold text-green-600 tracking-wide">Nutri BOWL</h1>
+          </Link>
 
           {/* Desktop Navigation */}
           <div className="hidden md:flex md:space-x-2 items-center">
@@ -128,54 +112,41 @@ const Navbar = () => {
                 {item.subItems ? (
                   <div className="relative">
                     <motion.div
-                      onClick={toggleMealPlans}
+                      onClick={() => setShowMealPlans(!showMealPlans)}
                       className={`${
-                        activeItem === item.name
-                          ? 'text-green-600 bg-green-50'
-                          : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
-                      } relative inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer`}
-                      whileHover={{ scale: 1.05 }}
-                      whileTap={{ scale: 0.98 }}
+                        activeItem === item.name ? 'text-green-600 bg-green-50' : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
+                      } inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium cursor-pointer`}
                     >
                       {item.icon}
                       {item.name}
-                      <FaChevronDown className={`ml-2 transition-transform ${showMealPlans ? 'transform rotate-180' : ''}`} />
+                      <FaChevronDown className={`ml-2 transition-transform ${showMealPlans ? 'rotate-180' : ''}`} />
                     </motion.div>
 
                     <AnimatePresence>
                       {showMealPlans && (
-                        <motion.div 
-                          className="absolute left-0 mt-2 w-64 origin-top-left z-50"
+                        <motion.div className="absolute left-0 mt-2 w-64 z-50"
                           initial={{ opacity: 0, y: -10 }}
                           animate={{ opacity: 1, y: 0 }}
                           exit={{ opacity: 0, y: -10 }}
                           transition={{ duration: 0.2 }}
                         >
-                          <div className="bg-white rounded-xl shadow-xl overflow-hidden border border-gray-100">
-                            <div className="p-2 bg-gradient-to-r from-green-100 to-green-50">
+                          <div className="bg-white rounded-xl shadow-xl border border-gray-100">
+                            <div className="p-2 bg-green-50">
                               <h4 className="font-semibold text-green-800 text-sm">MEAL PLAN OPTIONS</h4>
                             </div>
                             <div className="divide-y divide-gray-100">
                               {item.subItems.map((subItem) => (
-                                <motion.div
-                                  key={subItem.name}
-                                  whileHover={{ scale: 1.02 }}
-                                  whileTap={{ scale: 0.98 }}
+                                <motion.button key={subItem.name}
+                                  onClick={() => handleNavigation(subItem.path)}
+                                  className={`w-full text-left p-3 hover:bg-gradient-to-r ${subItem.color} flex items-start`}
                                 >
-                                  <button
-                                    onClick={() => handleNavigation(subItem.path)}
-                                    className={`w-full text-left p-3 hover:bg-gradient-to-r ${subItem.color} transition-all flex items-start`}
-                                  >
-                                    <div className="mr-3 mt-1">
-                                      {subItem.icon}
-                                    </div>
-                                    <div className="flex-1">
-                                      <div className="font-medium text-gray-800">{subItem.name}</div>
-                                      <div className="text-xs text-gray-500">{subItem.desc}</div>
-                                    </div>
-                                    <FaArrowRight className="text-gray-400 mt-1" />
-                                  </button>
-                                </motion.div>
+                                  <div className="mr-3 mt-1">{subItem.icon}</div>
+                                  <div className="flex-1">
+                                    <div className="font-medium text-gray-800">{subItem.name}</div>
+                                    <div className="text-xs text-gray-500">{subItem.desc}</div>
+                                  </div>
+                                  <FaArrowRight className="text-gray-400 mt-1" />
+                                </motion.button>
                               ))}
                             </div>
                           </div>
@@ -187,36 +158,46 @@ const Navbar = () => {
                   <motion.div
                     onClick={() => handleNavigation(item.path)}
                     className={`${
-                      activeItem === item.name
-                        ? 'text-green-600 bg-green-50'
-                        : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
-                    } relative inline-flex items-center px-4 py-2 border border-transparent rounded-lg text-sm font-medium transition-all duration-200 cursor-pointer`}
-                    whileHover={{ scale: 1.05 }}
-                    whileTap={{ scale: 0.98 }}
+                      activeItem === item.name ? 'text-green-600 bg-green-50' : 'text-gray-600 hover:text-green-600 hover:bg-green-50'
+                    } inline-flex items-center px-4 py-2 rounded-lg text-sm font-medium cursor-pointer`}
                   >
                     {item.icon}
                     {item.name}
+                    {item.name === 'Cart' && cartItemCount > 0 && (
+                      <span className="ml-1 bg-red-500 text-white text-xs rounded-full w-5 h-5 flex items-center justify-center">
+                        {cartItemCount}
+                      </span>
+                    )}
                   </motion.div>
                 )}
               </div>
             ))}
 
-            <motion.button 
-              className="bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white px-6 py-2.5 rounded-lg text-sm font-medium transition-all duration-200 shadow hover:shadow-lg flex items-center ml-2"
-              whileHover={{ scale: 1.05, y: -2 }}
-              whileTap={{ scale: 0.98 }}
-              onClick={() => handleNavigation('/signup')}
-            >
-              Get Started
-              <FaChevronDown className="ml-2 transform rotate-90" />
-            </motion.button>
+            {/* Auth Section */}
+            {user ? (
+              <div className="relative group ml-4">
+                <button className="flex items-center space-x-2 text-gray-700 hover:text-green-600">
+                  <FaUser />
+                  <span>{user.fullName?.split(' ')[0]}</span>
+                </button>
+                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+                  <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
+                  <button onClick={() => {handleLogout(); navigate('/'); }} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+                </div>
+              </div>
+            ) : (
+              <div className="flex items-center space-x-4 ml-4">
+                <Link to="/auth/login" className="text-gray-700 hover:text-green-600">Sign In</Link>
+                <Link to="/auth/register" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Sign Up</Link>
+              </div>
+            )}
           </div>
 
-          {/* Mobile menu button */}
-          <div className="-mr-2 flex items-center md:hidden">
+          {/* Mobile Menu Button */}
+          <div className="md:hidden">
             <motion.button
               onClick={() => setIsOpen(!isOpen)}
-              className="inline-flex items-center justify-center p-2 rounded-lg text-gray-600 hover:text-green-600 hover:bg-green-50 focus:outline-none"
+              className="text-gray-700 hover:text-green-600"
               whileHover={{ scale: 1.1 }}
               whileTap={{ scale: 0.9 }}
             >
@@ -226,73 +207,61 @@ const Navbar = () => {
         </div>
       </div>
 
-      {/* Mobile menu */}
+      {/* Mobile Menu */}
       <AnimatePresence>
         {isOpen && (
-          <motion.div 
+          <motion.div
             className="md:hidden bg-white shadow-lg"
             initial={{ height: 0, opacity: 0 }}
             animate={{ height: 'auto', opacity: 1 }}
             exit={{ height: 0, opacity: 0 }}
             transition={{ duration: 0.3 }}
           >
-            <div className="pt-2 pb-4 px-4 space-y-1">
+            <div className="px-4 py-2 space-y-1">
               {navItems.map((item) => (
                 <div key={item.name}>
-                  <motion.button
-                    onClick={item.subItems ? toggleMealPlans : () => handleNavigation(item.path)}
-                    className={`${
-                      activeItem === item.name
-                        ? 'bg-green-50 text-green-600'
-                        : 'text-gray-600 hover:bg-green-50'
-                    } block w-full text-left px-4 py-3 rounded-lg text-base font-medium transition-colors duration-200 flex items-center justify-between`}
+                  <button
+                    onClick={item.subItems ? () => setShowMealPlans(!showMealPlans) : () => handleNavigation(item.path)}
+                    className={`w-full text-left px-4 py-2 rounded-lg flex items-center justify-between ${
+                      activeItem === item.name ? 'bg-green-50 text-green-600' : 'hover:bg-green-50 text-gray-600'
+                    }`}
                   >
                     <div className="flex items-center">
-                      <span className="mr-3">{item.icon}</span>
-                      {item.name}
+                      {item.icon}
+                      <span className="ml-2">{item.name}</span>
                     </div>
-                    {item.subItems && (
-                      <FaChevronDown className={`transition-transform ${showMealPlans ? 'transform rotate-180' : ''}`} />
-                    )}
-                  </motion.button>
+                    {item.subItems && <FaChevronDown className={`${showMealPlans ? 'rotate-180' : ''}`} />}
+                  </button>
 
                   {item.subItems && showMealPlans && (
-                    <motion.div 
-                      className="pl-8 space-y-1 mt-1"
-                      initial={{ height: 0, opacity: 0 }}
-                      animate={{ height: 'auto', opacity: 1 }}
-                      exit={{ height: 0, opacity: 0 }}
-                      transition={{ duration: 0.2 }}
-                    >
+                    <div className="pl-8 mt-1">
                       {item.subItems.map((subItem) => (
-                        <motion.button
+                        <button
                           key={subItem.name}
                           onClick={() => handleNavigation(subItem.path)}
-                          className={`block w-full text-left px-4 py-2 rounded-lg text-sm font-medium transition-colors duration-200 flex items-center`}
-                          whileHover={{ x: 5 }}
+                          className="block w-full text-left px-4 py-2 text-sm text-gray-600 hover:text-green-600"
                         >
-                          <span className="mr-3">{subItem.icon}</span>
-                          <div>
-                            <div className="font-medium">{subItem.name}</div>
-                            <div className="text-xs text-gray-500">{subItem.desc}</div>
-                          </div>
-                        </motion.button>
+                          {subItem.name}
+                        </button>
                       ))}
-                    </motion.div>
+                    </div>
                   )}
                 </div>
               ))}
-              
-              <div className="pt-4 pb-2 border-t border-gray-200">
-                <motion.button 
-                  className="w-full bg-gradient-to-r from-green-500 to-green-600 text-white px-4 py-3 rounded-lg text-base font-medium shadow-md flex items-center justify-center"
-                  whileHover={{ y: -2 }}
-                  whileTap={{ scale: 0.98 }}
-                  onClick={() => handleNavigation('/signup')}
-                >
-                  Get Started
-                  <FaChevronDown className="ml-2 transform rotate-90" />
-                </motion.button>
+
+              {/* Auth Section (Mobile) */}
+              <div className="pt-4 border-t border-gray-200">
+                {user ? (
+                  <>
+                    <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
+                    <button onClick={() => { handleLogout(); navigate('/'); }} className="block w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
+                  </>
+                ) : (
+                  <>
+                    <Link to="/auth/login" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Sign In</Link>
+                    <Link to="/auth/register" className="block px-4 py-2 text-sm bg-green-600 text-white rounded-lg hover:bg-green-700 mt-1">Sign Up</Link>
+                  </>
+                )}
               </div>
             </div>
           </motion.div>
