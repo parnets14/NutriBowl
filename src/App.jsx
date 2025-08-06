@@ -1,5 +1,6 @@
-import { Routes, Route } from 'react-router-dom';
 
+import { Routes, Route, useLocation } from 'react-router-dom';
+import { useEffect, useState } from 'react';
 import Navbar from './Components/NavBar';
 import Footer from './Components/Footer';
 import Home from './Pages/Home';
@@ -21,7 +22,7 @@ import CheckoutPage from './Components/Checkout';
 import { useAdminAuth } from './hooks/AdminAuthProvider'; // Added useAdminAuth
 import Login from '../src/Admin/Login'; // Admin login component
 import AdminDashboard from './Admin/Dashboard'; // Admin dashboard component
-import { useState } from 'react'; // Added useState
+
 
 function AdminProtectedRoute() {
   const { isAuthenticated, isLoading } = useAdminAuth();
@@ -43,9 +44,17 @@ function AdminProtectedRoute() {
 }
 
 function App() {
+  const location = useLocation();
+  const [isAdminRoute, setIsAdminRoute] = useState(false);
+
+  useEffect(() => {
+    // Check if the current path starts with '/admin'
+    setIsAdminRoute(location.pathname.startsWith('/admin'));
+  }, [location]);
+
   return (
     <div className="flex flex-col min-h-screen">
-      <Navbar />
+      {!isAdminRoute && <Navbar />}
       <main className="flex-grow">
         <Routes>
           <Route path="/" element={<Home />} />
@@ -64,10 +73,10 @@ function App() {
           <Route path='/auth/login' element={<LoginPage/>}/>
           <Route path='/auth/register' element={<RegisterPage/>}/>
           <Route path='/profile' element={<ProfilePage/>}/>
-          <Route path='/admin' element={<AdminProtectedRoute/>}/>
+          <Route path='/admin/*' element={<AdminProtectedRoute/>}/>
         </Routes>
       </main>
-      <Footer />
+      {!isAdminRoute && <Footer />}
     </div>
   );
 }
