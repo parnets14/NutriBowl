@@ -16,6 +16,31 @@ import Menu from './Pages/Menu';
 import LoginPage from './Pages/Login';
 import RegisterPage from './Pages/Register';
 import ProfilePage from './Components/Profile';
+import CartPage from './Components/Cart';
+import CheckoutPage from './Components/Checkout';
+import { useAdminAuth } from './hooks/AdminAuthProvider'; // Added useAdminAuth
+import Login from '../src/Admin/Login'; // Admin login component
+import AdminDashboard from './Admin/Dashboard'; // Admin dashboard component
+import { useState } from 'react'; // Added useState
+
+function AdminProtectedRoute() {
+  const { isAuthenticated, isLoading } = useAdminAuth();
+  const [showDashboard, setShowDashboard] = useState(false);
+
+  if (isLoading) {
+    return (
+      <div className="min-h-screen flex items-center justify-center">
+        <div className="animate-spin rounded-full h-32 w-32 border-b-2 border-green-600"></div>
+      </div>
+    );
+  }
+
+  if (!isAuthenticated || !showDashboard) {
+    return <Login onLoginSuccess={() => setShowDashboard(true)} />;
+  }
+
+  return <AdminDashboard />;
+}
 
 function App() {
   return (
@@ -30,6 +55,8 @@ function App() {
           <Route path="/weight-gain" element={<WeightGainHome />} />
           <Route path="/bmi-calculator" element={<BMICalculator />} />
           <Route path="/menu" element={<Menu />} />
+          <Route path='/cart' element={<CartPage/>}/>
+          <Route path='/checkout' element={<CheckoutPage/>}/>
           <Route path="/meal-plans/weight-loss" element={<WeightLossMealPlan />} />
           <Route path="/meal-plans/stay-fit" element={<StayFitMealPlan />} />
           <Route path="/meal-plans/weight-gain" element={<WeightGainMealPlan />} />
@@ -37,6 +64,7 @@ function App() {
           <Route path='/auth/login' element={<LoginPage/>}/>
           <Route path='/auth/register' element={<RegisterPage/>}/>
           <Route path='/profile' element={<ProfilePage/>}/>
+          <Route path='/admin' element={<AdminProtectedRoute/>}/>
         </Routes>
       </main>
       <Footer />
