@@ -23,7 +23,7 @@ const BenefitCard = ({ icon, title, description, index }) => {
   );
 };
 
-const ImportanceOfHealthyWeightLoss = () => {
+const ImportanceOfHealthyWeightGain = () => {
   const navigate = useNavigate();
   const [benefits, setBenefits] = useState([]);
   const [filteredBenefits, setFilteredBenefits] = useState([]);
@@ -117,7 +117,7 @@ const ImportanceOfHealthyWeightLoss = () => {
             HEALTH BENEFITS
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            Importance of <span className="text-green-600"> Weight Loss</span>
+            Importance of <span className="text-green-600">Healthy Weight Management</span>
           </h2>
           
           {/* Category Filter */}
@@ -218,4 +218,4 @@ const ImportanceOfHealthyWeightLoss = () => {
   );
 };
 
-export default ImportanceOfHealthyWeightLoss;
+export default ImportanceOfHealthyWeightGain;

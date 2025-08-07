@@ -1,41 +1,71 @@
 import { FaCalendarAlt, FaCheck, FaDumbbell, FaLeaf, FaUtensils } from "react-icons/fa";
 import { motion } from "framer-motion";
+import axios from "axios";
+import { useEffect, useState } from "react";
 
 export const Specialization = () => {
-  const specializations = [
-    {
-      title: "Customized Nutrition Plans",
-      items: ["Weight Loss", "Weight Gain", "Muscle Building", "General Wellness and Fitness"],
-      icon: <FaUtensils className="text-green-500" />
-    },
-    {
-      title: "Monthly Subscription Meals",
-      items: [
-        "Fresh, calorie-counted meals delivered daily",
-        "Flexible 1-month to annual plans",
-        "Affordable pricing with meal slot options"
-      ],
-      icon: <FaCalendarAlt className="text-green-500" />
-    },
-    {
-      title: "Chef-Curated Healthy Menus",
-      items: [
-        "No refined sugar or preservatives",
-        "Balanced macro & micro nutrients",
-        "Tasty, homestyle cooking with a healthy twist"
-      ],
-      icon: <FaLeaf className="text-green-500" />
-    },
-    {
-      title: "Fitness-Centric Collaborations",
-      items: [
-        "Partnered with trainers & fitness centers",
-        "Meal programs aligned with workouts",
-        "Easy ordering & customer support"
-      ],
-      icon: <FaDumbbell className="text-green-500" />
-    }
-  ];
+  const [specializations, setSpecializations] = useState([]);
+  const [loading, setLoading] = useState(true);
+  const [error, setError] = useState(null);
+
+  // Map API icon strings to React icons
+  const iconMap = {
+    'utensils': <FaUtensils className="text-green-500" />,
+    'calendar': <FaCalendarAlt className="text-green-500" />,
+    'leaf': <FaLeaf className="text-green-500" />,
+    'dumbbell': <FaDumbbell className="text-green-500" />,
+    // Add more mappings as needed
+  };
+
+  useEffect(() => {
+    const fetchSpecializations = async () => {
+      try {
+        const response = await axios.get('http://localhost:5001/api/specialization');
+        const formattedData = response.data.map(item => ({
+          title: item.title,
+          items: Array.isArray(item.items) ? item.items : [item.items],
+          icon: iconMap[item.icon] || <FaCheck className="text-green-500" /> // Default icon
+        }));
+        setSpecializations(formattedData);
+      } catch (err) {
+        console.error('Error fetching specializations:', err);
+        setError('Failed to load specializations');
+        // Fallback to static data if API fails
+        setSpecializations([
+          {
+            title: "Customized Nutrition Plans",
+            items: ["Weight Loss", "Weight Gain", "Muscle Building", "General Wellness and Fitness"],
+            icon: <FaUtensils className="text-green-500" />
+          },
+          // ... other fallback data
+        ]);
+      } finally {
+        setLoading(false);
+      }
+    };
+
+    fetchSpecializations();
+  }, []);
+
+  if (loading) {
+    return (
+      <section className="py-16 bg-gradient-to-b from-green-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p>Loading specializations...</p>
+        </div>
+      </section>
+    );
+  }
+
+  if (error) {
+    return (
+      <section className="py-16 bg-gradient-to-b from-green-50 to-white">
+        <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8 text-center">
+          <p className="text-red-500">{error}</p>
+        </div>
+      </section>
+    );
+  }
 
   return (
     <section className="py-16 bg-gradient-to-b from-green-50 to-white">

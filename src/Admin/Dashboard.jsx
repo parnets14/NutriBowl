@@ -44,6 +44,11 @@ import AdminBenefits from "./AdminBenefits"
 import { AdminSolution } from "./AdminSolution"
 import AdminProblems from "./AdminProblems"
 
+import AdminSpecialization from "./AdminSpecialization"
+import ImportanceAdmin from "./ImportanceAdmin"
+import MissionAndVision from "./MissionVisionAdmin"
+import ChallengeAdminPanel from "./ChallengeAdminPanel"
+
 const menuItems = [
   { title: "Overview", icon: BarChart3, id: "overview" },
   { title: "Auth Test", icon: Shield, id: "auth-test" },
@@ -55,7 +60,13 @@ const menuItems = [
   {title:"Banner", icon:Shield, id:"banner"},
   {title:"Benefits", icon:Shield, id:"benefits"},
   {title:"Problem", icon:Shield, id:"problem"},
-  {title:"Solution", icon:Shield, id:"solution"}
+  {title:"Solution", icon:Shield, id:"solution"},
+  {title:"Challenge", icon:Shield, id:"challenge"},
+  {title:"Mission&Vision", icon:Shield, id:"MissionAndVision"},
+   {title:"Importance", icon:Shield, id:"importance"},
+  {title:"Specilization", icon:Shield, id:"specilization"},
+  
+
 ]
 
 const mealPlanCategories = [
@@ -161,8 +172,17 @@ export default function AdminDashboard() {
           return<AdminBenefits/>
           case "problem":
             return<AdminProblems/>
+          case "MissionAndVision":
+          return<MissionAndVision/>
           case "solution":
+            
             return <AdminSolution/>
+          case "challenge":
+            return<ChallengeAdminPanel/>
+          case "importance":
+            return <ImportanceAdmin/>
+          case "specilization":
+            return<AdminSpecialization/>
       case "experts":
         return <ExpertsManager />
       case "testimonials":
