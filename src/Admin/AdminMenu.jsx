@@ -1,11 +1,11 @@
-"use client"
+"use client";
 
-import React, { useState } from "react"
-import { Button } from "../components/ui/button"
-import { Input } from "../components/ui/input"
-import { Label } from "../components/ui/label"
-import { Textarea } from "../components/ui/textarea"
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card"
+import React, { useState, useEffect } from "react";
+import { Button } from "../components/ui/button";
+import { Input } from "../components/ui/input";
+import { Label } from "../components/ui/label";
+import { Textarea } from "../components/ui/textarea";
+import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
 import {
   Dialog,
   DialogContent,
@@ -14,76 +14,24 @@ import {
   DialogHeader,
   DialogTitle,
   DialogTrigger,
-} from "../components/ui/dialog"
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table"
-import { Badge } from "../components/ui/badge"
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs"
-import { Plus, Edit, Trash2, ChefHat, Search, Filter } from "lucide-react"
-
-const initialMenuItems = [
-  {
-    id: "1",
-    name: "Grilled Chicken Quinoa Bowl",
-    description: "High-protein bowl with grilled chicken, quinoa, and fresh vegetables",
-    price: 299,
-    calories: 450,
-    protein: 35,
-    carbs: 40,
-    fat: 12,
-    ingredients: ["Chicken breast", "Quinoa", "Broccoli", "Bell peppers", "Olive oil"],
-    category: "main",
-    dietType: ["non-veg"],
-    image: "/placeholder.svg?height=300&width=400",
-    allergens: [],
-    planType: ["weight-gain", "stay-fit"],
-    isActive: true,
-  },
-  {
-    id: "2",
-    name: "Paneer Tikka Masala",
-    description: "Creamy paneer curry with aromatic spices and herbs",
-    price: 249,
-    calories: 380,
-    protein: 18,
-    carbs: 25,
-    fat: 22,
-    ingredients: ["Paneer", "Tomatoes", "Onions", "Cream", "Spices"],
-    category: "main",
-    dietType: ["veg"],
-    image: "/placeholder.svg?height=300&width=400",
-    allergens: ["dairy"],
-    planType: ["weight-gain", "stay-fit"],
-    isActive: true,
-  },
-  {
-    id: "3",
-    name: "Avocado Toast with Eggs",
-    description: "Whole grain toast topped with avocado and poached eggs",
-    price: 199,
-    calories: 320,
-    protein: 16,
-    carbs: 28,
-    fat: 18,
-    ingredients: ["Whole grain bread", "Avocado", "Eggs", "Cherry tomatoes"],
-    category: "breakfast",
-    dietType: ["veg"],
-    image: "/placeholder.svg?height=300&width=400",
-    allergens: ["gluten", "eggs"],
-    planType: ["stay-fit", "weight-loss"],
-    isActive: true,
-  },
-]
+} from "../components/ui/dialog";
+import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
+import { Badge } from "../components/ui/badge";
+import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+import { Plus, Edit, Trash2, ChefHat, Search, Filter } from "lucide-react";
 
 export default function MenuManager() {
-  const [menuItems, setMenuItems] = useState(initialMenuItems)
-  const [filteredItems, setFilteredItems] = useState(initialMenuItems)
-  const [isDialogOpen, setIsDialogOpen] = useState(false)
-  const [editingItem, setEditingItem] = useState(null)
-  const [selectedTab, setSelectedTab] = useState("items")
-  const [searchTerm, setSearchTerm] = useState("")
-  const [categoryFilter, setCategoryFilter] = useState("all")
-  const [imageFile, setImageFile] = useState(null)
-  const [imagePreview, setImagePreview] = useState("")
+  const [menuItems, setMenuItems] = useState([]);
+  const [filteredItems, setFilteredItems] = useState([]);
+  const [isDialogOpen, setIsDialogOpen] = useState(false);
+  const [editingItem, setEditingItem] = useState(null);
+  const [selectedTab, setSelectedTab] = useState("items");
+  const [searchTerm, setSearchTerm] = useState("");
+  const [categoryFilter, setCategoryFilter] = useState("all");
+  const [imageFile, setImageFile] = useState(null);
+  const [imagePreview, setImagePreview] = useState("");
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
   const [formData, setFormData] = useState({
     name: "",
@@ -100,68 +48,134 @@ export default function MenuManager() {
     allergens: "",
     planType: [],
     isActive: true,
-  })
+  });
+
+  // Fetch menu items from API
+  useEffect(() => {
+    const fetchMenuItems = async () => {
+      try {
+        const response = await fetch("http://localhost:5001/api/menu");
+        if (!response.ok) {
+          throw new Error("Failed to fetch menu items");
+        }
+        const data = await response.json();
+        setMenuItems(data);
+        setFilteredItems(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchMenuItems();
+  }, []);
 
   // Filter items based on search and category
-  React.useEffect(() => {
-    let filtered = [...menuItems]
+  useEffect(() => {
+    let filtered = [...menuItems];
 
     if (searchTerm) {
       filtered = filtered.filter(
         (item) =>
           item.name.toLowerCase().includes(searchTerm.toLowerCase()) ||
-          item.description.toLowerCase().includes(searchTerm.toLowerCase()),
-      )
+          item.description.toLowerCase().includes(searchTerm.toLowerCase())
+      );
     }
 
     if (categoryFilter !== "all") {
-      filtered = filtered.filter((item) => item.category === categoryFilter)
+      filtered = filtered.filter((item) => item.category === categoryFilter);
     }
 
-    setFilteredItems(filtered)
-  }, [menuItems, searchTerm, categoryFilter])
+    setFilteredItems(filtered);
+  }, [menuItems, searchTerm, categoryFilter]);
 
   const handleImageChange = (e) => {
-    const file = e.target.files[0]
+    const file = e.target.files[0];
     if (file) {
-      setImageFile(file)
-      const reader = new FileReader()
+      setImageFile(file);
+      const reader = new FileReader();
       reader.onloadend = () => {
-        setImagePreview(reader.result)
+        setImagePreview(reader.result);
+      };
+      reader.readAsDataURL(file);
+    }
+  };
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    // Validate required fields
+    if (!formData.name || !formData.description || !formData.ingredients || !formData.category) {
+      setError("Please fill in all required fields: name, description, ingredients, and category.");
+      return;
+    }
+
+    if (!formData.price || !formData.calories || !formData.protein || !formData.carbs || !formData.fat) {
+      setError("Please provide valid numeric values for price, calories, protein, carbs, and fat.");
+      return;
+    }
+
+    const formDataToSend = new FormData();
+    formDataToSend.append("name", formData.name);
+    formDataToSend.append("description", formData.description);
+    formDataToSend.append("price", formData.price || 0);
+    formDataToSend.append("calories", formData.calories || 0);
+    formDataToSend.append("protein", formData.protein || 0);
+    formDataToSend.append("carbs", formData.carbs || 0);
+    formDataToSend.append("fat", formData.fat || 0);
+    formData.ingredients.split(",").map((item) => item.trim()).forEach((ingredient) => {
+      formDataToSend.append("ingredients[]", ingredient);
+    });
+    formData.dietType.forEach((type) => {
+      formDataToSend.append("dietType[]", type);
+    });
+    formData.allergens.split(",").map((item) => item.trim()).filter(Boolean).forEach((allergen) => {
+      formDataToSend.append("allergens[]", allergen);
+    });
+    formData.planType.forEach((type) => {
+      formDataToSend.append("planType[]", type);
+    });
+    formDataToSend.append("category", formData.category);
+    formDataToSend.append("isActive", formData.isActive);
+    if (imageFile) {
+      formDataToSend.append("image", imageFile);
+    }
+
+    try {
+      let response;
+      if (editingItem) {
+        response = await fetch(`http://localhost:5001/api/menu/${editingItem._id}`, {
+          method: "PUT",
+          body: formDataToSend,
+        });
+      } else {
+        response = await fetch("http://localhost:5001/api/menu", {
+          method: "POST",
+          body: formDataToSend,
+        });
       }
-      reader.readAsDataURL(file)
-    }
-  }
 
-  const handleSubmit = (e) => {
-    e.preventDefault()
-
-    const menuItemData = {
-      ...formData,
-      ingredients: formData.ingredients.split(",").map((item) => item.trim()),
-      allergens: formData.allergens
-        .split(",")
-        .map((item) => item.trim())
-        .filter(Boolean),
-      // For production, you would upload the image file to a server here
-      image: imagePreview || formData.image,
-    }
-
-    if (editingItem) {
-      setMenuItems(menuItems.map((item) => (item.id === editingItem.id ? { ...item, ...menuItemData } : item)))
-    } else {
-      const newItem = {
-        id: Date.now().toString(),
-        ...menuItemData,
+      if (!response.ok) {
+        const errorData = await response.json();
+        throw new Error(errorData.message || (editingItem ? "Failed to update menu item" : "Failed to create menu item"));
       }
-      setMenuItems([...menuItems, newItem])
-    }
 
-    resetForm()
-  }
+      const updatedItem = await response.json();
+      if (editingItem) {
+        setMenuItems(menuItems.map((item) => (item._id === editingItem._id ? updatedItem : item)));
+      } else {
+        setMenuItems([...menuItems, updatedItem]);
+      }
+
+      resetForm();
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const handleEdit = (item) => {
-    setEditingItem(item)
+    setEditingItem(item);
     setFormData({
       name: item.name,
       description: item.description,
@@ -177,20 +191,46 @@ export default function MenuManager() {
       allergens: item.allergens.join(", "),
       planType: item.planType,
       isActive: item.isActive,
-    })
-    setImagePreview(item.image)
-    setIsDialogOpen(true)
-  }
+    });
+    setImagePreview(`http://localhost:5001${item.image}`);
+    setIsDialogOpen(true);
+  };
 
-  const handleDelete = (id) => {
+  const handleDelete = async (id) => {
     if (confirm("Are you sure you want to delete this menu item?")) {
-      setMenuItems(menuItems.filter((item) => item.id !== id))
+      try {
+        const response = await fetch(`http://localhost:5001/api/menu/${id}`, {
+          method: "DELETE",
+        });
+        if (!response.ok) {
+          throw new Error("Failed to delete menu item");
+        }
+        setMenuItems(menuItems.filter((item) => item._id !== id));
+      } catch (err) {
+        setError(err.message);
+      }
     }
-  }
+  };
 
-  const toggleItemStatus = (id) => {
-    setMenuItems(menuItems.map((item) => (item.id === id ? { ...item, isActive: !item.isActive } : item)))
-  }
+  const toggleItemStatus = async (id) => {
+    const item = menuItems.find((item) => item._id === id);
+    try {
+      const response = await fetch(`http://localhost:5001/api/menu/${id}`, {
+        method: "PUT",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({ isActive: !item.isActive }),
+      });
+      if (!response.ok) {
+        throw new Error("Failed to toggle item status");
+      }
+      const updatedItem = await response.json();
+      setMenuItems(menuItems.map((item) => (item._id === id ? updatedItem : item)));
+    } catch (err) {
+      setError(err.message);
+    }
+  };
 
   const resetForm = () => {
     setFormData({
@@ -208,59 +248,71 @@ export default function MenuManager() {
       allergens: "",
       planType: [],
       isActive: true,
-    })
-    setEditingItem(null)
-    setImageFile(null)
-    setImagePreview("")
-    setIsDialogOpen(false)
-  }
+    });
+    setEditingItem(null);
+    setImageFile(null);
+    setImagePreview("");
+    setIsDialogOpen(false);
+    setError(null);
+  };
 
   const handleDietTypeChange = (type) => {
     const updatedDietType = formData.dietType.includes(type)
       ? formData.dietType.filter((t) => t !== type)
-      : [...formData.dietType, type]
-    setFormData({ ...formData, dietType: updatedDietType })
-  }
+      : [...formData.dietType, type];
+    setFormData({ ...formData, dietType: updatedDietType });
+  };
 
   const handlePlanTypeChange = (type) => {
     const updatedPlanType = formData.planType.includes(type)
       ? formData.planType.filter((t) => t !== type)
-      : [...formData.planType, type]
-    setFormData({ ...formData, planType: updatedPlanType })
-  }
+      : [...formData.planType, type];
+    setFormData({ ...formData, planType: updatedPlanType });
+  };
 
   const getCategoryColor = (category) => {
     switch (category) {
       case "breakfast":
-        return "bg-yellow-100 text-yellow-800"
+        return "bg-yellow-100 text-yellow-800";
       case "main":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "snacks":
-        return "bg-orange-100 text-orange-800"
+        return "bg-orange-100 text-orange-800";
       case "desserts":
-        return "bg-pink-100 text-pink-800"
+        return "bg-pink-100 text-pink-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
-  }
+  };
 
   const getDietTypeColor = (type) => {
     switch (type) {
       case "veg":
-        return "bg-green-100 text-green-800"
+        return "bg-green-100 text-green-800";
       case "non-veg":
-        return "bg-red-100 text-red-800"
+        return "bg-red-100 text-red-800";
       case "vegan":
-        return "bg-emerald-100 text-emerald-800"
+        return "bg-emerald-100 text-emerald-800";
       case "keto":
-        return "bg-purple-100 text-purple-800"
+        return "bg-purple-100 text-purple-800";
       default:
-        return "bg-gray-100 text-gray-800"
+        return "bg-gray-100 text-gray-800";
     }
+  };
+
+  if (loading) {
+    return <div className="text-center py-16">Loading menu items...</div>;
+  }
+
+  if (error && !menuItems.length) {
+    return <div className="text-center py-16 text-red-500">Error: {error}</div>;
   }
 
   return (
     <div className="space-y-6">
+      {error && (
+        <div className="text-center py-4 text-red-500">{error}</div>
+      )}
       <Card>
         <CardHeader>
           <div className="flex justify-between items-center">
@@ -305,7 +357,7 @@ export default function MenuManager() {
                           id="price"
                           type="number"
                           value={formData.price}
-                          onChange={(e) => setFormData({ ...formData, price: parseInt(e.target.value) })}
+                          onChange={(e) => setFormData({ ...formData, price: parseInt(e.target.value) || 0 })}
                           placeholder="299"
                           required
                         />
@@ -351,7 +403,7 @@ export default function MenuManager() {
                           id="calories"
                           type="number"
                           value={formData.calories}
-                          onChange={(e) => setFormData({ ...formData, calories: parseInt(e.target.value) })}
+                          onChange={(e) => setFormData({ ...formData, calories: parseInt(e.target.value) || 0 })}
                           placeholder="450"
                           required
                         />
@@ -362,7 +414,7 @@ export default function MenuManager() {
                           id="protein"
                           type="number"
                           value={formData.protein}
-                          onChange={(e) => setFormData({ ...formData, protein: parseInt(e.target.value) })}
+                          onChange={(e) => setFormData({ ...formData, protein: parseInt(e.target.value) || 0 })}
                           placeholder="35"
                           required
                         />
@@ -373,7 +425,7 @@ export default function MenuManager() {
                           id="carbs"
                           type="number"
                           value={formData.carbs}
-                          onChange={(e) => setFormData({ ...formData, carbs: parseInt(e.target.value) })}
+                          onChange={(e) => setFormData({ ...formData, carbs: parseInt(e.target.value) || 0 })}
                           placeholder="40"
                           required
                         />
@@ -384,7 +436,7 @@ export default function MenuManager() {
                           id="fat"
                           type="number"
                           value={formData.fat}
-                          onChange={(e) => setFormData({ ...formData, fat: parseInt(e.target.value) })}
+                          onChange={(e) => setFormData({ ...formData, fat: parseInt(e.target.value) || 0 })}
                           placeholder="12"
                           required
                         />
@@ -544,11 +596,11 @@ export default function MenuManager() {
                 </TableHeader>
                 <TableBody>
                   {filteredItems.map((item) => (
-                    <TableRow key={item.id}>
+                    <TableRow key={item._id}>
                       <TableCell className="font-medium">
                         <div className="flex items-center space-x-3">
                           <img
-                            src={item.image || "/placeholder.svg"}
+                            src={`http://localhost:5001${item.image}` || "/placeholder.svg"}
                             alt={item.name}
                             className="w-12 h-12 rounded-lg object-cover"
                           />
@@ -574,7 +626,7 @@ export default function MenuManager() {
                       </TableCell>
                       <TableCell>
                         <button
-                          onClick={() => toggleItemStatus(item.id)}
+                          onClick={() => toggleItemStatus(item._id)}
                           className={`px-2 py-1 rounded-full text-xs font-medium ${
                             item.isActive ? "bg-green-100 text-green-800" : "bg-red-100 text-red-800"
                           }`}
@@ -587,7 +639,7 @@ export default function MenuManager() {
                           <Button variant="outline" size="sm" onClick={() => handleEdit(item)}>
                             <Edit className="w-4 h-4" />
                           </Button>
-                          <Button variant="destructive" size="sm" onClick={() => handleDelete(item.id)}>
+                          <Button variant="destructive" size="sm" onClick={() => handleDelete(item._id)}>
                             <Trash2 className="w-4 h-4" />
                           </Button>
                         </div>
@@ -640,7 +692,6 @@ export default function MenuManager() {
                 </Card>
               </div>
 
-              {/* Category Distribution */}
               <Card className="mt-6">
                 <CardHeader>
                   <CardTitle>Category Distribution</CardTitle>
@@ -648,8 +699,8 @@ export default function MenuManager() {
                 <CardContent>
                   <div className="space-y-4">
                     {["breakfast", "main", "snacks", "desserts"].map((category) => {
-                      const count = menuItems.filter((item) => item.category === category).length
-                      const percentage = menuItems.length > 0 ? (count / menuItems.length) * 100 : 0
+                      const count = menuItems.filter((item) => item.category === category).length;
+                      const percentage = menuItems.length > 0 ? (count / menuItems.length) * 100 : 0;
                       return (
                         <div key={category} className="flex items-center justify-between">
                           <span className="capitalize font-medium">{category}</span>
@@ -660,7 +711,7 @@ export default function MenuManager() {
                             <span className="text-sm text-gray-600">{count} items</span>
                           </div>
                         </div>
-                      )
+                      );
                     })}
                   </div>
                 </CardContent>
@@ -670,5 +721,5 @@ export default function MenuManager() {
         </CardContent>
       </Card>
     </div>
-  )
+  );
 }

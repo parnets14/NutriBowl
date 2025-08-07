@@ -1,6 +1,6 @@
 "use client";
 
-import { useState, useRef } from "react";
+import { useState, useEffect, useRef } from "react";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -18,66 +18,53 @@ import {
 import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
 import { Plus, Edit, Trash2, MessageSquare, Star, Upload } from "lucide-react";
 
-const initialTestimonials = [
-  {
-    id: "1",
-    name: "Priya Singh",
-    feedback: "Nutri Bowl completely transformed my life! I lost 8 kg in 3 months and feel more energetic than ever.",
-    image: "/testimonials/testimonial1.jpg",
-    rating: 5,
-  },
-  {
-    id: "2",
-    name: "Karan Patel",
-    feedback: "The personalized meal plan and daily tracking helped me stay consistent and motivated.",
-    image: "/testimonials/testimonial2.jpg",
-    rating: 5,
-  },
-];
+const API_URL = "http://localhost:5001/api/testimonial"; // Adjust if using env or deployed URL
 
 export default function TestimonialsManager() {
-  const [testimonials, setTestimonials] = useState(initialTestimonials);
+  const [testimonials, setTestimonials] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingTestimonial, setEditingTestimonial] = useState(null);
-  const [formData, setFormData] = useState({
-    name: "",
-    feedback: "",
-    image: "",
-    rating: 5,
-  });
+  const [formData, setFormData] = useState({ name: "", feedback: "", image: "", rating: 5 });
   const [imagePreview, setImagePreview] = useState("");
   const [imageFile, setImageFile] = useState(null);
   const fileInputRef = useRef(null);
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    // In a real application, you would upload the imageFile to your server here
-    // and get back the URL to store in your database
-    // For this example, we'll just use the preview URL temporarily
-
-    const testimonialData = {
-      ...formData,
-      image: imagePreview || formData.image, // Use the preview if available, otherwise keep existing image
-    };
-
-    if (editingTestimonial) {
-      setTestimonials(
-        testimonials.map((testimonial) =>
-          testimonial.id === editingTestimonial.id ? { ...testimonial, ...testimonialData } : testimonial
-        )
-      );
-    } else {
-      const newTestimonial = {
-        id: Date.now().toString(),
-        ...testimonialData,
-      };
-      setTestimonials([...testimonials, newTestimonial]);
-    }
-
-    resetForm();
+  // ✅ Fetch all testimonials
+  const fetchTestimonials = async () => {
+    const res = await fetch(API_URL);
+    const data = await res.json();
+    setTestimonials(data);
   };
 
+  useEffect(() => {
+    fetchTestimonials();
+  }, []);
+
+  // ✅ Submit handler for add or update
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+
+    const form = new FormData();
+    form.append("name", formData.name);
+    form.append("feedback", formData.feedback);
+    form.append("rating", formData.rating);
+    if (imageFile) form.append("image", imageFile);
+
+    const method = editingTestimonial ? "PUT" : "POST";
+    const url = editingTestimonial ? `${API_URL}/${editingTestimonial._id}` : API_URL;
+
+    const res = await fetch(url, {
+      method,
+      body: form,
+    });
+
+    if (res.ok) {
+      fetchTestimonials(); // Refresh list
+      resetForm();
+    }
+  };
+
+  // ✅ Edit handler
   const handleEdit = (testimonial) => {
     setEditingTestimonial(testimonial);
     setFormData({
@@ -90,40 +77,41 @@ export default function TestimonialsManager() {
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (id) => {
-    setTestimonials(testimonials.filter((testimonial) => testimonial.id !== id));
+  // ✅ Delete handler
+  const handleDelete = async (id) => {
+    const confirmed = window.confirm("Are you sure you want to delete this testimonial?");
+    if (!confirmed) return;
+
+    const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+    if (res.ok) fetchTestimonials();
   };
 
+  // ✅ Reset form
   const resetForm = () => {
     setFormData({ name: "", feedback: "", image: "", rating: 5 });
     setImagePreview("");
     setImageFile(null);
     setEditingTestimonial(null);
     setIsDialogOpen(false);
-    if (fileInputRef.current) {
-      fileInputRef.current.value = "";
-    }
+    if (fileInputRef.current) fileInputRef.current.value = "";
   };
 
+  // ✅ Handle image input
   const handleImageUpload = (e) => {
     const file = e.target.files[0];
     if (file) {
-      setImageFile(file); // Store the actual file for upload
-      
-      // Create preview URL
+      setImageFile(file);
       const reader = new FileReader();
-      reader.onloadend = () => {
-        setImagePreview(reader.result);
-      };
+      reader.onloadend = () => setImagePreview(reader.result);
       reader.readAsDataURL(file);
     }
   };
 
-  const renderStars = (rating) => {
-    return Array.from({ length: 5 }, (_, i) => (
+  // ✅ Render stars
+  const renderStars = (rating) =>
+    Array.from({ length: 5 }, (_, i) => (
       <Star key={i} className={`w-4 h-4 ${i < rating ? "text-yellow-400 fill-current" : "text-gray-300"}`} />
     ));
-  };
 
   return (
     <Card>
@@ -138,7 +126,7 @@ export default function TestimonialsManager() {
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => resetForm()}>
+              <Button onClick={resetForm}>
                 <Plus className="w-4 h-4 mr-2" />
                 Add Testimonial
               </Button>
@@ -182,7 +170,7 @@ export default function TestimonialsManager() {
                         accept="image/*"
                         className="hidden"
                         id="image-upload"
-                        required={!editingTestimonial} // Only require for new testimonials
+                        required={!editingTestimonial}
                       />
                       <Label
                         htmlFor="image-upload"
@@ -240,11 +228,11 @@ export default function TestimonialsManager() {
           </TableHeader>
           <TableBody>
             {testimonials.map((testimonial) => (
-              <TableRow key={testimonial.id}>
+              <TableRow key={testimonial._id}>
                 <TableCell className="font-medium">
                   <div className="flex items-center space-x-3">
                     <img
-                      src={testimonial.image}
+                      src={`http://localhost:5001${testimonial.image}`}
                       alt={testimonial.name}
                       className="w-10 h-10 rounded-full object-cover"
                     />
@@ -260,7 +248,7 @@ export default function TestimonialsManager() {
                     <Button variant="outline" size="sm" onClick={() => handleEdit(testimonial)}>
                       <Edit className="w-4 h-4" />
                     </Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete(testimonial.id)}>
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete(testimonial._id)}>
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>

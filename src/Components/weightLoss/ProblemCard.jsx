@@ -1,9 +1,13 @@
-import React, { useState } from "react";
-import { FaFire, FaHeartbeat, FaBalanceScale, FaUserMd, FaUsers, FaChartLine, FaLeaf, FaCalendarAlt, FaUtensils } from "react-icons/fa";
+"use client";
+
+import React, { useState, useEffect } from "react";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
+import axios from "axios";
 import { Solution } from "../Solution";
+import { FaUserMd } from "react-icons/fa";
 
+// Reuse your existing ProblemCard
 const ProblemCard = ({ icon, title, description, image, index, hoveredCard, setHoveredCard }) => {
   return (
     <motion.div
@@ -13,7 +17,6 @@ const ProblemCard = ({ icon, title, description, image, index, hoveredCard, setH
       whileHover={{ y: -5 }}
     >
       <div className="h-full bg-white border border-gray-200 rounded-xl transition-all duration-300 group-hover:border-green-300 flex flex-col">
-        {/* Image Section */}
         <div className="relative h-40 overflow-hidden">
           <img 
             src={image} 
@@ -27,78 +30,36 @@ const ProblemCard = ({ icon, title, description, image, index, hoveredCard, setH
             <h3 className="ml-2 text-lg font-bold text-white">{title}</h3>
           </div>
         </div>
-        
-        {/* Text Section */}
         <div className="p-6 flex-grow">
           <p className="text-gray-600">{description}</p>
         </div>
-        
-        {/* Animated Bottom Border */}
         <div className={`absolute bottom-0 left-0 right-0 h-1 bg-green-500 transition-all duration-500 ${hoveredCard === index ? 'w-full' : 'w-0'}`}></div>
       </div>
     </motion.div>
   );
 };
 
-
-
 const WeightLossProblems = () => {
   const [hoveredCard, setHoveredCard] = useState(null);
+  const [problems, setProblems] = useState([]);
   const navigate = useNavigate();
 
-  const problems = [
-    {
-      icon: <FaFire />,
-      title: "Lack of Consistency",
-      description: "Difficulty maintaining routines due to busy schedules or lack of immediate results",
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      icon: <FaHeartbeat />,
-      title: "Emotional Eating",
-      description: "Using food as comfort leading to unhealthy patterns and weight fluctuations",
-      image: "https://images.unsplash.com/photo-1518459031867-a89b944bffe4?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      icon: <FaBalanceScale />,
-      title: "Unrealistic Expectations",
-      description: "Expecting rapid results leading to frustration and abandonment of plans",
-      image: "https://images.unsplash.com/photo-1551288049-bebda4e38f71?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-    },
-    {
-      icon: <FaUserMd />,
-      title: "Generic Diets",
-      description: "One-size-fits-all approaches that don't account for individual needs",
-      image: "https://images.unsplash.com/photo-1576091160550-2173dba999ef?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=800&q=80"
-    }
-  ];
+  const API_URL = "http://localhost:5001/api/problem";
 
-  const solutions = [
-    {
-      icon: <FaUserMd />,
-      title: "Personalized Nutrition",
-      description: "Every bowl is tailored to your goals — whether it's weight loss, muscle gain, or balanced wellness.",
-      color: "text-green-500"
-    },
-    {
-      icon: <FaCalendarAlt />,
-      title: "Subscription Meal Plans",
-      description: "1-month to 1-year plans with calorie-counted, portion-controlled meals delivered daily.",
-      color: "text-blue-500"
-    },
-    {
-      icon: <FaUtensils />,
-      title: "Tasty & Healthy",
-      description: "Mindful meals that taste great and keep you on track — effortlessly.",
-      color: "text-yellow-500"
-    },
-    {
-      icon: <FaLeaf />,
-      title: "We Handle Everything",
-      description: "No cooking, no planning, no guesswork. Just eat, feel good, and let your body and mind align.",
-      color: "text-purple-500"
-    }
-  ];
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const res = await axios.get(API_URL);
+        // Filter problems with category "weightloss"
+        const filtered = res.data.filter((item) => item.category.toLowerCase() === "weight-loss");
+        setProblems(filtered);
+      } catch (err) {
+        console.error("Failed to fetch problems:", err);
+      }
+    };
+
+    fetchProblems();
+  }, []);
 
   const containerVariants = {
     hidden: { opacity: 0 },
@@ -106,9 +67,9 @@ const WeightLossProblems = () => {
       opacity: 1,
       transition: {
         staggerChildren: 0.1,
-        delayChildren: 0.2
-      }
-    }
+        delayChildren: 0.2,
+      },
+    },
   };
 
   const itemVariants = {
@@ -118,16 +79,16 @@ const WeightLossProblems = () => {
       opacity: 1,
       transition: {
         duration: 0.5,
-        ease: "easeOut"
-      }
-    }
+        ease: "easeOut",
+      },
+    },
   };
 
   return (
-    <section className="relative pt-10  bg-gradient-to-b from-green-50 to-white">
+    <section className="relative pt-10 bg-gradient-to-b from-green-50 to-white">
       <div className="relative z-10 container mx-auto px-5 sm:px-6 lg:px-8">
         {/* Header */}
-        <motion.div 
+        <motion.div
           initial={{ opacity: 0, y: -20 }}
           animate={{ opacity: 1, y: 0 }}
           transition={{ duration: 0.6 }}
@@ -137,6 +98,7 @@ const WeightLossProblems = () => {
             WEIGHT LOSS CHALLENGES
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 leading-tight">
+            Weight Loss
             Common <span className="text-green-600">Problems</span> Faced
           </h2>
           <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
@@ -153,15 +115,12 @@ const WeightLossProblems = () => {
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
         >
           {problems.map((problem, index) => (
-            <motion.div
-              key={index}
-              variants={itemVariants}
-            >
-              <ProblemCard 
-                icon={problem.icon}
+            <motion.div key={problem._id || index} variants={itemVariants}>
+              <ProblemCard
+                icon={<FaUserMd />} // Placeholder icon, could be dynamic
                 title={problem.title}
                 description={problem.description}
-                image={problem.image}
+                image={`http://localhost:5001/uploads/${problem.image}`}
                 index={index}
                 hoveredCard={hoveredCard}
                 setHoveredCard={setHoveredCard}
@@ -170,19 +129,10 @@ const WeightLossProblems = () => {
           ))}
         </motion.div>
 
-        {/* NutriBowl Solution Section */}
-  
-     <Solution/>
-        {/* CTA Section */}
-        <motion.div
-          initial={{ opacity: 0, y: 20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ delay: 0.4 }}
-          viewport={{ once: true }}
-          className="text-center"
-        >
+        {/* Solutions */}
+        <Solution />
 
-        </motion.div>
+        {/* CTA or Footer (Optional) */}
       </div>
     </section>
   );

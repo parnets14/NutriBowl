@@ -1,43 +1,34 @@
 import React, { useState, useEffect } from "react";
 
-const testimonials = [
-  {
-    name: "Priya Singh",
-    feedback: "Nutri Bowl completely transformed my life! I lost 8 kg in 3 months and feel more energetic than ever.",
-    image: "https://images.unsplash.com/photo-1573496359142-b8d87734a5a2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=688&q=80",
-  },
-  {
-    name: "Karan Patel",
-    feedback: "The personalized meal plan and daily tracking helped me stay consistent and motivated.",
-    image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-  },
-  {
-    name: "Simran Kaur",
-    feedback: "Great support from the coaches! I now understand what healthy eating really means.",
-    image: "https://images.unsplash.com/photo-1519699047748-de8e457a634e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=880&q=80",
-  },
-  {
-    name: "Rahul Sharma",
-    feedback: "The recipes are delicious and easy to make. Never thought healthy food could taste this good!",
-    image: "https://images.unsplash.com/photo-1568602471122-7832951cc4c5?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-  },
-  {
-    name: "Ananya Gupta",
-    feedback: "My energy levels have doubled since I started following Nutri Bowl's recommendations.",
-    image: "https://images.unsplash.com/photo-1534528741775-53994a69daeb?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=764&q=80",
-  },
-  {
-    name: "Vikram Joshi",
-    feedback: "As a busy professional, the meal prep guides have saved me so much time while keeping me healthy.",
-    image: "https://images.unsplash.com/photo-1500648767791-00dcc994a43e?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-  },
-];
-
 const Testimonials = () => {
+  const [testimonials, setTestimonials] = useState([]);
   const [visibleCards, setVisibleCards] = useState(3);
   const [currentIndex, setCurrentIndex] = useState(0);
   const [autoSlide, setAutoSlide] = useState(true);
+  const [error, setError] = useState(null);
+  const [loading, setLoading] = useState(true);
 
+  // Fetch testimonials from API
+  useEffect(() => {
+    const fetchTestimonials = async () => {
+      try {
+        const response = await fetch("http://localhost:5001/api/testimonial");
+        if (!response.ok) {
+          throw new Error("Failed to fetch testimonials");
+        }
+        const data = await response.json();
+        setTestimonials(data);
+        setLoading(false);
+      } catch (err) {
+        setError(err.message);
+        setLoading(false);
+      }
+    };
+
+    fetchTestimonials();
+  }, []);
+
+  // Handle responsive card display
   useEffect(() => {
     const handleResize = () => {
       if (window.innerWidth >= 1280) {
@@ -50,19 +41,20 @@ const Testimonials = () => {
     };
 
     handleResize();
-    window.addEventListener('resize', handleResize);
-    return () => window.removeEventListener('resize', handleResize);
+    window.addEventListener("resize", handleResize);
+    return () => window.removeEventListener("resize", handleResize);
   }, []);
 
+  // Auto-slide effect
   useEffect(() => {
-    if (!autoSlide) return;
-    
+    if (!autoSlide || testimonials.length === 0) return;
+
     const slideInterval = setInterval(() => {
       nextSlide();
     }, 5000); // Change slide every 5 seconds
 
     return () => clearInterval(slideInterval);
-  }, [autoSlide, currentIndex, visibleCards]);
+  }, [autoSlide, currentIndex, visibleCards, testimonials]);
 
   const nextSlide = () => {
     setCurrentIndex((prevIndex) => {
@@ -79,6 +71,7 @@ const Testimonials = () => {
   };
 
   const getVisibleTestimonials = () => {
+    if (testimonials.length === 0) return [];
     let endIndex = currentIndex + visibleCards;
     if (endIndex > testimonials.length) {
       const remaining = endIndex - testimonials.length;
@@ -89,16 +82,25 @@ const Testimonials = () => {
 
   const visibleTestimonials = getVisibleTestimonials();
 
+  // Handle loading and error states
+  if (loading) {
+    return <div className="text-center py-16">Loading testimonials...</div>;
+  }
+
+  if (error) {
+    return <div className="text-center py-16 text-red-500">Error: {error}</div>;
+  }
+
   return (
     <div className="py-16 bg-green-50 px-4 sm:px-6 lg:px-8 text-center relative overflow-hidden">
       <h2 className="text-3xl md:text-4xl font-bold text-[#2a5b45] mb-12">
         What Our Clients Say
       </h2>
-      
+
       <div className="relative max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         {/* Left Navigation Button */}
         {testimonials.length > visibleCards && (
-          <button 
+          <button
             onClick={() => {
               setAutoSlide(false);
               prevSlide();
@@ -119,25 +121,25 @@ const Testimonials = () => {
           </button>
         )}
 
-        <div 
+        <div
           className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8 mx-auto max-w-6xl"
           onMouseEnter={() => setAutoSlide(false)}
           onMouseLeave={() => setAutoSlide(true)}
         >
           {visibleTestimonials.map((item, idx) => (
-            <div 
-              key={`${item.name}-${idx}`} 
+            <div
+              key={`${item._id}-${idx}`}
               className="bg-white p-6 rounded-xl shadow-md transition-all duration-300 hover:shadow-lg hover:scale-[1.02] flex flex-col items-center"
             >
               <img
-                src={item.image}
+                src={`http://localhost:5001${item.image}`} // Adjust if your API returns a different image path structure
                 alt={item.name}
                 className="w-20 h-20 rounded-full mx-auto mb-4 object-cover border-4 border-[#4CAF50]"
               />
               <p className="text-gray-700 italic mb-4">"{item.feedback}"</p>
               <h4 className="mt-auto font-semibold text-[#2a5b45]">{item.name}</h4>
               <div className="flex justify-center mt-2">
-                {[...Array(5)].map((_, i) => (
+                {[...Array(item.rating || 5)].map((_, i) => (
                   <svg
                     key={i}
                     className="w-5 h-5 text-[#4CAF50]"
@@ -154,7 +156,7 @@ const Testimonials = () => {
 
         {/* Right Navigation Button */}
         {testimonials.length > visibleCards && (
-          <button 
+          <button
             onClick={() => {
               setAutoSlide(false);
               nextSlide();

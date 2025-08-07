@@ -1,129 +1,140 @@
-import React from 'react';
-import { motion } from 'framer-motion';
+"use client";
 
-const problems = [
-  {
-    title: "Burnout from Overtraining",
-    media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-      alt: "Person exhausted from overtraining"
-    },
-    description: "Pushing too hard without proper recovery leads to fatigue and decreased performance."
-  },
-  {
-    title: "Mental Blocks & Low Confidence",
-    media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1492633423870-43d1cd2775eb?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-      alt: "Person struggling with confidence during workout"
-    },
-    description: "Psychological barriers that prevent you from reaching your full potential."
-  },
-  {
-    title: "Lack of Support or Guidance",
-    media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1545205597-3d9d02c29597?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-      alt: "Person training alone looking frustrated"
-    },
-    description: "Trying to navigate fitness without expert advice often leads to plateaus."
-  },
-  {
-    title: "Inconsistency in Routine",
-    media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1518611012118-696072aa579a?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-      alt: "Person skipping workout"
-    },
-    description: "Sporadic workouts that prevent meaningful progress over time."
-  },
-  {
-    title: "Lack of Clear Goals",
-    media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1495555687398-3f50d6e79e1e?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-      alt: "Person looking confused at gym"
-    },
-    description: "Without specific targets, motivation and direction quickly fade."
-  },
-  {
-    title: "Poor Nutrition Choices",
-    media: {
-      type: "image",
-      src: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-4.0.3&ixid=MnwxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8&auto=format&fit=crop&w=800&q=80",
-      alt: "Unhealthy food choices"
-    },
-    description: "Undermining workouts with improper fueling and recovery nutrition."
-  },
-];
+import React, { useState, useEffect } from "react";
+import { motion } from "framer-motion";
+import { useNavigate } from "react-router-dom";
+import axios from "axios";
+import { Solution } from "../Solution";
+import { FaUserMd } from "react-icons/fa";
 
-const MediaComponent = ({ media }) => {
+// Reuse your existing ProblemCard
+const ProblemCard = ({ icon, title, description, image, index, hoveredCard, setHoveredCard }) => {
   return (
-    <div className="w-full h-48 bg-gray-100 overflow-hidden">
-      <img
-        src={media.src}
-        alt={media.alt}
-        className="w-full h-full object-cover"
-        loading="lazy"
-        onError={(e) => {
-          e.target.onerror = null;
-          e.target.src = "https://via.placeholder.com/800x450?text=Image+Not+Found";
-        }}
-      />
-    </div>
+    <motion.div
+      className={`relative group overflow-hidden rounded-2xl h-full shadow-lg`}
+      onMouseEnter={() => setHoveredCard(index)}
+      onMouseLeave={() => setHoveredCard(null)}
+      whileHover={{ y: -5 }}
+    >
+      <div className="h-full bg-white border border-gray-200 rounded-xl transition-all duration-300 group-hover:border-green-300 flex flex-col">
+        <div className="relative h-40 overflow-hidden">
+          <img 
+            src={image} 
+            alt={title}
+            className="w-full h-full object-cover transition-transform duration-500 group-hover:scale-105"
+          />
+          <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent flex items-end p-4">
+            <div className={`text-2xl ${hoveredCard === index ? 'text-green-500' : 'text-white'} transition-colors duration-300`}>
+              {React.cloneElement(icon, { className: "text-2xl" })}
+            </div>
+            <h3 className="ml-2 text-lg font-bold text-white">{title}</h3>
+          </div>
+        </div>
+        <div className="p-6 flex-grow">
+          <p className="text-gray-600">{description}</p>
+        </div>
+        <div className={`absolute bottom-0 left-0 right-0 h-1 bg-green-500 transition-all duration-500 ${hoveredCard === index ? 'w-full' : 'w-0'}`}></div>
+      </div>
+    </motion.div>
   );
 };
 
-const ProblemsFaced = () => {
+const StayfitsProblems = () => {
+  const [hoveredCard, setHoveredCard] = useState(null);
+  const [problems, setProblems] = useState([]);
+  const navigate = useNavigate();
+
+  const API_URL = "http://localhost:5001/api/problem";
+
+  useEffect(() => {
+    const fetchProblems = async () => {
+      try {
+        const res = await axios.get(API_URL);
+        // Filter problems with category "weightloss"
+        const filtered = res.data.filter((item) => item.category.toLowerCase() === "stay-fit");
+        setProblems(filtered);
+      } catch (err) {
+        console.error("Failed to fetch problems:", err);
+      }
+    };
+
+    fetchProblems();
+  }, []);
+
+  const containerVariants = {
+    hidden: { opacity: 0 },
+    visible: {
+      opacity: 1,
+      transition: {
+        staggerChildren: 0.1,
+        delayChildren: 0.2,
+      },
+    },
+  };
+
+  const itemVariants = {
+    hidden: { y: 20, opacity: 0 },
+    visible: {
+      y: 0,
+      opacity: 1,
+      transition: {
+        duration: 0.5,
+        ease: "easeOut",
+      },
+    },
+  };
+
   return (
-    <section className="relative bg-gradient-to-b from-green-50 to-white py-12 md:py-16">
-      <div className="container mx-auto px-4 sm:px-6 lg:px-8">
+    <section className="relative pt-10 bg-gradient-to-b from-green-50 to-white">
+      <div className="relative z-10 container mx-auto px-5 sm:px-6 lg:px-8">
         {/* Header */}
         <motion.div
           initial={{ opacity: 0, y: -20 }}
-          whileInView={{ opacity: 1, y: 0 }}
-          transition={{ duration: 0.5 }}
-          viewport={{ once: true }}
-          className="text-center mb-12"
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.6 }}
+          className="text-center mb-16"
         >
           <span className="inline-block px-4 py-2 mb-4 text-sm font-semibold text-green-600 bg-green-100 rounded-full">
-            FITNESS CHALLENGES
+            STAY FIT CHALLENGES
           </span>
-          <h2 className="text-3xl md:text-4xl font-bold text-gray-800 mb-3">
-            Common Problems in <span className="text-green-600">Staying Fit</span>
+          <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4 leading-tight">
+            Stay Fit Common <span className="text-green-600">Problems</span> Faced
           </h2>
-          <p className="text-lg text-gray-600 max-w-2xl mx-auto">
+          <p className="text-lg text-gray-600 max-w-3xl mx-auto leading-relaxed">
             Understanding these challenges is the first step toward overcoming them
           </p>
         </motion.div>
 
-        {/* Grid */}
-        <div className="grid grid-cols-1 sm:grid-cols-3 lg:grid-cols-4 gap-6">
+        {/* Problem Cards Grid */}
+        <motion.div
+          variants={containerVariants}
+          initial="hidden"
+          whileInView="visible"
+          viewport={{ once: true, margin: "-100px" }}
+          className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6 mb-16"
+        >
           {problems.map((problem, index) => (
-            <motion.div
-              key={index}
-              className="bg-white rounded-xl border border-green-100 shadow-sm hover:shadow-md transition-all overflow-hidden"
-              initial={{ opacity: 0, y: 20 }}
-              whileInView={{ opacity: 1, y: 0 }}
-              transition={{ duration: 0.4, delay: index * 0.1 }}
-              viewport={{ once: true }}
-              whileHover={{ y: -5 }}
-            >
-              <MediaComponent media={problem.media} />
-              <div className="p-5">
-                <h3 className="text-lg font-semibold text-gray-800 mb-2">
-                  {problem.title}
-                </h3>
-                <p className="text-gray-600 text-sm mb-3">{problem.description}</p>
-                
-              </div>
+            <motion.div key={problem._id || index} variants={itemVariants}>
+              <ProblemCard
+                icon={<FaUserMd />} // Placeholder icon, could be dynamic
+                title={problem.title}
+                description={problem.description}
+                image={`http://localhost:5001/uploads/${problem.image}`}
+                index={index}
+                hoveredCard={hoveredCard}
+                setHoveredCard={setHoveredCard}
+              />
             </motion.div>
           ))}
-        </div>
+        </motion.div>
+
+        {/* Solutions */}
+        <Solution />
+
+        {/* CTA or Footer (Optional) */}
       </div>
     </section>
   );
 };
 
-export default ProblemsFaced;
+export default StayfitsProblems;

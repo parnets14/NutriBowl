@@ -1,9 +1,11 @@
 import { Benefits } from "../Benifits"
+import Challenge from "../Challenge"
 import { MissionAndVision } from "../mission&vision"
 import { Solution } from "../Solution"
 import { Specialization } from "../Specialization"
 import WeightGainProblems from "./problem"
 import WeightGainBanner from "./WeightGainBanner"
+import WeightGainImportance from "./WeightGainImportance"
 import WeightGainMealPlan from "./WeightGainMealPlan"
 
 export const WeightGainHome=()=>{
@@ -24,11 +26,13 @@ export const WeightGainHome=()=>{
               <MissionAndVision />
               {/* Benefits */}
               <Benefits />
+              <Specialization />
+              <Challenge/>
               <WeightGainProblems />
-        
+              <WeightGainImportance/>
               {/* Specialization */}
-             <Specialization />
-             <Solution/>
+             
+   
          
         <div /></div>
     

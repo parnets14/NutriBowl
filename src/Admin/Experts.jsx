@@ -1,6 +1,7 @@
 "use client";
 
-import { useState } from "react";
+import { useEffect, useState } from "react";
+import axios from "axios";
 import { Button } from "../components/ui/button";
 import { Input } from "../components/ui/input";
 import { Label } from "../components/ui/label";
@@ -19,50 +20,59 @@ import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from ".
 import { Badge } from "../components/ui/badge";
 import { Plus, Edit, Trash2, User } from "lucide-react";
 
-const initialExperts = [
-  {
-    id: "1",
-    name: "Dr. Neha Sharma",
-    title: "Certified Nutritionist",
-    image: "https://images.unsplash.com/photo-1559839734-2b71ea197ec2?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=1470&q=80",
-    bio: "10+ years helping clients achieve healthy lifestyles through balanced nutrition.",
-  },
-  {
-    id: "2",
-    name: "Raj Mehta",
-    title: "Fitness Coach",
-    image: "https://images.unsplash.com/photo-1560250097-0b93528c311a?ixlib=rb-4.0.3&ixid=M3wxMjA3fDB8MHxwaG90by1wYWdlfHx8fGVufDB8fHx8fA%3D%3D&auto=format&fit=crop&w=687&q=80",
-    bio: "Expert in strength training and weight management for all body types.",
-  },
-];
+const API_URL = "http://localhost:5001/api/expert"; // adjust if different
 
 export default function Experts() {
-  const [experts, setExperts] = useState(initialExperts);
+  const [experts, setExperts] = useState([]);
   const [isDialogOpen, setIsDialogOpen] = useState(false);
   const [editingExpert, setEditingExpert] = useState(null);
   const [formData, setFormData] = useState({
     name: "",
     title: "",
-    image: "",
     bio: "",
+    imageFile: null,
+    imagePreview: "",
   });
 
-  const handleSubmit = (e) => {
-    e.preventDefault();
-
-    if (editingExpert) {
-      // Update existing expert
-      setExperts(experts.map((expert) => (expert.id === editingExpert.id ? { ...expert, ...formData } : expert)));
-    } else {
-      // Add new expert
-      const newExpert = {
-        id: Date.now().toString(),
-        ...formData,
-      };
-      setExperts([...experts, newExpert]);
+  const fetchExperts = async () => {
+    try {
+      const res = await axios.get(API_URL);
+      setExperts(res.data);
+    } catch (err) {
+      console.error("Error fetching experts:", err);
     }
+  };
 
-    resetForm();
+  useEffect(() => {
+    fetchExperts();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const data = new FormData();
+      data.append("name", formData.name);
+      data.append("title", formData.title);
+      data.append("bio", formData.bio);
+      if (formData.imageFile) {
+        data.append("image", formData.imageFile);
+      }
+
+      if (editingExpert) {
+        await axios.put(`${API_URL}/${editingExpert._id}`, data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      } else {
+        await axios.post(API_URL, data, {
+          headers: { "Content-Type": "multipart/form-data" },
+        });
+      }
+
+      fetchExperts();
+      resetForm();
+    } catch (err) {
+      console.error("Error saving expert:", err);
+    }
   };
 
   const handleEdit = (expert) => {
@@ -70,18 +80,30 @@ export default function Experts() {
     setFormData({
       name: expert.name,
       title: expert.title,
-      image: expert.image,
       bio: expert.bio,
+      imageFile: null,
+      imagePreview: `http://localhost:5001${expert.image}`,
     });
     setIsDialogOpen(true);
   };
 
-  const handleDelete = (id) => {
-    setExperts(experts.filter((expert) => expert.id !== id));
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`${API_URL}/${id}`);
+      fetchExperts();
+    } catch (err) {
+      console.error("Error deleting expert:", err);
+    }
   };
 
   const resetForm = () => {
-    setFormData({ name: "", title: "", image: "", bio: "" });
+    setFormData({
+      name: "",
+      title: "",
+      bio: "",
+      imageFile: null,
+      imagePreview: "",
+    });
     setEditingExpert(null);
     setIsDialogOpen(false);
   };
@@ -99,7 +121,7 @@ export default function Experts() {
           </div>
           <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
             <DialogTrigger asChild>
-              <Button onClick={() => resetForm()}>
+              <Button onClick={resetForm}>
                 <Plus className="w-4 h-4 mr-2" />
                 Add Expert
               </Button>
@@ -134,14 +156,30 @@ export default function Experts() {
                     />
                   </div>
                   <div className="space-y-2">
-                    <Label htmlFor="image">Image URL</Label>
+                    <Label htmlFor="image">Profile Picture</Label>
                     <Input
                       id="image"
-                      value={formData.image}
-                      onChange={(e) => setFormData({ ...formData, image: e.target.value })}
-                      placeholder="https://example.com/image.jpg"
-                      required
+                      type="file"
+                      accept="image/*"
+                      onChange={(e) => {
+                        const file = e.target.files[0];
+                        if (file) {
+                          setFormData({
+                            ...formData,
+                            imageFile: file,
+                            imagePreview: URL.createObjectURL(file),
+                          });
+                        }
+                      }}
+                      required={!editingExpert}
                     />
+                    {formData.imagePreview && (
+                      <img
+                        src={formData.imagePreview}
+                        alt="Preview"
+                        className="w-20 h-20 rounded-full object-cover mt-2"
+                      />
+                    )}
                   </div>
                   <div className="space-y-2">
                     <Label htmlFor="bio">Bio</Label>
@@ -177,11 +215,11 @@ export default function Experts() {
           </TableHeader>
           <TableBody>
             {experts.map((expert) => (
-              <TableRow key={expert.id}>
+              <TableRow key={expert._id}>
                 <TableCell className="font-medium">
                   <div className="flex items-center space-x-3">
                     <img
-                      src={expert.image || "/placeholder.svg"}
+                      src={`http://localhost:5001${expert.image}`}
                       alt={expert.name}
                       className="w-10 h-10 rounded-full object-cover"
                     />
@@ -197,7 +235,7 @@ export default function Experts() {
                     <Button variant="outline" size="sm" onClick={() => handleEdit(expert)}>
                       <Edit className="w-4 h-4" />
                     </Button>
-                    <Button variant="destructive" size="sm" onClick={() => handleDelete(expert.id)}>
+                    <Button variant="destructive" size="sm" onClick={() => handleDelete(expert._id)}>
                       <Trash2 className="w-4 h-4" />
                     </Button>
                   </div>

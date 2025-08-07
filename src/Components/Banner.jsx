@@ -1,7 +1,9 @@
 import React, { useEffect, useState } from "react";
+import { FaSpinner } from "react-icons/fa";
 
 const NutriBowlBanner = () => {
   const [banner, setBanner] = useState(null);
+  const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
     const fetchBanner = async () => {
@@ -9,18 +11,32 @@ const NutriBowlBanner = () => {
         const res = await fetch("http://localhost:5001/api/banner");
         const data = await res.json();
         if (data.length > 0) {
-          setBanner(data[0]); // Use first banner, or modify logic as needed
+          setBanner(data[0]);
         }
       } catch (err) {
         console.error("Failed to fetch banner:", err);
+      } finally {
+        setIsLoading(false);
       }
     };
 
     fetchBanner();
   }, []);
 
+  if (isLoading) {
+    return (
+      <div className="flex justify-center items-center h-64 bg-gray-100">
+        <FaSpinner className="animate-spin text-green-500 text-4xl" />
+      </div>
+    );
+  }
+
   if (!banner) {
-    return null; // Or a loading spinner
+    return (
+      <div className="flex justify-center items-center h-64 bg-gray-100 text-gray-600">
+        Failed to load banner.
+      </div>
+    );
   }
 
   return (
