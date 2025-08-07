@@ -1,93 +1,150 @@
-import React from 'react';
-import { FaArrowRight } from 'react-icons/fa';
-import { useNavigate } from 'react-router-dom';
+import React, { useState, useEffect } from "react";
+import axios from "axios";
 
-const WeightGainProblems = () => {
-    const navigate=useNavigate()
-  const problems = [
-    {
-      image: "https://images.unsplash.com/photo-1490645935967-10de6ba17061?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Poor Appetite & Skipped Meals",
-      description: "Struggling to eat enough calories throughout the day"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1571019613454-1cb2f99b2d8b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Fear of Unhealthy Fat Gain",
-      description: "Worried about gaining fat instead of lean muscle"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1541534741688-6078c6bfb5c5?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Fast Metabolism & Active Lifestyle",
-      description: "Burning calories faster than you can consume them"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1556909114-4b5b6c8e6ca4?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Lack of Consistent Support",
-      description: "No guidance or accountability for your journey"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1507003211169-0a1dd7228f2d?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Mental Block & Low Confidence",
-      description: "Self-doubt and frustration with slow progress"
-    },
-    {
-      image: "https://images.unsplash.com/photo-1484480974693-6ca0a78fb36b?ixlib=rb-1.2.1&auto=format&fit=crop&w=500&q=80",
-      title: "Lack of Structured Plan",
-      description: "No clear roadmap for effective weight gain"
+const Problems = () => {
+  const [problems, setProblems] = useState([]);
+  const [form, setForm] = useState({
+    title: "",
+    description: "",
+    category: "",
+    file: null,
+  });
+  const [editId, setEditId] = useState(null);
+
+  const fetchProblems = async () => {
+    try {
+      const res = await axios.get("/api/problem");
+      console.log("Fetched problems:", res.data);
+      if (Array.isArray(res.data)) {
+        setProblems(res.data);
+      } else {
+        console.error("Expected an array but got:", res.data);
+        setProblems([]);
+      }
+    } catch (err) {
+      console.error("Failed to fetch problems:", err);
+      setProblems([]);
     }
-  ];
+  };
+
+  useEffect(() => {
+    fetchProblems();
+  }, []);
+
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    try {
+      const formData = new FormData();
+      formData.append("title", form.title);
+      formData.append("description", form.description);
+      formData.append("category", form.category);
+      if (form.file) formData.append("image", form.file);
+
+      if (editId) {
+        await axios.put(`/api/problems/${editId}`, formData);
+        setEditId(null);
+      } else {
+        await axios.post("/api/problems", formData);
+      }
+
+      setForm({ title: "", description: "", category: "", file: null });
+      fetchProblems();
+    } catch (err) {
+      console.error("Submit failed:", err);
+    }
+  };
+
+  const handleDelete = async (id) => {
+    try {
+      await axios.delete(`/api/problems/${id}`);
+      fetchProblems();
+    } catch (err) {
+      console.error("Delete failed:", err);
+    }
+  };
+
+  const handleEdit = (problem) => {
+    setForm({
+      title: problem.title,
+      description: problem.description,
+      category: problem.category,
+      file: null,
+    });
+    setEditId(problem._id);
+  };
+
+  const groupedByCategory = problems.reduce((acc, curr) => {
+    if (!acc[curr.category]) acc[curr.category] = [];
+    acc[curr.category].push(curr);
+    return acc;
+  }, {});
 
   return (
-    <div className="py-16 bg-gradient-to-br from-green-50 to-white">
-      <div className="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
-        <div className="text-center mb-12">
-          <h2 className="text-3xl font-bold text-gray-900 mb-4">
-            Common <span className="text-green-600">Weight Gain</span> Challenges
-          </h2>
-          <p className="text-lg text-gray-600 max-w-3xl mx-auto">
-            These are the most frequent obstacles people face when trying to gain healthy weight
-          </p>
-        </div>
+    <div className="p-6 max-w-4xl mx-auto">
+      <h2 className="text-2xl font-bold mb-4">{editId ? "Edit Problem" : "Add Problem"}</h2>
+      <form onSubmit={handleSubmit} className="grid grid-cols-1 gap-4 mb-8" encType="multipart/form-data">
+        <input
+          placeholder="Title"
+          value={form.title}
+          onChange={(e) => setForm({ ...form, title: e.target.value })}
+          className="border p-2"
+        />
+        <input
+          placeholder="Category"
+          value={form.category}
+          onChange={(e) => setForm({ ...form, category: e.target.value })}
+          className="border p-2"
+        />
+        <textarea
+          placeholder="Description"
+          value={form.description}
+          onChange={(e) => setForm({ ...form, description: e.target.value })}
+          className="border p-2"
+        />
+        <input
+          type="file"
+          accept="image/*"
+          onChange={(e) => setForm({ ...form, file: e.target.files[0] })}
+          className="border p-2"
+        />
+        <button className="bg-green-600 text-white py-2 rounded">
+          {editId ? "Update" : "Create"}
+        </button>
+      </form>
 
-        <div className="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-8">
-          {problems.map((problem, index) => (
-            <div 
-              key={index}
-              className="bg-white rounded-xl overflow-hidden shadow-lg hover:shadow-xl transition-all duration-300 border border-green-100 hover:border-green-200 group"
-            >
-              <div className="h-32 overflow-hidden relative">
-                <img 
-                  src={problem.image} 
-                  alt={problem.title}
-                  className="w-full h-full object-cover group-hover:scale-105 transition-transform duration-300"
-                />
-                <div className="absolute inset-0 bg-gradient-to-t from-green-900/20 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-300"></div>
-              </div>
-              <div className="p-4 relative">
-                <div className="absolute -top-3 left-4 w-6 h-6 bg-green-600 rounded-full flex items-center justify-center shadow-lg">
-                  <span className="text-white font-bold text-xs">{index + 1}</span>
+      <h3 className="text-xl font-semibold mb-2">Problems by Category</h3>
+      {Object.entries(groupedByCategory).map(([category, items]) => (
+        <div key={category} className="mb-6">
+          <h4 className="text-lg font-bold text-green-700 mb-2">{category}</h4>
+          <div className="space-y-4">
+            {items.map((p) => (
+              <div key={p._id} className="border p-4 rounded shadow-sm flex justify-between items-start gap-4">
+                <div>
+                  <h4 className="text-lg font-bold">{p.title}</h4>
+                  <p className="text-sm text-gray-600">{p.description}</p>
+                  <p className="text-xs text-gray-400">Category: {p.category}</p>
+                  {p.image && (
+                    <img
+                      src={`http://localhost:5000/uploads/${p.image}`}
+                      alt={p.title}
+                      onError={(e) => {
+                        e.target.src = "https://via.placeholder.com/150?text=No+Image";
+                      }}
+                      className="w-40 h-24 object-cover mt-2 border"
+                    />
+                  )}
                 </div>
-                <h3 className="text-lg font-semibold text-gray-800 mb-2 mt-1">{problem.title}</h3>
-                <p className="text-gray-600 mb-3 text-sm leading-relaxed">{problem.description}</p>
-                <button className="text-green-600 font-medium flex items-center gap-2 hover:text-green-700 transition-colors group-hover:translate-x-1 transform duration-200 text-sm">
-                  Learn more <FaArrowRight className="text-xs" />
-                </button>
+                <div className="space-x-2">
+                  <button onClick={() => handleEdit(p)} className="text-blue-600">Edit</button>
+                  <button onClick={() => handleDelete(p._id)} className="text-red-600">Delete</button>
+                </div>
               </div>
-            </div>
-          ))}
+            ))}
+          </div>
         </div>
-
-        <div className="mt-12 text-center">
-          <button 
-          onClick={()=>navigate("/meal-plans/weight-gain")}
-           className="bg-gradient-to-r from-green-600 to-green-700 hover:from-green-700 hover:to-green-800 text-white font-semibold py-4 px-10 rounded-full transition duration-300 shadow-lg hover:shadow-xl transform hover:-translate-y-1 flex items-center gap-3 mx-auto">
-            View Weight gain meal plan
-            <FaArrowRight />
-          </button>
-        </div>
-      </div>
+      ))}
     </div>
   );
 };
 
-export default WeightGainProblems;
+export default Problems;
