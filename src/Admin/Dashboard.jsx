@@ -51,7 +51,7 @@ import ChallengeAdminPanel from "./ChallengeAdminPanel"
 
 const menuItems = [
   { title: "Overview", icon: BarChart3, id: "overview" },
-  { title: "Auth Test", icon: Shield, id: "auth-test" },
+  // { title: "Auth Test", icon: Shield, id: "auth-test" },
   { title: "Experts", icon: Users, id: "experts" },
   { title: "Testimonials", icon: MessageSquare, id: "testimonials" },
   { title: "Menu", icon: ChefHat, id: "menu" },
@@ -163,8 +163,8 @@ export default function AdminDashboard() {
     switch (activeView) {
       case "overview":
         return <OverviewContent setActiveView={setActiveView} />
-      case "auth-test":
-        return <AuthTest />
+      // case "auth-test":
+      //   return <AuthTest />
       case "about":
         return<AdminAbout/>
         case "banner":
