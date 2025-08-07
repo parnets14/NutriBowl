@@ -58,6 +58,7 @@ const menuItems = [
   { title: "Meal Plans", icon: UtensilsCrossed, id: "meal-plans" },
   {title:"About", icon:Shield, id:"about"},
   {title:"Banner", icon:Shield, id:"banner"},
+  {title:"Order", icon:Shield, id:"order"},
   {title:"Benefits", icon:Shield, id:"benefits"},
   {title:"Problem", icon:Shield, id:"problem"},
   {title:"Solution", icon:Shield, id:"solution"},
@@ -197,6 +198,8 @@ export default function AdminDashboard() {
         return <WeightGainMealManager />
       case "weight-loss-meals":
         return <WeightLossMealManager />
+        //  case "order":
+        // return < />
       default:
         return <OverviewContent setActiveView={setActiveView} />
     }
