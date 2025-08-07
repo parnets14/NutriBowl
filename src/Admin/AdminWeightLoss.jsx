@@ -1,499 +1,1785 @@
-import React, { useState } from "react";
-import { Button } from "../components/ui/button";
-import { Input } from "../components/ui/input";
-import { Label } from "../components/ui/label";
-import { Textarea } from "../components/ui/textarea";
-import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
-import {
-  Dialog,
-  DialogContent,
-  DialogDescription,
-  DialogFooter,
-  DialogHeader,
-  DialogTitle,
-  DialogTrigger,
-} from "../components/ui/dialog";
-import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
-import { Badge } from "../components/ui/badge";
-import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
-import { Plus, Edit, Trash2, TrendingDown } from "lucide-react";
+// // import React, { useState } from "react";
+// // import { Button } from "../components/ui/button";
+// // import { Input } from "../components/ui/input";
+// // import { Label } from "../components/ui/label";
+// // import { Textarea } from "../components/ui/textarea";
+// // import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+// // import {
+// //   Dialog,
+// //   DialogContent,
+// //   DialogDescription,
+// //   DialogFooter,
+// //   DialogHeader,
+// //   DialogTitle,
+// //   DialogTrigger,
+// // } from "../components/ui/dialog";
+// // import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
+// // import { Badge } from "../components/ui/badge";
+// // import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+// // import { Plus, Edit, Trash2, TrendingDown } from "lucide-react";
 
-const initialWeightLossMeals = [
-  {
-    id: "1",
-    day: "DAY - 1",
-    mealType: "VEG MEAL",
-    mealTime: "Lunch",
-    items: [
-      {
-        id: "1",
-        course: "Starter",
-        item: "Clear Vegetable Broth",
-        calories: 45,
-        protein: 2,
-        carbs: 8,
-        fat: 1,
-        ingredients: "Mixed vegetables – 50g, ginger – 2g, garlic – 1g, herbs – 1 tsp",
-        benefits: "Low-calorie starter; boosts metabolism and aids digestion.",
-      },
-      {
-        id: "2",
-        course: "Main",
-        item: "Quinoa Vegetable Bowl",
-        calories: 220,
-        protein: 8,
-        carbs: 35,
-        fat: 5,
-        ingredients: "Quinoa – 50g, broccoli – 40g, bell peppers – 30g, olive oil – 1 tsp",
-        benefits: "High protein grain; supports weight loss and provides sustained energy.",
-      },
-    ],
-  },
-];
+// // const initialWeightLossMeals = [
+// //   {
+// //     id: "1",
+// //     day: "DAY - 1",
+// //     mealType: "VEG MEAL",
+// //     mealTime: "Lunch",
+// //     items: [
+// //       {
+// //         id: "1",
+// //         course: "Starter",
+// //         item: "Clear Vegetable Broth",
+// //         calories: 45,
+// //         protein: 2,
+// //         carbs: 8,
+// //         fat: 1,
+// //         ingredients: "Mixed vegetables – 50g, ginger – 2g, garlic – 1g, herbs – 1 tsp",
+// //         benefits: "Low-calorie starter; boosts metabolism and aids digestion.",
+// //       },
+// //       {
+// //         id: "2",
+// //         course: "Main",
+// //         item: "Quinoa Vegetable Bowl",
+// //         calories: 220,
+// //         protein: 8,
+// //         carbs: 35,
+// //         fat: 5,
+// //         ingredients: "Quinoa – 50g, broccoli – 40g, bell peppers – 30g, olive oil – 1 tsp",
+// //         benefits: "High protein grain; supports weight loss and provides sustained energy.",
+// //       },
+// //     ],
+// //   },
+// // ];
 
-export default function WeightLossMealManager() {
-  const [meals, setMeals] = useState(initialWeightLossMeals);
-  const [isDialogOpen, setIsDialogOpen] = useState(false);
-  const [editingMeal, setEditingMeal] = useState(null);
-  const [selectedTab, setSelectedTab] = useState("meals");
-  const [formData, setFormData] = useState({
-    day: "DAY - 1",
-    mealType: "VEG MEAL",
-    mealTime: "Lunch",
-    items: [],
+// // export default function WeightLossMealManager() {
+// //   const [meals, setMeals] = useState(initialWeightLossMeals);
+// //   const [isDialogOpen, setIsDialogOpen] = useState(false);
+// //   const [editingMeal, setEditingMeal] = useState(null);
+// //   const [selectedTab, setSelectedTab] = useState("meals");
+// //   const [formData, setFormData] = useState({
+// //     day: "DAY - 1",
+// //     mealType: "VEG MEAL",
+// //     mealTime: "Lunch",
+// //     items: [],
+// //   });
+
+// //   const [itemFormData, setItemFormData] = useState({
+// //     course: "Starter",
+// //     item: "",
+// //     calories: 0,
+// //     protein: 0,
+// //     carbs: 0,
+// //     fat: 0,
+// //     ingredients: "",
+// //     benefits: "",
+// //   });
+
+// //   const handleSubmit = (e) => {
+// //     e.preventDefault();
+
+// //     const mealWithIds = {
+// //       ...formData,
+// //       items: formData.items.map((item, index) => ({
+// //         ...item,
+// //         id: Date.now().toString() + index,
+// //       })),
+// //     };
+
+// //     if (editingMeal) {
+// //       setMeals(meals.map((meal) => (meal.id === editingMeal.id ? { ...meal, ...mealWithIds } : meal)));
+// //     } else {
+// //       const newMeal = {
+// //         id: Date.now().toString(),
+// //         ...mealWithIds,
+// //       };
+// //       setMeals([...meals, newMeal]);
+// //     }
+
+// //     resetForm();
+// //   };
+
+// //   const handleEdit = (meal) => {
+// //     setEditingMeal(meal);
+// //     setFormData({
+// //       day: meal.day,
+// //       mealType: meal.mealType,
+// //       mealTime: meal.mealTime,
+// //       items: meal.items.map(({ id, ...item }) => item),
+// //     });
+// //     setIsDialogOpen(true);
+// //   };
+
+// //   const handleDelete = (id) => {
+// //     setMeals(meals.filter((meal) => meal.id !== id));
+// //   };
+
+// //   const addItemToMeal = () => {
+// //     setFormData({
+// //       ...formData,
+// //       items: [...formData.items, itemFormData],
+// //     });
+// //     setItemFormData({
+// //       course: "Starter",
+// //       item: "",
+// //       calories: 0,
+// //       protein: 0,
+// //       carbs: 0,
+// //       fat: 0,
+// //       ingredients: "",
+// //       benefits: "",
+// //     });
+// //   };
+
+// //   const removeItemFromMeal = (index) => {
+// //     setFormData({
+// //       ...formData,
+// //       items: formData.items.filter((_, i) => i !== index),
+// //     });
+// //   };
+
+// //   const resetForm = () => {
+// //     setFormData({
+// //       day: "DAY - 1",
+// //       mealType: "VEG MEAL",
+// //       mealTime: "Lunch",
+// //       items: [],
+// //     });
+// //     setItemFormData({
+// //       course: "Starter",
+// //       item: "",
+// //       calories: 0,
+// //       protein: 0,
+// //       carbs: 0,
+// //       fat: 0,
+// //       ingredients: "",
+// //       benefits: "",
+// //     });
+// //     setEditingMeal(null);
+// //     setIsDialogOpen(false);
+// //   };
+
+// //   const getCourseColor = (course) => {
+// //     switch (course) {
+// //       case "Starter":
+// //         return "bg-blue-100 text-blue-800";
+// //       case "Main":
+// //         return "bg-blue-200 text-blue-900";
+// //       case "Salad":
+// //         return "bg-blue-300 text-blue-900";
+// //       default:
+// //         return "bg-gray-100 text-gray-800";
+// //     }
+// //   };
+
+// //   const getMealTypeColor = (type) => {
+// //     return type === "VEG MEAL" ? "bg-green-100 text-green-800" : "bg-orange-100 text-orange-800";
+// //   };
+
+// //   return (
+// //     <div className="space-y-6">
+// //       <Card>
+// //         <CardHeader>
+// //           <div className="flex justify-between items-center">
+// //             <div>
+// //               <CardTitle className="flex items-center space-x-2 text-blue-700">
+// //                 <TrendingDown className="w-5 h-5" />
+// //                 <span>Weight Loss Meal Plans Management</span>
+// //               </CardTitle>
+// //               <CardDescription>Manage low-calorie meal plans for healthy weight loss</CardDescription>
+// //             </div>
+// //             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+// //               <DialogTrigger asChild>
+// //                 <Button onClick={() => resetForm()} className="bg-blue-600 hover:bg-blue-700">
+// //                   <Plus className="w-4 h-4 mr-2" />
+// //                   Add Weight Loss Plan
+// //                 </Button>
+// //               </DialogTrigger>
+// //               <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+// //                 <DialogHeader>
+// //                   <DialogTitle>{editingMeal ? "Edit Weight Loss Plan" : "Add New Weight Loss Plan"}</DialogTitle>
+// //                   <DialogDescription>
+// //                     {editingMeal ? "Update weight loss meal plan" : "Create a new low-calorie meal plan"}
+// //                   </DialogDescription>
+// //                 </DialogHeader>
+// //                 <form onSubmit={handleSubmit}>
+// //                   <div className="grid gap-4 py-4">
+// //                     <div className="grid grid-cols-3 gap-4">
+// //                       <div className="space-y-2">
+// //                         <Label htmlFor="day">Day</Label>
+// //                         <select
+// //                           id="day"
+// //                           value={formData.day}
+// //                           onChange={(e) => setFormData({ ...formData, day: e.target.value })}
+// //                           className="w-full p-2 border border-gray-300 rounded-md"
+// //                           required
+// //                         >
+// //                           <option value="DAY - 1">Day 1</option>
+// //                           <option value="DAY - 2">Day 2</option>
+// //                           <option value="DAY - 3">Day 3</option>
+// //                           <option value="DAY - 4">Day 4</option>
+// //                           <option value="DAY - 5">Day 5</option>
+// //                           <option value="DAY - 6">Day 6</option>
+// //                           <option value="DAY - 7">Day 7</option>
+// //                         </select>
+// //                       </div>
+// //                       <div className="space-y-2">
+// //                         <Label htmlFor="mealType">Meal Type</Label>
+// //                         <select
+// //                           id="mealType"
+// //                           value={formData.mealType}
+// //                           onChange={(e) =>
+// //                             setFormData({ ...formData, mealType: e.target.value })
+// //                           }
+// //                           className="w-full p-2 border border-gray-300 rounded-md"
+// //                           required
+// //                         >
+// //                           <option value="VEG MEAL">Vegetarian</option>
+// //                           <option value="NON-VEG MEAL">Non-Vegetarian</option>
+// //                         </select>
+// //                       </div>
+// //                       <div className="space-y-2">
+// //                         <Label htmlFor="mealTime">Meal Time</Label>
+// //                         <select
+// //                           id="mealTime"
+// //                           value={formData.mealTime}
+// //                           onChange={(e) =>
+// //                             setFormData({ ...formData, mealTime: e.target.value })
+// //                           }
+// //                           className="w-full p-2 border border-gray-300 rounded-md"
+// //                           required
+// //                         >
+// //                           <option value="Lunch">Lunch</option>
+// //                           <option value="Dinner">Dinner</option>
+// //                         </select>
+// //                       </div>
+// //                     </div>
+
+// //                     {/* Add Meal Items Section */}
+// //                     <div className="border-t pt-4">
+// //                       <h4 className="text-lg font-medium mb-4">Add Low-Calorie Meal Items</h4>
+// //                       <div className="grid grid-cols-2 gap-4 mb-4">
+// //                         <div className="space-y-2">
+// //                           <Label htmlFor="course">Course</Label>
+// //                           <select
+// //                             id="course"
+// //                             value={itemFormData.course}
+// //                             onChange={(e) =>
+// //                               setItemFormData({ ...itemFormData, course: e.target.value })
+// //                             }
+// //                             className="w-full p-2 border border-gray-300 rounded-md"
+// //                           >
+// //                             <option value="Starter">Starter</option>
+// //                             <option value="Main">Main</option>
+// //                             <option value="Salad">Salad</option>
+// //                           </select>
+// //                         </div>
+// //                         <div className="space-y-2">
+// //                           <Label htmlFor="item">Item Name</Label>
+// //                           <Input
+// //                             id="item"
+// //                             value={itemFormData.item}
+// //                             onChange={(e) => setItemFormData({ ...itemFormData, item: e.target.value })}
+// //                             placeholder="Clear Vegetable Broth"
+// //                           />
+// //                         </div>
+// //                       </div>
+
+// //                       <div className="grid grid-cols-4 gap-4 mb-4">
+// //                         <div className="space-y-2">
+// //                           <Label htmlFor="calories">Calories</Label>
+// //                           <Input
+// //                             id="calories"
+// //                             type="number"
+// //                             value={itemFormData.calories}
+// //                             onChange={(e) =>
+// //                               setItemFormData({ ...itemFormData, calories: parseInt(e.target.value) })
+// //                             }
+// //                             placeholder="45"
+// //                           />
+// //                         </div>
+// //                         <div className="space-y-2">
+// //                           <Label htmlFor="protein">Protein (g)</Label>
+// //                           <Input
+// //                             id="protein"
+// //                             type="number"
+// //                             value={itemFormData.protein}
+// //                             onChange={(e) =>
+// //                               setItemFormData({ ...itemFormData, protein: parseInt(e.target.value) })
+// //                             }
+// //                             placeholder="2"
+// //                           />
+// //                         </div>
+// //                         <div className="space-y-2">
+// //                           <Label htmlFor="carbs">Carbs (g)</Label>
+// //                           <Input
+// //                             id="carbs"
+// //                             type="number"
+// //                             value={itemFormData.carbs}
+// //                             onChange={(e) =>
+// //                               setItemFormData({ ...itemFormData, carbs: parseInt(e.target.value) })
+// //                             }
+// //                             placeholder="8"
+// //                           />
+// //                         </div>
+// //                         <div className="space-y-2">
+// //                           <Label htmlFor="fat">Fat (g)</Label>
+// //                           <Input
+// //                             id="fat"
+// //                             type="number"
+// //                             value={itemFormData.fat}
+// //                             onChange={(e) => setItemFormData({ ...itemFormData, fat: parseInt(e.target.value) })}
+// //                             placeholder="1"
+// //                           />
+// //                         </div>
+// //                       </div>
+
+// //                       <div className="grid grid-cols-2 gap-4 mb-4">
+// //                         <div className="space-y-2">
+// //                           <Label htmlFor="ingredients">Ingredients</Label>
+// //                           <Textarea
+// //                             id="ingredients"
+// //                             value={itemFormData.ingredients}
+// //                             onChange={(e) => setItemFormData({ ...itemFormData, ingredients: e.target.value })}
+// //                             placeholder="Mixed vegetables – 50g, ginger – 2g..."
+// //                           />
+// //                         </div>
+// //                         <div className="space-y-2">
+// //                           <Label htmlFor="benefits">Benefits</Label>
+// //                           <Textarea
+// //                             id="benefits"
+// //                             value={itemFormData.benefits}
+// //                             onChange={(e) => setItemFormData({ ...itemFormData, benefits: e.target.value })}
+// //                             placeholder="Low-calorie starter; boosts metabolism..."
+// //                           />
+// //                         </div>
+// //                       </div>
+
+// //                       <Button type="button" onClick={addItemToMeal} variant="outline" className="mb-4 bg-transparent">
+// //                         <Plus className="w-4 h-4 mr-2" />
+// //                         Add Item to Meal
+// //                       </Button>
+
+// //                       {/* Display Added Items */}
+// //                       {formData.items.length > 0 && (
+// //                         <div className="space-y-2">
+// //                           <h5 className="font-medium">Added Items:</h5>
+// //                           {formData.items.map((item, index) => (
+// //                             <div key={index} className="flex items-center justify-between p-2 bg-blue-50 rounded">
+// //                               <span>
+// //                                 {item.course}: {item.item} ({item.calories} kcal)
+// //                               </span>
+// //                               <Button
+// //                                 type="button"
+// //                                 variant="destructive"
+// //                                 size="sm"
+// //                                 onClick={() => removeItemFromMeal(index)}
+// //                               >
+// //                                 <Trash2 className="w-4 h-4" />
+// //                               </Button>
+// //                             </div>
+// //                           ))}
+// //                         </div>
+// //                       )}
+// //                     </div>
+// //                   </div>
+// //                   <DialogFooter>
+// //                     <Button type="button" variant="outline" onClick={resetForm}>
+// //                       Cancel
+// //                     </Button>
+// //                     <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
+// //                       {editingMeal ? "Update" : "Add"} Weight Loss Plan
+// //                     </Button>
+// //                   </DialogFooter>
+// //                 </form>
+// //               </DialogContent>
+// //             </Dialog>
+// //           </div>
+// //         </CardHeader>
+// //         <CardContent>
+// //           <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+// //             <TabsList>
+// //               <TabsTrigger value="meals">Weight Loss Plans</TabsTrigger>
+// //               <TabsTrigger value="analytics">Analytics</TabsTrigger>
+// //             </TabsList>
+
+// //             <TabsContent value="meals">
+// //               <Table>
+// //                 <TableHeader>
+// //                   <TableRow>
+// //                     <TableHead>Day</TableHead>
+// //                     <TableHead>Type</TableHead>
+// //                     <TableHead>Meal Time</TableHead>
+// //                     <TableHead>Items Count</TableHead>
+// //                     <TableHead>Total Calories</TableHead>
+// //                     <TableHead className="text-right">Actions</TableHead>
+// //                   </TableRow>
+// //                 </TableHeader>
+// //                 <TableBody>
+// //                   {meals.map((meal) => (
+// //                     <TableRow key={meal.id}>
+// //                       <TableCell className="font-medium">{meal.day}</TableCell>
+// //                       <TableCell>
+// //                         <Badge className={getMealTypeColor(meal.mealType)}>
+// //                           {meal.mealType.replace("MEAL", "").trim()}
+// //                         </Badge>
+// //                       </TableCell>
+// //                       <TableCell>{meal.mealTime}</TableCell>
+// //                       <TableCell>{meal.items.length} items</TableCell>
+// //                       <TableCell className="font-semibold text-blue-600">
+// //                         {meal.items.reduce((total, item) => total + item.calories, 0)} kcal
+// //                       </TableCell>
+// //                       <TableCell className="text-right">
+// //                         <div className="flex justify-end space-x-2">
+// //                           <Button variant="outline" size="sm" onClick={() => handleEdit(meal)}>
+// //                             <Edit className="w-4 h-4" />
+// //                           </Button>
+// //                           <Button variant="destructive" size="sm" onClick={() => handleDelete(meal.id)}>
+// //                             <Trash2 className="w-4 h-4" />
+// //                           </Button>
+// //                         </div>
+// //                       </TableCell>
+// //                     </TableRow>
+// //                   ))}
+// //                 </TableBody>
+// //               </Table>
+// //             </TabsContent>
+
+// //             <TabsContent value="analytics">
+// //               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+// //                 <Card>
+// //                   <CardHeader>
+// //                     <CardTitle className="text-sm">Total Plans</CardTitle>
+// //                   </CardHeader>
+// //                   <CardContent>
+// //                     <div className="text-2xl font-bold text-blue-600">{meals.length}</div>
+// //                   </CardContent>
+// //                 </Card>
+// //                 <Card>
+// //                   <CardHeader>
+// //                     <CardTitle className="text-sm">Avg Calories/Meal</CardTitle>
+// //                   </CardHeader>
+// //                   <CardContent>
+// //                     <div className="text-2xl font-bold text-blue-600">
+// //                       {Math.round(
+// //                         meals.reduce(
+// //                           (total, meal) => total + meal.items.reduce((mealTotal, item) => mealTotal + item.calories, 0),
+// //                           0,
+// //                         ) / meals.length,
+// //                       ) || 0}
+// //                     </div>
+// //                   </CardContent>
+// //                 </Card>
+// //                 <Card>
+// //                   <CardHeader>
+// //                     <CardTitle className="text-sm">Vegetarian Plans</CardTitle>
+// //                   </CardHeader>
+// //                   <CardContent>
+// //                     <div className="text-2xl font-bold text-green-600">
+// //                       {meals.filter((m) => m.mealType === "VEG MEAL").length}
+// //                     </div>
+// //                   </CardContent>
+// //                 </Card>
+// //                 <Card>
+// //                   <CardHeader>
+// //                     <CardTitle className="text-sm">Non-Veg Plans</CardTitle>
+// //                   </CardHeader>
+// //                   <CardContent>
+// //                     <div className="text-2xl font-bold text-orange-600">
+// //                       {meals.filter((m) => m.mealType === "NON-VEG MEAL").length}
+// //                     </div>
+// //                   </CardContent>
+// //                 </Card>
+// //               </div>
+// //             </TabsContent>
+// //           </Tabs>
+// //         </CardContent>
+// //       </Card>
+// //     </div>
+// //   );
+// // }
+// "use client";
+
+// import React, { useState, useEffect } from "react";
+// import { Button } from "../components/ui/button";
+// import { Input } from "../components/ui/input";
+// import { Label } from "../components/ui/label";
+// import { Textarea } from "../components/ui/textarea";
+// import { Card, CardContent, CardDescription, CardHeader, CardTitle } from "../components/ui/card";
+// import {
+//   Dialog,
+//   DialogContent,
+//   DialogDescription,
+//   DialogFooter,
+//   DialogHeader,
+//   DialogTitle,
+//   DialogTrigger,
+// } from "../components/ui/dialog";
+// import { Table, TableBody, TableCell, TableHead, TableHeader, TableRow } from "../components/ui/table";
+// import { Badge } from "../components/ui/badge";
+// import { Tabs, TabsContent, TabsList, TabsTrigger } from "../components/ui/tabs";
+// import { Plus, Edit, Trash2, TrendingDown } from "lucide-react";
+
+// const API_URL = "http://localhost:5001/api/weight-loss-meals"; // Update with your backend API URL
+
+// // API helper functions
+// async function fetchMeals() {
+//   const res = await fetch(API_URL);
+//   if (!res.ok) throw new Error("Failed to fetch weight loss meals");
+//   return res.json();
+// }
+
+// async function createMealApi(meal) {
+//   const res = await fetch(API_URL, {
+//     method: "POST",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(meal),
+//   });
+//   if (!res.ok) throw new Error("Failed to create meal");
+//   return res.json();
+// }
+
+// async function updateMealApi(id, meal) {
+//   const res = await fetch(`${API_URL}/${id}`, {
+//     method: "PUT",
+//     headers: { "Content-Type": "application/json" },
+//     body: JSON.stringify(meal),
+//   });
+//   if (!res.ok) throw new Error("Failed to update meal");
+//   return res.json();
+// }
+
+// async function deleteMealApi(id) {
+//   const res = await fetch(`${API_URL}/${id}`, { method: "DELETE" });
+//   if (!res.ok) throw new Error("Failed to delete meal");
+// }
+
+// export default function WeightLossMealManager() {
+//   const [meals, setMeals] = useState([]);
+//   const [isDialogOpen, setIsDialogOpen] = useState(false);
+//   const [editingMeal, setEditingMeal] = useState(null);
+//   const [selectedTab, setSelectedTab] = useState("meals");
+//   const [formData, setFormData] = useState({
+//     day: "DAY - 1",
+//     mealType: "VEG MEAL",
+//     mealTime: "Lunch",
+//     items: [],
+//   });
+
+//   const [itemFormData, setItemFormData] = useState({
+//     course: "Starter",
+//     item: "",
+//     calories: 0,
+//     protein: 0,
+//     carbs: 0,
+//     fat: 0,
+//     ingredients: "",
+//     benefits: "",
+//   });
+
+//   // Load meals on component mount
+//   useEffect(() => {
+//     async function loadMeals() {
+//       try {
+//         const apiMeals = await fetchMeals();
+//         const mappedMeals = apiMeals.map((meal) => ({
+//           ...meal,
+//           id: meal._id, // map MongoDB _id to id
+//         }));
+//         setMeals(mappedMeals);
+//       } catch (error) {
+//         console.error("Error loading meals:", error);
+//       }
+//     }
+//     loadMeals();
+//   }, []);
+
+//   const resetForm = () => {
+//     setFormData({
+//       day: "DAY - 1",
+//       mealType: "VEG MEAL",
+//       mealTime: "Lunch",
+//       items: [],
+//     });
+//     setItemFormData({
+//       course: "Starter",
+//       item: "",
+//       calories: 0,
+//       protein: 0,
+//       carbs: 0,
+//       fat: 0,
+//       ingredients: "",
+//       benefits: "",
+//     });
+//     setEditingMeal(null);
+//     setIsDialogOpen(false);
+//   };
+
+//   const handleSubmit = async (e) => {
+//     e.preventDefault();
+
+//     // Assign temporary ids to items (only for UI use)
+//     const mealWithIds = {
+//       ...formData,
+//       items: formData.items.map((item, index) => ({
+//         ...item,
+//         id: item.id || Date.now().toString() + index,
+//       })),
+//     };
+
+//     try {
+//       if (editingMeal) {
+//         const updatedMeal = await updateMealApi(editingMeal.id, mealWithIds);
+//         setMeals(
+//           meals.map((meal) =>
+//             meal.id === editingMeal.id ? { ...updatedMeal, id: updatedMeal._id } : meal
+//           )
+//         );
+//       } else {
+//         const newMeal = await createMealApi(mealWithIds);
+//         setMeals([...meals, { ...newMeal, id: newMeal._id }]);
+//       }
+//       resetForm();
+//     } catch (error) {
+//       console.error("Failed to save meal:", error);
+//     }
+//   };
+
+//   const handleEdit = (meal) => {
+//     setEditingMeal(meal);
+//     setFormData({
+//       day: meal.day,
+//       mealType: meal.mealType,
+//       mealTime: meal.mealTime,
+//       // Remove ids from items before editing
+//       items: meal.items.map(({ id, _id, ...rest }) => rest),
+//     });
+//     setIsDialogOpen(true);
+//   };
+
+//   const handleDelete = async (id) => {
+//     try {
+//       await deleteMealApi(id);
+//       setMeals(meals.filter((meal) => meal.id !== id));
+//     } catch (error) {
+//       console.error("Failed to delete meal:", error);
+//     }
+//   };
+
+//   const addItemToMeal = () => {
+//     if (!itemFormData.item.trim()) return; // Don't add empty item
+
+//     setFormData({
+//       ...formData,
+//       items: [...formData.items, itemFormData],
+//     });
+//     setItemFormData({
+//       course: "Starter",
+//       item: "",
+//       calories: 0,
+//       protein: 0,
+//       carbs: 0,
+//       fat: 0,
+//       ingredients: "",
+//       benefits: "",
+//     });
+//   };
+
+//   const removeItemFromMeal = (index) => {
+//     setFormData({
+//       ...formData,
+//       items: formData.items.filter((_, i) => i !== index),
+//     });
+//   };
+
+//   const getCourseColor = (course) => {
+//     switch (course) {
+//       case "Starter":
+//         return "bg-blue-100 text-blue-800";
+//       case "Main":
+//         return "bg-blue-200 text-blue-900";
+//       case "Salad":
+//         return "bg-blue-300 text-blue-900";
+//       default:
+//         return "bg-gray-100 text-gray-800";
+//     }
+//   };
+
+//   const getMealTypeColor = (type) => {
+//     return type === "VEG MEAL" ? "bg-green-100 text-green-800" : "bg-orange-100 text-orange-800";
+//   };
+
+//   return (
+//     <div className="space-y-6">
+//       <Card>
+//         <CardHeader>
+//           <div className="flex justify-between items-center">
+//             <div>
+//               <CardTitle className="flex items-center space-x-2 text-blue-700">
+//                 <TrendingDown className="w-5 h-5" />
+//                 <span>Weight Loss Meal Plans Management</span>
+//               </CardTitle>
+//               <CardDescription>Manage low-calorie meal plans for healthy weight loss</CardDescription>
+//             </div>
+//             <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
+//               <DialogTrigger asChild>
+//                 <Button onClick={resetForm} className="bg-blue-600 hover:bg-blue-700">
+//                   <Plus className="w-4 h-4 mr-2" />
+//                   Add Weight Loss Plan
+//                 </Button>
+//               </DialogTrigger>
+//               <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
+//                 <DialogHeader>
+//                   <DialogTitle>{editingMeal ? "Edit Weight Loss Plan" : "Add New Weight Loss Plan"}</DialogTitle>
+//                   <DialogDescription>
+//                     {editingMeal ? "Update weight loss meal plan" : "Create a new low-calorie meal plan"}
+//                   </DialogDescription>
+//                 </DialogHeader>
+//                 <form onSubmit={handleSubmit}>
+//                   <div className="grid gap-4 py-4">
+//                     <div className="grid grid-cols-3 gap-4">
+//                       <div className="space-y-2">
+//                         <Label htmlFor="day">Day</Label>
+//                         <select
+//                           id="day"
+//                           value={formData.day}
+//                           onChange={(e) => setFormData({ ...formData, day: e.target.value })}
+//                           className="w-full p-2 border border-gray-300 rounded-md"
+//                           required
+//                         >
+//                           <option value="DAY - 1">Day 1</option>
+//                           <option value="DAY - 2">Day 2</option>
+//                           <option value="DAY - 3">Day 3</option>
+//                           <option value="DAY - 4">Day 4</option>
+//                           <option value="DAY - 5">Day 5</option>
+//                           <option value="DAY - 6">Day 6</option>
+//                           <option value="DAY - 7">Day 7</option>
+//                         </select>
+//                       </div>
+//                       <div className="space-y-2">
+//                         <Label htmlFor="mealType">Meal Type</Label>
+//                         <select
+//                           id="mealType"
+//                           value={formData.mealType}
+//                           onChange={(e) => setFormData({ ...formData, mealType: e.target.value })}
+//                           className="w-full p-2 border border-gray-300 rounded-md"
+//                           required
+//                         >
+//                           <option value="VEG MEAL">Vegetarian</option>
+//                           <option value="NON-VEG MEAL">Non-Vegetarian</option>
+//                         </select>
+//                       </div>
+//                       <div className="space-y-2">
+//                         <Label htmlFor="mealTime">Meal Time</Label>
+//                         <select
+//                           id="mealTime"
+//                           value={formData.mealTime}
+//                           onChange={(e) => setFormData({ ...formData, mealTime: e.target.value })}
+//                           className="w-full p-2 border border-gray-300 rounded-md"
+//                           required
+//                         >
+//                           <option value="Lunch">Lunch</option>
+//                           <option value="Dinner">Dinner</option>
+//                         </select>
+//                       </div>
+//                     </div>
+
+//                     {/* Add Meal Items Section */}
+//                     <div className="border-t pt-4">
+//                       <h4 className="text-lg font-medium mb-4">Add Low-Calorie Meal Items</h4>
+//                       <div className="grid grid-cols-2 gap-4 mb-4">
+//                         <div className="space-y-2">
+//                           <Label htmlFor="course">Course</Label>
+//                           <select
+//                             id="course"
+//                             value={itemFormData.course}
+//                             onChange={(e) => setItemFormData({ ...itemFormData, course: e.target.value })}
+//                             className="w-full p-2 border border-gray-300 rounded-md"
+//                           >
+//                             <option value="Starter">Starter</option>
+//                             <option value="Main">Main</option>
+//                             <option value="Salad">Salad</option>
+//                           </select>
+//                         </div>
+//                         <div className="space-y-2">
+//                           <Label htmlFor="item">Item Name</Label>
+//                           <Input
+//                             id="item"
+//                             value={itemFormData.item}
+//                             onChange={(e) => setItemFormData({ ...itemFormData, item: e.target.value })}
+//                             placeholder="Clear Vegetable Broth"
+//                           />
+//                         </div>
+//                       </div>
+
+//                       <div className="grid grid-cols-4 gap-4 mb-4">
+//                         <div className="space-y-2">
+//                           <Label htmlFor="calories">Calories</Label>
+//                           <Input
+//                             id="calories"
+//                             type="number"
+//                             min={0}
+//                             value={itemFormData.calories}
+//                             onChange={(e) =>
+//                               setItemFormData({ ...itemFormData, calories: parseInt(e.target.value) || 0 })
+//                             }
+//                             placeholder="45"
+//                           />
+//                         </div>
+//                         <div className="space-y-2">
+//                           <Label htmlFor="protein">Protein (g)</Label>
+//                           <Input
+//                             id="protein"
+//                             type="number"
+//                             min={0}
+//                             value={itemFormData.protein}
+//                             onChange={(e) =>
+//                               setItemFormData({ ...itemFormData, protein: parseInt(e.target.value) || 0 })
+//                             }
+//                             placeholder="2"
+//                           />
+//                         </div>
+//                         <div className="space-y-2">
+//                           <Label htmlFor="carbs">Carbs (g)</Label>
+//                           <Input
+//                             id="carbs"
+//                             type="number"
+//                             min={0}
+//                             value={itemFormData.carbs}
+//                             onChange={(e) =>
+//                               setItemFormData({ ...itemFormData, carbs: parseInt(e.target.value) || 0 })
+//                             }
+//                             placeholder="8"
+//                           />
+//                         </div>
+//                         <div className="space-y-2">
+//                           <Label htmlFor="fat">Fat (g)</Label>
+//                           <Input
+//                             id="fat"
+//                             type="number"
+//                             min={0}
+//                             value={itemFormData.fat}
+//                             onChange={(e) =>
+//                               setItemFormData({ ...itemFormData, fat: parseInt(e.target.value) || 0 })
+//                             }
+//                             placeholder="1"
+//                           />
+//                         </div>
+//                       </div>
+
+//                       <div className="grid grid-cols-2 gap-4 mb-4">
+//                         <div className="space-y-2">
+//                           <Label htmlFor="ingredients">Ingredients</Label>
+//                           <Textarea
+//                             id="ingredients"
+//                             value={itemFormData.ingredients}
+//                             onChange={(e) => setItemFormData({ ...itemFormData, ingredients: e.target.value })}
+//                             placeholder="Mixed vegetables – 50g, ginger – 2g..."
+//                           />
+//                         </div>
+//                         <div className="space-y-2">
+//                           <Label htmlFor="benefits">Benefits</Label>
+//                           <Textarea
+//                             id="benefits"
+//                             value={itemFormData.benefits}
+//                             onChange={(e) => setItemFormData({ ...itemFormData, benefits: e.target.value })}
+//                             placeholder="Low-calorie starter; boosts metabolism..."
+//                           />
+//                         </div>
+//                       </div>
+
+//                       <Button 
+//                         type="button" 
+//                         onClick={addItemToMeal} 
+//                         variant="outline" 
+//                         className="mb-4 bg-transparent"
+//                         disabled={!itemFormData.item.trim()}
+//                       >
+//                         <Plus className="w-4 h-4 mr-2" />
+//                         Add Item to Meal
+//                       </Button>
+
+//                       {/* Display Added Items */}
+//                       {formData.items.length > 0 && (
+//                         <div className="space-y-2">
+//                           <h5 className="font-medium">Added Items:</h5>
+//                           {formData.items.map((item, index) => (
+//                             <div key={index} className="flex items-center justify-between p-2 bg-blue-50 rounded">
+//                               <span>{item.course}: {item.item} ({item.calories} kcal)</span>
+//                               <Button
+//                                 type="button"
+//                                 variant="destructive"
+//                                 size="sm"
+//                                 onClick={() => removeItemFromMeal(index)}
+//                               >
+//                                 <Trash2 className="w-4 h-4" />
+//                               </Button>
+//                             </div>
+//                           ))}
+//                         </div>
+//                       )}
+//                     </div>
+//                   </div>
+
+//                   <DialogFooter>
+//                     <Button type="button" variant="outline" onClick={resetForm}>
+//                       Cancel
+//                     </Button>
+//                     <Button type="submit" className="bg-blue-600 hover:bg-blue-700" disabled={formData.items.length === 0}>
+//                       {editingMeal ? "Update" : "Add"} Weight Loss Plan
+//                     </Button>
+//                   </DialogFooter>
+//                 </form>
+//               </DialogContent>
+//             </Dialog>
+//           </div>
+//         </CardHeader>
+
+//         <CardContent>
+//           <Tabs value={selectedTab} onValueChange={setSelectedTab}>
+//             <TabsList>
+//               <TabsTrigger value="meals">Weight Loss Plans</TabsTrigger>
+//               <TabsTrigger value="analytics">Analytics</TabsTrigger>
+//             </TabsList>
+
+//             <TabsContent value="meals">
+//               <Table>
+//                 <TableHeader>
+//                   <TableRow>
+//                     <TableHead>Day</TableHead>
+//                     <TableHead>Type</TableHead>
+//                     <TableHead>Meal Time</TableHead>
+//                     <TableHead>Items Count</TableHead>
+//                     <TableHead>Total Calories</TableHead>
+//                     <TableHead className="text-right">Actions</TableHead>
+//                   </TableRow>
+//                 </TableHeader>
+//                 <TableBody>
+//                   {meals.map((meal) => (
+//                     <TableRow key={meal.id}>
+//                       <TableCell className="font-medium">{meal.day}</TableCell>
+//                       <TableCell>
+//                         <Badge className={getMealTypeColor(meal.mealType)}>
+//                           {meal.mealType.replace("MEAL", "").trim()}
+//                         </Badge>
+//                       </TableCell>
+//                       <TableCell>{meal.mealTime}</TableCell>
+//                       <TableCell>{meal.items.length} items</TableCell>
+//                       <TableCell className="font-semibold text-blue-600">
+//                         {meal.items.reduce((total, item) => total + item.calories, 0)} kcal
+//                       </TableCell>
+//                       <TableCell className="text-right">
+//                         <div className="flex justify-end space-x-2">
+//                           <Button variant="outline" size="sm" onClick={() => handleEdit(meal)}>
+//                             <Edit className="w-4 h-4" />
+//                           </Button>
+//                           <Button variant="destructive" size="sm" onClick={() => handleDelete(meal.id)}>
+//                             <Trash2 className="w-4 h-4" />
+//                           </Button>
+//                         </div>
+//                       </TableCell>
+//                     </TableRow>
+//                   ))}
+//                 </TableBody>
+//               </Table>
+//             </TabsContent>
+
+//             <TabsContent value="analytics">
+//               <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
+//                 <Card>
+//                   <CardHeader>
+//                     <CardTitle className="text-sm">Total Plans</CardTitle>
+//                   </CardHeader>
+//                   <CardContent>
+//                     <div className="text-2xl font-bold text-blue-600">{meals.length}</div>
+//                   </CardContent>
+//                 </Card>
+//                 <Card>
+//                   <CardHeader>
+//                     <CardTitle className="text-sm">Avg Calories/Meal</CardTitle>
+//                   </CardHeader>
+//                   <CardContent>
+//                     <div className="text-2xl font-bold text-blue-600">
+//                       {Math.round(
+//                         meals.reduce(
+//                           (total, meal) =>
+//                             total + meal.items.reduce((mealTotal, item) => mealTotal + item.calories, 0),
+//                           0
+//                         ) / meals.length || 0
+//                       )}
+//                     </div>
+//                   </CardContent>
+//                 </Card>
+//                 <Card>
+//                   <CardHeader>
+//                     <CardTitle className="text-sm">Vegetarian Plans</CardTitle>
+//                   </CardHeader>
+//                   <CardContent>
+//                     <div className="text-2xl font-bold text-green-600">
+//                       {meals.filter((m) => m.mealType === "VEG MEAL").length}
+//                     </div>
+//                   </CardContent>
+//                 </Card>
+//                 <Card>
+//                   <CardHeader>
+//                     <CardTitle className="text-sm">Non-Veg Plans</CardTitle>
+//                   </CardHeader>
+//                   <CardContent>
+//                     <div className="text-2xl font-bold text-orange-600">
+//                       {meals.filter((m) => m.mealType === "NON-VEG MEAL").length}
+//                     </div>
+//                   </CardContent>
+//                 </Card>
+//               </div>
+//             </TabsContent>
+//           </Tabs>
+//         </CardContent>
+//       </Card>
+//     </div>
+//   );
+// }
+
+import React, { useState, useEffect } from 'react';
+import axios from 'axios';
+
+const apiUrl = 'http://localhost:5001/api/weight-loss-meals';
+
+
+const DAYS = ['Monday', 'Tuesday', 'Wednesday', 'Thursday', 'Friday', 'Saturday', 'Sunday'];
+
+const COURSE_OPTIONS = ['Starter', 'Main', 'Salad'];
+
+const defaultMealItem = {
+  Course: COURSE_OPTIONS[0],
+  Item: '',
+  Calories: '',
+  Protein: '',
+  Carbs: '',
+  Fat: '',
+  Ingredients: '',
+  Benefits: '',
+};
+
+const defaultMeal = { Lunch: [defaultMealItem], Dinner: [defaultMealItem] };
+
+function CollapsibleMealItem({ idx, item, onChange, onRemove, mealType, isVeg }) {
+  const [open, setOpen] = useState(false);
+
+  const handleChange = (field, value) => {
+    onChange(idx, field, value);
+  };
+
+  return (
+    <div
+      style={{
+        border: '1px solid #ccc',
+        borderRadius: 6,
+        padding: 12,
+        marginBottom: 12,
+        backgroundColor: '#fdfdfd',
+        boxShadow: '0 1px 3px rgba(0,0,0,0.06)',
+      }}
+    >
+      <div
+        onClick={() => setOpen(!open)}
+        style={{
+          cursor: 'pointer',
+          fontWeight: 600,
+          marginBottom: open ? 12 : 0,
+          display: 'flex',
+          justifyContent: 'space-between',
+          alignItems: 'center',
+          userSelect: 'none',
+          fontSize: 16,
+          color: '#222',
+        }}
+        aria-expanded={open}
+        aria-controls={`${mealType}-${isVeg ? 'veg' : 'nonveg'}-item-${idx}`}
+      >
+        <span>{item.Course || 'Course'} - {item.Item || 'Item'}</span>
+        <button
+          type="button"
+          aria-label={`Remove ${mealType} item`}
+          onClick={(e) => {
+            e.stopPropagation();
+            onRemove(idx);
+          }}
+          style={{
+            backgroundColor: '#e74c3c',
+            border: 'none',
+            color: 'white',
+            borderRadius: 4,
+            padding: '4px 8px',
+            cursor: 'pointer',
+            fontWeight: 700,
+            fontSize: 16,
+            lineHeight: 1,
+          }}
+        >
+          &times;
+        </button>
+      </div>
+
+      {open && (
+        <div style={{ marginTop: 10, fontSize: 14, color: '#444' }}>
+          {/* Course Dropdown */}
+          <div style={{ marginBottom: 10 }}>
+            <label htmlFor={`course-${mealType}-${idx}`} style={{ fontWeight: 600, display: 'block', marginBottom: 4 }}>
+              Course:
+            </label>
+            <select
+              id={`course-${mealType}-${idx}`}
+              value={item.Course}
+              onChange={(e) => handleChange('Course', e.target.value)}
+              style={{
+                width: '100%',
+                padding: 8,
+                borderRadius: 4,
+                border: '1px solid #ccc',
+                fontSize: 14,
+                appearance: 'none',
+                cursor: 'pointer',
+                backgroundColor: 'white',
+              }}
+            >
+              {COURSE_OPTIONS.map((c) => (
+                <option key={c} value={c}>{c}</option>
+              ))}
+            </select>
+          </div>
+
+          {['Item', 'Calories', 'Protein', 'Carbs', 'Fat', 'Ingredients', 'Benefits'].map((field) => (
+            <div key={field} style={{ marginBottom: 10 }}>
+              <label style={{ fontWeight: 600, display: 'block', marginBottom: 4 }}>{field}:</label>
+              <input
+                type="text"
+                value={item[field]}
+                onChange={(e) => handleChange(field, e.target.value)}
+                placeholder={`Enter ${field}`}
+                style={{
+                  width: '100%',
+                  padding: 8,
+                  borderRadius: 4,
+                  border: '1px solid #ccc',
+                  fontSize: 14,
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+          ))}
+        </div>
+      )}
+    </div>
+  );
+}
+
+function Modal({ isOpen, onClose, onAdd }) {
+  const [mealCategory, setMealCategory] = useState('Vegetarian');
+  const [mealTime, setMealTime] = useState('Lunch');
+  const [course, setCourse] = useState(COURSE_OPTIONS[0]);
+
+  const [itemData, setItemData] = useState({
+    Item: '',
+    Calories: '',
+    Protein: '',
+    Carbs: '',
+    Fat: '',
+    Ingredients: '',
+    Benefits: '',
   });
 
-  const [itemFormData, setItemFormData] = useState({
-    course: "Starter",
-    item: "",
-    calories: 0,
-    protein: 0,
-    carbs: 0,
-    fat: 0,
-    ingredients: "",
-    benefits: "",
-  });
+  useEffect(() => {
+    if (isOpen) {
+      setMealCategory('Vegetarian');
+      setMealTime('Lunch');
+      setCourse(COURSE_OPTIONS[0]);
+      setItemData({
+        Item: '',
+        Calories: '',
+        Protein: '',
+        Carbs: '',
+        Fat: '',
+        Ingredients: '',
+        Benefits: '',
+      });
+    }
+  }, [isOpen]);
+
+  const handleInputChange = (field, value) => {
+    setItemData((prev) => ({ ...prev, [field]: value }));
+  };
 
   const handleSubmit = (e) => {
     e.preventDefault();
-
-    const mealWithIds = {
-      ...formData,
-      items: formData.items.map((item, index) => ({
-        ...item,
-        id: Date.now().toString() + index,
-      })),
-    };
-
-    if (editingMeal) {
-      setMeals(meals.map((meal) => (meal.id === editingMeal.id ? { ...meal, ...mealWithIds } : meal)));
-    } else {
-      const newMeal = {
-        id: Date.now().toString(),
-        ...mealWithIds,
-      };
-      setMeals([...meals, newMeal]);
+    if (!itemData.Item.trim()) {
+      alert('Please enter an Item name.');
+      return;
     }
 
-    resetForm();
+    const newItem = {
+      Course: course,
+      ...itemData,
+    };
+
+    onAdd(mealCategory, mealTime, newItem);
+    onClose();
   };
 
-  const handleEdit = (meal) => {
-    setEditingMeal(meal);
-    setFormData({
-      day: meal.day,
-      mealType: meal.mealType,
-      mealTime: meal.mealTime,
-      items: meal.items.map(({ id, ...item }) => item),
+  if (!isOpen) return null;
+
+  return (
+    <div
+      role="dialog"
+      aria-modal="true"
+      aria-labelledby="modal-title"
+      tabIndex={-1}
+      style={{
+        position: 'fixed',
+        inset: 0,
+        backgroundColor: 'rgba(0,0,0,0.45)',
+        display: 'flex',
+        justifyContent: 'center',
+        alignItems: 'center',
+        zIndex: 2000,
+      }}
+      onClick={onClose}
+    >
+      <div
+        onClick={(e) => e.stopPropagation()}
+        style={{
+          backgroundColor: 'white',
+          borderRadius: 8,
+          maxWidth: 460,
+          width: '90%',
+          maxHeight: '90vh',
+          overflowY: 'auto',
+          boxShadow: '0 4px 15px rgba(0,0,0,0.3)',
+          padding: 24,
+          fontSize: 14,
+          color: '#333',
+        }}
+      >
+        <h2 id="modal-title" style={{ marginBottom: 20, fontWeight: 700, fontSize: 22, color: '#2c3e50' }}>
+          Add New Meal Item
+        </h2>
+        <form onSubmit={handleSubmit}>
+
+          {/* Meal Category */}
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="mealCategory" style={{ fontWeight: 600, display: 'block', marginBottom: 6 }}>
+              Meal Category:
+            </label>
+            <select
+              id="mealCategory"
+              value={mealCategory}
+              onChange={(e) => setMealCategory(e.target.value)}
+              required
+              style={{
+                width: '100%',
+                padding: 10,
+                fontSize: 14,
+                borderRadius: 5,
+                border: '1px solid #bbb',
+                cursor: 'pointer',
+                backgroundColor: 'white',
+              }}
+            >
+              <option value="Vegetarian">Vegetarian</option>
+              <option value="Non-Vegetarian">Non-Vegetarian</option>
+            </select>
+          </div>
+
+          {/* Meal Time */}
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="mealTime" style={{ fontWeight: 600, display: 'block', marginBottom: 6 }}>
+              Meal Time:
+            </label>
+            <select
+              id="mealTime"
+              value={mealTime}
+              onChange={(e) => setMealTime(e.target.value)}
+              required
+              style={{
+                width: '100%',
+                padding: 10,
+                fontSize: 14,
+                borderRadius: 5,
+                border: '1px solid #bbb',
+                cursor: 'pointer',
+                backgroundColor: 'white',
+              }}
+            >
+              <option value="Lunch">Lunch</option>
+              <option value="Dinner">Dinner</option>
+            </select>
+          </div>
+
+          {/* Course */}
+          <div style={{ marginBottom: 16 }}>
+            <label htmlFor="course" style={{ fontWeight: 600, display: 'block', marginBottom: 6 }}>
+              Course:
+            </label>
+            <select
+              id="course"
+              value={course}
+              onChange={(e) => setCourse(e.target.value)}
+              required
+              style={{
+                width: '100%',
+                padding: 10,
+                fontSize: 14,
+                borderRadius: 5,
+                border: '1px solid #bbb',
+                cursor: 'pointer',
+                backgroundColor: 'white',
+              }}
+            >
+              {COURSE_OPTIONS.map((opt) => (
+                <option key={opt} value={opt}>
+                  {opt}
+                </option>
+              ))}
+            </select>
+          </div>
+
+          {/* Other Inputs */}
+          {['Item', 'Calories', 'Protein', 'Carbs', 'Fat', 'Ingredients', 'Benefits'].map((field) => (
+            <div key={field} style={{ marginBottom: 16 }}>
+              <label htmlFor={field} style={{ fontWeight: 600, display: 'block', marginBottom: 6 }}>
+                {field}:
+              </label>
+              <input
+                id={field}
+                type="text"
+                value={itemData[field]}
+                onChange={(e) => handleInputChange(field, e.target.value)}
+                placeholder={`Enter ${field}`}
+                required={field === 'Item'}
+                style={{
+                  width: '100%',
+                  padding: 10,
+                  fontSize: 14,
+                  borderRadius: 5,
+                  border: '1px solid #bbb',
+                  boxSizing: 'border-box',
+                }}
+              />
+            </div>
+          ))}
+
+          <div style={{ display: 'flex', justifyContent: 'flex-end', gap: 12 }}>
+            <button
+              type="button"
+              onClick={onClose}
+              style={{
+                backgroundColor: '#bbb',
+                border: 'none',
+                padding: '10px 18px',
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontWeight: 600,
+              }}
+            >
+              Cancel
+            </button>
+            <button
+              type="submit"
+              style={{
+                backgroundColor: '#27ae60',
+                color: 'white',
+                border: 'none',
+                padding: '10px 18px',
+                borderRadius: 6,
+                cursor: 'pointer',
+                fontWeight: 700,
+              }}
+            >
+              Add Item
+            </button>
+          </div>
+        </form>
+      </div>
+    </div>
+  );
+}
+
+function AdminWeightLoss() {
+  const [mealPlans, setMealPlans] = useState([]);
+  const [day, setDay] = useState('');
+  const [vegMeal, setVegMeal] = useState(defaultMeal);
+  const [nonVegMeal, setNonVegMeal] = useState(defaultMeal);
+  const [editMode, setEditMode] = useState(false);
+  const [loading, setLoading] = useState(false);
+  const [isModalOpen, setIsModalOpen] = useState(false);
+
+  useEffect(() => {
+    fetchMealPlans();
+  }, []);
+
+  const fetchMealPlans = async () => {
+    setLoading(true);
+    try {
+      const res = await axios.get(apiUrl);
+      setMealPlans(res.data);
+    } catch (err) {
+      alert('Error fetching meal plans: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
+  };
+
+  const handleMealItemChange = (setter, mealKey, idx, field, value) => {
+    setter((prev) => {
+      const updatedArray = [...prev[mealKey]];
+      updatedArray[idx] = { ...updatedArray[idx], [field]: value };
+      return { ...prev, [mealKey]: updatedArray };
     });
-    setIsDialogOpen(true);
   };
 
-  const handleDelete = (id) => {
-    setMeals(meals.filter((meal) => meal.id !== id));
+  const addMealItemToState = (category, mealTime, newItem) => {
+    if (category === 'Vegetarian') {
+      setVegMeal(prev => ({ ...prev, [mealTime]: [...prev[mealTime], newItem] }));
+    } else {
+      setNonVegMeal(prev => ({ ...prev, [mealTime]: [...prev[mealTime], newItem] }));
+    }
   };
 
-  const addItemToMeal = () => {
-    setFormData({
-      ...formData,
-      items: [...formData.items, itemFormData],
-    });
-    setItemFormData({
-      course: "Starter",
-      item: "",
-      calories: 0,
-      protein: 0,
-      carbs: 0,
-      fat: 0,
-      ingredients: "",
-      benefits: "",
-    });
+  const addMealItem = (setter, mealKey) => {
+    setter((prev) => ({ ...prev, [mealKey]: [...prev[mealKey], defaultMealItem] }));
   };
 
-  const removeItemFromMeal = (index) => {
-    setFormData({
-      ...formData,
-      items: formData.items.filter((_, i) => i !== index),
+  const removeMealItem = (setter, mealKey, idx) => {
+    setter((prev) => {
+      const updated = [...prev[mealKey]];
+      updated.splice(idx, 1);
+      return { ...prev, [mealKey]: updated.length ? updated : [defaultMealItem] };
     });
   };
 
   const resetForm = () => {
-    setFormData({
-      day: "DAY - 1",
-      mealType: "VEG MEAL",
-      mealTime: "Lunch",
-      items: [],
-    });
-    setItemFormData({
-      course: "Starter",
-      item: "",
-      calories: 0,
-      protein: 0,
-      carbs: 0,
-      fat: 0,
-      ingredients: "",
-      benefits: "",
-    });
-    setEditingMeal(null);
-    setIsDialogOpen(false);
+    setDay('');
+    setVegMeal(defaultMeal);
+    setNonVegMeal(defaultMeal);
+    setEditMode(false);
   };
 
-  const getCourseColor = (course) => {
-    switch (course) {
-      case "Starter":
-        return "bg-blue-100 text-blue-800";
-      case "Main":
-        return "bg-blue-200 text-blue-900";
-      case "Salad":
-        return "bg-blue-300 text-blue-900";
-      default:
-        return "bg-gray-100 text-gray-800";
+  const handleSubmit = async (e) => {
+    e.preventDefault();
+    if (!day.trim()) {
+      alert('Please select a valid day.');
+      return;
+    }
+    setLoading(true);
+    try {
+      if (editMode) {
+        await axios.put(`${apiUrl}/${day}`, { vegMeal, nonVegMeal });
+        alert('Meal plan updated successfully!');
+      } else {
+        await axios.post(apiUrl, { day, vegMeal, nonVegMeal });
+        alert('Meal plan created successfully!');
+      }
+      resetForm();
+      await fetchMealPlans();
+    } catch (err) {
+      alert('Error saving meal plan: ' + (err.response?.data?.error || err.message));
+    } finally {
+      setLoading(false);
     }
   };
 
-  const getMealTypeColor = (type) => {
-    return type === "VEG MEAL" ? "bg-green-100 text-green-800" : "bg-orange-100 text-orange-800";
+  const handleEdit = (plan) => {
+    setDay(plan.day);
+    setVegMeal(plan.vegMeal || defaultMeal);
+    setNonVegMeal(plan.nonVegMeal || defaultMeal);
+    setEditMode(true);
+  };
+
+  const handleDelete = async (dayToDelete) => {
+    if (!window.confirm(`Are you sure you want to delete the meal plan for "${dayToDelete}"?`)) return;
+    setLoading(true);
+    try {
+      await axios.delete(`${apiUrl}/${dayToDelete}`);
+      alert('Deleted successfully');
+      if (dayToDelete === day) resetForm();
+      await fetchMealPlans();
+    } catch (err) {
+      alert('Error deleting meal plan: ' + err.message);
+    } finally {
+      setLoading(false);
+    }
   };
 
   return (
-    <div className="space-y-6">
-      <Card>
-        <CardHeader>
-          <div className="flex justify-between items-center">
-            <div>
-              <CardTitle className="flex items-center space-x-2 text-blue-700">
-                <TrendingDown className="w-5 h-5" />
-                <span>Weight Loss Meal Plans Management</span>
-              </CardTitle>
-              <CardDescription>Manage low-calorie meal plans for healthy weight loss</CardDescription>
-            </div>
-            <Dialog open={isDialogOpen} onOpenChange={setIsDialogOpen}>
-              <DialogTrigger asChild>
-                <Button onClick={() => resetForm()} className="bg-blue-600 hover:bg-blue-700">
-                  <Plus className="w-4 h-4 mr-2" />
-                  Add Weight Loss Plan
-                </Button>
-              </DialogTrigger>
-              <DialogContent className="max-w-4xl max-h-[90vh] overflow-y-auto">
-                <DialogHeader>
-                  <DialogTitle>{editingMeal ? "Edit Weight Loss Plan" : "Add New Weight Loss Plan"}</DialogTitle>
-                  <DialogDescription>
-                    {editingMeal ? "Update weight loss meal plan" : "Create a new low-calorie meal plan"}
-                  </DialogDescription>
-                </DialogHeader>
-                <form onSubmit={handleSubmit}>
-                  <div className="grid gap-4 py-4">
-                    <div className="grid grid-cols-3 gap-4">
-                      <div className="space-y-2">
-                        <Label htmlFor="day">Day</Label>
-                        <select
-                          id="day"
-                          value={formData.day}
-                          onChange={(e) => setFormData({ ...formData, day: e.target.value })}
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                          required
-                        >
-                          <option value="DAY - 1">Day 1</option>
-                          <option value="DAY - 2">Day 2</option>
-                          <option value="DAY - 3">Day 3</option>
-                          <option value="DAY - 4">Day 4</option>
-                          <option value="DAY - 5">Day 5</option>
-                          <option value="DAY - 6">Day 6</option>
-                          <option value="DAY - 7">Day 7</option>
-                        </select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="mealType">Meal Type</Label>
-                        <select
-                          id="mealType"
-                          value={formData.mealType}
-                          onChange={(e) =>
-                            setFormData({ ...formData, mealType: e.target.value })
-                          }
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                          required
-                        >
-                          <option value="VEG MEAL">Vegetarian</option>
-                          <option value="NON-VEG MEAL">Non-Vegetarian</option>
-                        </select>
-                      </div>
-                      <div className="space-y-2">
-                        <Label htmlFor="mealTime">Meal Time</Label>
-                        <select
-                          id="mealTime"
-                          value={formData.mealTime}
-                          onChange={(e) =>
-                            setFormData({ ...formData, mealTime: e.target.value })
-                          }
-                          className="w-full p-2 border border-gray-300 rounded-md"
-                          required
-                        >
-                          <option value="Lunch">Lunch</option>
-                          <option value="Dinner">Dinner</option>
-                        </select>
-                      </div>
-                    </div>
+    <div style={{ maxWidth: 900, margin: '30px auto', fontFamily: "'Segoe UI', Tahoma, Geneva, Verdana, sans-serif" }}>
+      <h1 style={{ textAlign: 'center', color: '#2c3e50', marginBottom: 20 }}>Meal Plan Admin Panel</h1>
 
-                    {/* Add Meal Items Section */}
-                    <div className="border-t pt-4">
-                      <h4 className="text-lg font-medium mb-4">Add Low-Calorie Meal Items</h4>
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="course">Course</Label>
-                          <select
-                            id="course"
-                            value={itemFormData.course}
-                            onChange={(e) =>
-                              setItemFormData({ ...itemFormData, course: e.target.value })
-                            }
-                            className="w-full p-2 border border-gray-300 rounded-md"
-                          >
-                            <option value="Starter">Starter</option>
-                            <option value="Main">Main</option>
-                            <option value="Salad">Salad</option>
-                          </select>
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="item">Item Name</Label>
-                          <Input
-                            id="item"
-                            value={itemFormData.item}
-                            onChange={(e) => setItemFormData({ ...itemFormData, item: e.target.value })}
-                            placeholder="Clear Vegetable Broth"
-                          />
-                        </div>
-                      </div>
+      <div style={{ textAlign: 'right', marginBottom: 16 }}>
+        <button
+          onClick={() => setIsModalOpen(true)}
+          style={{
+            backgroundColor: '#27ae60',
+            color: 'white',
+            border: 'none',
+            padding: '12px 28px',
+            borderRadius: 6,
+            cursor: 'pointer',
+            fontWeight: '700',
+            fontSize: 16,
+            boxShadow: '0 2px 6px rgba(39,174,96,0.5)',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseOver={e => e.currentTarget.style.backgroundColor = '#219150'}
+          onMouseOut={e => e.currentTarget.style.backgroundColor = '#27ae60'}
+          aria-label="Add new meal item"
+        >
+          + Add Meal Item
+        </button>
+      </div>
 
-                      <div className="grid grid-cols-4 gap-4 mb-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="calories">Calories</Label>
-                          <Input
-                            id="calories"
-                            type="number"
-                            value={itemFormData.calories}
-                            onChange={(e) =>
-                              setItemFormData({ ...itemFormData, calories: parseInt(e.target.value) })
-                            }
-                            placeholder="45"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="protein">Protein (g)</Label>
-                          <Input
-                            id="protein"
-                            type="number"
-                            value={itemFormData.protein}
-                            onChange={(e) =>
-                              setItemFormData({ ...itemFormData, protein: parseInt(e.target.value) })
-                            }
-                            placeholder="2"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="carbs">Carbs (g)</Label>
-                          <Input
-                            id="carbs"
-                            type="number"
-                            value={itemFormData.carbs}
-                            onChange={(e) =>
-                              setItemFormData({ ...itemFormData, carbs: parseInt(e.target.value) })
-                            }
-                            placeholder="8"
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="fat">Fat (g)</Label>
-                          <Input
-                            id="fat"
-                            type="number"
-                            value={itemFormData.fat}
-                            onChange={(e) => setItemFormData({ ...itemFormData, fat: parseInt(e.target.value) })}
-                            placeholder="1"
-                          />
-                        </div>
-                      </div>
+      <Modal isOpen={isModalOpen} onClose={() => setIsModalOpen(false)} onAdd={addMealItemToState} />
 
-                      <div className="grid grid-cols-2 gap-4 mb-4">
-                        <div className="space-y-2">
-                          <Label htmlFor="ingredients">Ingredients</Label>
-                          <Textarea
-                            id="ingredients"
-                            value={itemFormData.ingredients}
-                            onChange={(e) => setItemFormData({ ...itemFormData, ingredients: e.target.value })}
-                            placeholder="Mixed vegetables – 50g, ginger – 2g..."
-                          />
-                        </div>
-                        <div className="space-y-2">
-                          <Label htmlFor="benefits">Benefits</Label>
-                          <Textarea
-                            id="benefits"
-                            value={itemFormData.benefits}
-                            onChange={(e) => setItemFormData({ ...itemFormData, benefits: e.target.value })}
-                            placeholder="Low-calorie starter; boosts metabolism..."
-                          />
-                        </div>
-                      </div>
+      <form
+        onSubmit={handleSubmit}
+        style={{
+          backgroundColor: '#fff',
+          padding: 24,
+          borderRadius: 8,
+          boxShadow: '0 4px 18px rgba(0,0,0,0.1)',
+          marginBottom: 40,
+        }}
+      >
+        <h2 style={{ marginBottom: 18, fontWeight: '700', fontSize: 24, color: '#34495e' }}>
+          {editMode ? 'Edit Meal Plan' : 'Add New Meal Plan'}
+        </h2>
 
-                      <Button type="button" onClick={addItemToMeal} variant="outline" className="mb-4 bg-transparent">
-                        <Plus className="w-4 h-4 mr-2" />
-                        Add Item to Meal
-                      </Button>
+        <div style={{ marginBottom: 22 }}>
+          <label htmlFor="day" style={{ fontWeight: 700, fontSize: 16 }}>
+            Day:
+          </label>
+          <select
+            id="day"
+            value={day}
+            disabled={editMode}
+            onChange={e => setDay(e.target.value)}
+            required
+            style={{
+              width: '100%',
+              padding: 12,
+              marginTop: 8,
+              borderRadius: 6,
+              border: '1.5px solid #aaa',
+              fontSize: 16,
+              cursor: 'pointer',
+              boxShadow: 'inset 0 1px 3px rgba(0,0,0,0.1)',
+              transition: 'border-color 0.2s',
+            }}
+            onFocus={e => e.currentTarget.style.borderColor = '#27ae60'}
+            onBlur={e => e.currentTarget.style.borderColor = '#aaa'}
+          >
+            <option value="">Select Day</option>
+            {DAYS.map((d) => (
+              <option key={d} value={d}>
+                {d}
+              </option>
+            ))}
+          </select>
+        </div>
 
-                      {/* Display Added Items */}
-                      {formData.items.length > 0 && (
-                        <div className="space-y-2">
-                          <h5 className="font-medium">Added Items:</h5>
-                          {formData.items.map((item, index) => (
-                            <div key={index} className="flex items-center justify-between p-2 bg-blue-50 rounded">
-                              <span>
-                                {item.course}: {item.item} ({item.calories} kcal)
-                              </span>
-                              <Button
-                                type="button"
-                                variant="destructive"
-                                size="sm"
-                                onClick={() => removeItemFromMeal(index)}
-                              >
-                                <Trash2 className="w-4 h-4" />
-                              </Button>
-                            </div>
-                          ))}
-                        </div>
-                      )}
-                    </div>
-                  </div>
-                  <DialogFooter>
-                    <Button type="button" variant="outline" onClick={resetForm}>
-                      Cancel
-                    </Button>
-                    <Button type="submit" className="bg-blue-600 hover:bg-blue-700">
-                      {editingMeal ? "Update" : "Add"} Weight Loss Plan
-                    </Button>
-                  </DialogFooter>
-                </form>
-              </DialogContent>
-            </Dialog>
-          </div>
-        </CardHeader>
-        <CardContent>
-          <Tabs value={selectedTab} onValueChange={setSelectedTab}>
-            <TabsList>
-              <TabsTrigger value="meals">Weight Loss Plans</TabsTrigger>
-              <TabsTrigger value="analytics">Analytics</TabsTrigger>
-            </TabsList>
-
-            <TabsContent value="meals">
-              <Table>
-                <TableHeader>
-                  <TableRow>
-                    <TableHead>Day</TableHead>
-                    <TableHead>Type</TableHead>
-                    <TableHead>Meal Time</TableHead>
-                    <TableHead>Items Count</TableHead>
-                    <TableHead>Total Calories</TableHead>
-                    <TableHead className="text-right">Actions</TableHead>
-                  </TableRow>
-                </TableHeader>
-                <TableBody>
-                  {meals.map((meal) => (
-                    <TableRow key={meal.id}>
-                      <TableCell className="font-medium">{meal.day}</TableCell>
-                      <TableCell>
-                        <Badge className={getMealTypeColor(meal.mealType)}>
-                          {meal.mealType.replace("MEAL", "").trim()}
-                        </Badge>
-                      </TableCell>
-                      <TableCell>{meal.mealTime}</TableCell>
-                      <TableCell>{meal.items.length} items</TableCell>
-                      <TableCell className="font-semibold text-blue-600">
-                        {meal.items.reduce((total, item) => total + item.calories, 0)} kcal
-                      </TableCell>
-                      <TableCell className="text-right">
-                        <div className="flex justify-end space-x-2">
-                          <Button variant="outline" size="sm" onClick={() => handleEdit(meal)}>
-                            <Edit className="w-4 h-4" />
-                          </Button>
-                          <Button variant="destructive" size="sm" onClick={() => handleDelete(meal.id)}>
-                            <Trash2 className="w-4 h-4" />
-                          </Button>
-                        </div>
-                      </TableCell>
-                    </TableRow>
-                  ))}
-                </TableBody>
-              </Table>
-            </TabsContent>
-
-            <TabsContent value="analytics">
-              <div className="grid grid-cols-1 md:grid-cols-4 gap-4">
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">Total Plans</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-blue-600">{meals.length}</div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">Avg Calories/Meal</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-blue-600">
-                      {Math.round(
-                        meals.reduce(
-                          (total, meal) => total + meal.items.reduce((mealTotal, item) => mealTotal + item.calories, 0),
-                          0,
-                        ) / meals.length,
-                      ) || 0}
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">Vegetarian Plans</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-green-600">
-                      {meals.filter((m) => m.mealType === "VEG MEAL").length}
-                    </div>
-                  </CardContent>
-                </Card>
-                <Card>
-                  <CardHeader>
-                    <CardTitle className="text-sm">Non-Veg Plans</CardTitle>
-                  </CardHeader>
-                  <CardContent>
-                    <div className="text-2xl font-bold text-orange-600">
-                      {meals.filter((m) => m.mealType === "NON-VEG MEAL").length}
-                    </div>
-                  </CardContent>
-                </Card>
+        {[{ title: 'Vegetarian Meal', mealState: vegMeal, setter: setVegMeal, isVeg: true },
+          { title: 'Non-Vegetarian Meal', mealState: nonVegMeal, setter: setNonVegMeal, isVeg: false }].map(({ title, mealState, setter, isVeg }) => (
+          <section
+            key={title}
+            style={{
+              marginBottom: 36,
+              backgroundColor: '#fafafa',
+              padding: '18px 28px',
+              borderRadius: 10,
+              boxShadow: 'inset 0 0 12px #ddd',
+            }}
+          >
+            <h3 style={{ color: isVeg ? '#27ae60' : '#c0392b', marginBottom: 20, fontWeight: 700, fontSize: 20 }}>
+              {title}
+            </h3>
+            {['Lunch', 'Dinner'].map(mealType => (
+              <div key={mealType} style={{ marginBottom: 26 }}>
+                <h4 style={{ marginBottom: 12, color: '#34495e', fontWeight: 600, fontSize: 18 }}>
+                  {mealType}
+                  <button
+                    type="button"
+                    onClick={() => addMealItem(setter, mealType)}
+                    style={{
+                      marginLeft: 12,
+                      color: '#2980b9',
+                      background: 'none',
+                      border: 'none',
+                      cursor: 'pointer',
+                      fontWeight: '700',
+                      fontSize: 20,
+                      userSelect: 'none',
+                      transition: 'color 0.2s',
+                    }}
+                    onMouseOver={e => e.currentTarget.style.color = '#1c5980'}
+                    onMouseOut={e => e.currentTarget.style.color = '#2980b9'}
+                    aria-label={`Add ${mealType} item`}
+                  >
+                    ＋ Add Item
+                  </button>
+                </h4>
+                {mealState[mealType].map((item, index) => (
+                  <CollapsibleMealItem
+                    key={`${mealType}-${isVeg ? 'veg' : 'nonveg'}-${index}`}
+                    idx={index}
+                    item={item}
+                    onChange={(i, field, value) => handleMealItemChange(setter, mealType, i, field, value)}
+                    onRemove={i => removeMealItem(setter, mealType, i)}
+                    mealType={mealType}
+                    isVeg={isVeg}
+                  />
+                ))}
               </div>
-            </TabsContent>
-          </Tabs>
-        </CardContent>
-      </Card>
+            ))}
+          </section>
+        ))}
+
+        <button
+          type="submit"
+          disabled={loading}
+          style={{
+            backgroundColor: '#2980b9',
+            color: 'white',
+            padding: '14px 36px',
+            borderRadius: 8,
+            fontSize: 18,
+            fontWeight: '700',
+            cursor: loading ? 'not-allowed' : 'pointer',
+            border: 'none',
+            marginRight: 20,
+            boxShadow: '0 3px 8px rgb(41 128 185 / 0.6)',
+            transition: 'background-color 0.2s',
+          }}
+          onMouseOver={e => !loading && (e.currentTarget.style.backgroundColor = '#1f6391')}
+          onMouseOut={e => !loading && (e.currentTarget.style.backgroundColor = '#2980b9')}
+        >
+          {editMode ? (loading ? 'Updating...' : 'Update Meal Plan') : loading ? 'Creating...' : 'Create Meal Plan'}
+        </button>
+        {editMode && (
+          <button
+            type="button"
+            onClick={resetForm}
+            disabled={loading}
+            style={{
+              backgroundColor: '#7f8c8d',
+              color: 'white',
+              padding: '14px 36px',
+              borderRadius: 8,
+              fontSize: 18,
+              fontWeight: '700',
+              cursor: loading ? 'not-allowed' : 'pointer',
+              border: 'none',
+              boxShadow: '0 3px 8px rgb(127 140 141 / 0.6)',
+              transition: 'background-color 0.2s',
+            }}
+            onMouseOver={e => !loading && (e.currentTarget.style.backgroundColor = '#626c6f')}
+            onMouseOut={e => !loading && (e.currentTarget.style.backgroundColor = '#7f8c8d')}
+          >
+            Cancel
+          </button>
+        )}
+      </form>
+
+      <h2 style={{ marginBottom: 18, textAlign: 'center', color: '#2c3e50', fontSize: 22, fontWeight: 700 }}>
+        {loading ? 'Loading Meal Plans...' : 'Existing Meal Plans'}
+      </h2>
+
+      {!loading && (
+        <table
+          style={{
+            width: '100%',
+            borderCollapse: 'collapse',
+            boxShadow: '0 2px 12px rgba(0,0,0,0.1)',
+          }}
+          aria-label="Existing meal plans"
+        >
+          <thead style={{ backgroundColor: '#2980b9', color: 'white' }}>
+            <tr>
+              <th style={{ padding: 14, fontSize: 16 }}>Day</th>
+              <th style={{ padding: 14, fontSize: 16 }}>Veg Lunch</th>
+              <th style={{ padding: 14, fontSize: 16 }}>Veg Dinner</th>
+              <th style={{ padding: 14, fontSize: 16 }}>NonVeg Lunch</th>
+              <th style={{ padding: 14, fontSize: 16 }}>NonVeg Dinner</th>
+              <th style={{ padding: 14, fontSize: 16 }}>Actions</th>
+            </tr>
+          </thead>
+          <tbody>
+            {mealPlans.length ? (
+              mealPlans.map(plan => (
+                <tr
+                  key={plan.day}
+                  style={{
+                    borderBottom: '1px solid #d2d2d2',
+                    backgroundColor: plan.day === day && editMode ? '#d6f5d6' : 'white',
+                    fontSize: 15,
+                  }}
+                >
+                  <td style={{ padding: 12, fontWeight: 700 }}>{plan.day}</td>
+                  <td style={{ padding: 12 }}>{plan.vegMeal?.Lunch?.map(i => i.Item).filter(Boolean).join(', ') || 'N/A'}</td>
+                  <td style={{ padding: 12 }}>{plan.vegMeal?.Dinner?.map(i => i.Item).filter(Boolean).join(', ') || 'N/A'}</td>
+                  <td style={{ padding: 12 }}>{plan.nonVegMeal?.Lunch?.map(i => i.Item).filter(Boolean).join(', ') || 'N/A'}</td>
+                  <td style={{ padding: 12 }}>{plan.nonVegMeal?.Dinner?.map(i => i.Item).filter(Boolean).join(', ') || 'N/A'}</td>
+                  <td style={{ padding: 12 }}>
+                    <button
+                      onClick={() => handleEdit(plan)}
+                      style={{
+                        backgroundColor: '#27ae60',
+                        border: 'none',
+                        color: 'white',
+                        padding: '8px 14px',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        marginRight: 8,
+                        fontWeight: 600,
+                        fontSize: 14,
+                        transition: 'background-color 0.2s',
+                      }}
+                      onMouseOver={e => (e.currentTarget.style.backgroundColor = '#1f8a3e')}
+                      onMouseOut={e => (e.currentTarget.style.backgroundColor = '#27ae60')}
+                      aria-label={`Edit meal plan for ${plan.day}`}
+                    >
+                      Edit
+                    </button>
+                    <button
+                      onClick={() => handleDelete(plan.day)}
+                      style={{
+                        backgroundColor: '#c0392b',
+                        border: 'none',
+                        color: 'white',
+                        padding: '8px 14px',
+                        borderRadius: 6,
+                        cursor: 'pointer',
+                        fontWeight: 600,
+                        fontSize: 14,
+                        transition: 'background-color 0.2s',
+                      }}
+                      onMouseOver={e => (e.currentTarget.style.backgroundColor = '#8f281e')}
+                      onMouseOut={e => (e.currentTarget.style.backgroundColor = '#c0392b')}
+                      aria-label={`Delete meal plan for ${plan.day}`}
+                    >
+                      Delete
+                    </button>
+                  </td>
+                </tr>
+              ))
+            ) : (
+              <tr>
+                <td colSpan={6} style={{ padding: 20, textAlign: 'center', fontStyle: 'italic', fontSize: 16 }}>
+                  No meal plans found.
+                </td>
+              </tr>
+            )}
+          </tbody>
+        </table>
+      )}
     </div>
   );
 }
+
+export default AdminWeightLoss;
