@@ -174,23 +174,41 @@ const handleLogout = () => {
             ))}
 
             {/* Auth Section */}
-            {user ? (
-              <div className="relative group ml-4">
-                <button className="flex items-center space-x-2 text-gray-700 hover:text-green-600">
-                  <FaUser />
-                  <span>{user.fullName?.split(' ')[0]}</span>
-                </button>
-                <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
-                  <Link to="/profile" className="block px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Profile</Link>
-                  <button onClick={() => {handleLogout(); navigate('/'); }} className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100">Logout</button>
-                </div>
-              </div>
-            ) : (
-              <div className="flex items-center space-x-4 ml-4">
-                <Link to="/auth/login" className="text-gray-700 hover:text-green-600">Sign In</Link>
-                <Link to="/auth/register" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Sign Up</Link>
-              </div>
-            )}
+            {/* Auth Section */}
+{localStorage.getItem('token') ? (
+  <div className="relative group ml-4">
+    <button 
+      onClick={() => navigate('/profile')} // Add click handler
+      className="flex items-center space-x-2 text-gray-700 hover:text-green-600 cursor-pointer"
+    >
+      <FaUser />
+      <span>{user?.fullName?.split(' ')[0] || 'Profile'}</span>
+    </button>
+    <div className="absolute right-0 mt-2 w-48 bg-white rounded-md shadow-lg py-1 opacity-0 invisible group-hover:opacity-100 group-hover:visible transition-all">
+      <button 
+        onClick={() => navigate('/profile')}
+        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        Profile
+      </button>
+      <button 
+        onClick={() => {
+          localStorage.removeItem('token');
+          navigate('/');
+          window.location.reload(); // Force refresh
+        }} 
+        className="w-full text-left px-4 py-2 text-sm text-gray-700 hover:bg-gray-100"
+      >
+        Logout
+      </button>
+    </div>
+  </div>
+) : (
+  <div className="flex items-center space-x-4 ml-4">
+    <Link to="/auth/login" className="text-gray-700 hover:text-green-600">Sign In</Link>
+    <Link to="/auth/register" className="bg-green-600 text-white px-4 py-2 rounded-lg hover:bg-green-700">Sign Up</Link>
+  </div>
+)}
           </div>
 
           {/* Mobile Menu Button */}

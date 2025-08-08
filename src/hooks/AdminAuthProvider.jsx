@@ -37,7 +37,7 @@ export const AdminAuthProvider = ({ children }) => {
         role: "admin",
       }
       setUser(userData)
-      localStorage.setItem("admin_user", JSON.stringify(userData))
+      // localStorage.setItem("admin_user", JSON.stringify(userData))
       setIsLoading(false)
       return true
     }

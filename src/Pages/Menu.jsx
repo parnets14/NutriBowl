@@ -98,7 +98,7 @@ export default function MenuPage() {
   };
 
   const handleAddToCart = (item) => {
-    if (!user) {
+    if (!localStorage.getItem("token")) {
       if (confirm("Please sign in to add items to cart. Would you like to sign in now?")) {
         navigate("/auth/login");
       }

@@ -1,45 +1,63 @@
+import React, { useState } from "react";
+import { motion } from "framer-motion";
+import { FaEye, FaEyeSlash, FaGoogle, FaFacebook } from "react-icons/fa";
+import { Link, useNavigate } from "react-router-dom";
 
-
-import React, { useState } from "react"
-import { motion } from "framer-motion"
-import { FaEye, FaEyeSlash, FaGoogle, FaFacebook } from "react-icons/fa"
-import { Link } from "react-router-dom"
-import { useNavigate } from 'react-router-dom';
-import { useAuth } from "../hooks/useAuth"
+const API_URL = "http://localhost:5001/api/auth/login";
 
 export default function LoginPage() {
   const [formData, setFormData] = useState({
     email: "",
     password: "",
-  })
-  const [showPassword, setShowPassword] = useState(false)
-  const [isLoading, setIsLoading] = useState(false)
-  const [error, setError] = useState("")
-
-  const { login } = useAuth()
-   const navigate = useNavigate();
+  });
+  const [showPassword, setShowPassword] = useState(false);
+  const [isLoading, setIsLoading] = useState(false);
+  const [error, setError] = useState("");
+  const navigate = useNavigate();
 
   const handleSubmit = async (e) => {
-    e.preventDefault()
-    setIsLoading(true)
-    setError("")
+    e.preventDefault();
+    setIsLoading(true);
+    setError("");
 
     try {
-      await login(formData.email, formData.password)
-      navigate("/profile")
+      const response = await fetch(API_URL, {
+        method: "POST",
+        headers: {
+          "Content-Type": "application/json",
+        },
+        body: JSON.stringify({
+          email: formData.email,
+          password: formData.password
+        }),
+      });
+
+      const data = await response.json();
+
+      if (!response.ok) {
+        throw new Error(data.message || "Login failed");
+      }
+
+      // Store token and user data
+      localStorage.setItem("token", data.token);
+      localStorage.setItem("user", JSON.stringify(data.user));
+      console.log("success");
+      
+      navigate("/profile");
     } catch (err) {
-      setError("Invalid email or password")
+      setError(err.message || "Invalid email or password");
     } finally {
-      setIsLoading(false)
+      setIsLoading(false);
     }
-  }
+  };
 
   const handleChange = (e) => {
     setFormData((prev) => ({
       ...prev,
       [e.target.name]: e.target.value,
-    }))
-  }
+    }));
+  };
+
 
   return (
     <div className="min-h-screen bg-gradient-to-br from-green-50 to-white flex items-center justify-center py-12 px-4 sm:px-6 lg:px-8">

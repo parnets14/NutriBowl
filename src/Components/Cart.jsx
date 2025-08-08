@@ -9,7 +9,7 @@ import { useNavigate } from "react-router-dom"
 
 export default function CartPage() {
   const { cartItems, updateQuantity, removeFromCart, clearCart, getCartTotal } = useCart()
-  const { user } = useAuth()
+  // const { user } = useAuth()
   const navigate= useNavigate();
 
   const [orderType, setOrderType] = useState("one-time")
@@ -22,18 +22,18 @@ export default function CartPage() {
   const total = getCartTotal() + deliveryFee + tax
 
   const handleCheckout = () => {
-    if (!user) {
-      navigate("/auth/login")
-      return
-    }
+    // if (!localStorage.getItem("token")) {
+    //   navigate("/auth/login")
+    //   return
+    // }
 
     const now = new Date()
     const cutoffTime = new Date()
     cutoffTime.setHours(18, 0, 0, 0)
 
-    if (now > cutoffTime) {
-      alert("Orders after 6 PM will be delivered from the next available slot")
-    }
+    // if (now > cutoffTime) {
+    //   alert("Orders after 6 PM will be delivered from the next available slot")
+    // }
 
     navigate("/checkout")
   }

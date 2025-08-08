@@ -38,11 +38,8 @@ import WeightLossMealManager from "./AdminWeightLoss"
 import MenuManager from "./AdminMenu"
 import AuthTest from "../Admin/AuthTest"
 import AdminAbout from "./AdminAbout"
-
+import AdminOrder from './AdminOrder.jsx';
 import AdminBanner from "./AdminBanner"
-import AdminBenefits from "./AdminBenefits"
-import { AdminSolution } from "./AdminSolution"
-import AdminProblems from "./AdminProblems"
 
 const menuItems = [
   { title: "Overview", icon: BarChart3, id: "overview" },
@@ -54,9 +51,6 @@ const menuItems = [
   {title:"About", icon:Shield, id:"about"},
   {title:"Banner", icon:Shield, id:"banner"},
   {title:"Order", icon:Shield, id:"order"},
-  {title:"Benefits", icon:Shield, id:"benefits"},
-  {title:"Problem", icon:Shield, id:"problem"},
-  {title:"Solution", icon:Shield, id:"solution"}
 ]
 
 const mealPlanCategories = [
@@ -158,12 +152,6 @@ export default function AdminDashboard() {
         return<AdminAbout/>
         case "banner":
           return<AdminBanner/>
-        case "benefits":
-          return<AdminBenefits/>
-          case "problem":
-            return<AdminProblems/>
-          case "solution":
-            return <AdminSolution/>
       case "experts":
         return <ExpertsManager />
       case "testimonials":
@@ -178,8 +166,8 @@ export default function AdminDashboard() {
         return <WeightGainMealManager />
       case "weight-loss-meals":
         return <WeightLossMealManager />
-        //  case "order":
-        // return < />
+         case "order":
+        return <AdminOrder />
       default:
         return <OverviewContent setActiveView={setActiveView} />
     }

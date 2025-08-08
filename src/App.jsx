@@ -21,6 +21,7 @@ import CheckoutPage from './Components/Checkout';
 import { useAdminAuth } from './hooks/AdminAuthProvider'; // Added useAdminAuth
 import Login from '../src/Admin/Login'; // Admin login component
 import AdminDashboard from './Admin/Dashboard'; // Admin dashboard component
+import OrderSuccess from './Components/OrderSuccess';
 
 
 function AdminProtectedRoute() {
@@ -72,6 +73,7 @@ function App() {
           <Route path='/auth/login' element={<LoginPage/>}/>
           <Route path='/auth/register' element={<RegisterPage/>}/>
           <Route path='/profile' element={<ProfilePage/>}/>
+          <Route path='ordersuccess' element={<OrderSuccess/>} />
           <Route path='/admin/*' element={<AdminProtectedRoute/>}/>
         </Routes>
       </main>
