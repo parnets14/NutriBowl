@@ -23,7 +23,7 @@ const BenefitCard = ({ icon, title, description, index }) => {
   );
 };
 
-const ImportanceOfHealthyWeightLoss = () => {
+const ImportanceOfHealthyStayfit = () => {
   const navigate = useNavigate();
   const [benefits, setBenefits] = useState([]);
   const [filteredBenefits, setFilteredBenefits] = useState([]);
@@ -52,7 +52,7 @@ const ImportanceOfHealthyWeightLoss = () => {
 
         setBenefits(response.data);
         setFilteredBenefits(
-          response.data.filter((item) => item.category === "weight-gain")
+          response.data.filter((item) => item.category === "stay-fit")
         );
       } catch (err) {
         console.error("Error fetching benefits:", err);
@@ -117,7 +117,7 @@ const ImportanceOfHealthyWeightLoss = () => {
             HEALTH BENEFITS
           </span>
           <h2 className="text-3xl md:text-4xl lg:text-5xl font-bold text-gray-800 mb-4">
-            Importance of <span className="text-green-600"> Weight Loss</span>
+            Importance of <span className="text-green-600">Healthy Weight Management</span>
           </h2>
           
           {/* Category Filter */}
@@ -205,7 +205,7 @@ const ImportanceOfHealthyWeightLoss = () => {
             </div>
             <div className="md:w-1/3">
               <button
-                onClick={() => navigate("/meal-plans/weight-loss")}
+                onClick={() => navigate("/meal-plans/stay-fit")}
                 className="w-full bg-gradient-to-r from-green-500 to-green-600 hover:from-green-600 hover:to-green-700 text-white font-bold py-3 px-6 rounded-full transition-all shadow-md hover:shadow-lg"
               >
                 View Weight loss Meal plan
@@ -218,4 +218,4 @@ const ImportanceOfHealthyWeightLoss = () => {
   );
 };
 
-export default ImportanceOfHealthyWeightLoss;
+export default ImportanceOfHealthyStayfit;

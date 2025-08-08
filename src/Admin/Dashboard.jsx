@@ -41,9 +41,14 @@ import AdminAbout from "./AdminAbout"
 import AdminOrder from './AdminOrder.jsx';
 import AdminBanner from "./AdminBanner"
 
+import AdminSpecialization from "./AdminSpecialization"
+import ImportanceAdmin from "./ImportanceAdmin"
+import MissionAndVision from "./MissionVisionAdmin"
+import ChallengeAdminPanel from "./ChallengeAdminPanel"
+
 const menuItems = [
   { title: "Overview", icon: BarChart3, id: "overview" },
-  { title: "Auth Test", icon: Shield, id: "auth-test" },
+  // { title: "Auth Test", icon: Shield, id: "auth-test" },
   { title: "Experts", icon: Users, id: "experts" },
   { title: "Testimonials", icon: MessageSquare, id: "testimonials" },
   { title: "Menu", icon: ChefHat, id: "menu" },
@@ -51,6 +56,15 @@ const menuItems = [
   {title:"About", icon:Shield, id:"about"},
   {title:"Banner", icon:Shield, id:"banner"},
   {title:"Order", icon:Shield, id:"order"},
+  {title:"Benefits", icon:Shield, id:"benefits"},
+  {title:"Problem", icon:Shield, id:"problem"},
+  {title:"Solution", icon:Shield, id:"solution"},
+  {title:"Challenge", icon:Shield, id:"challenge"},
+  {title:"Mission&Vision", icon:Shield, id:"MissionAndVision"},
+   {title:"Importance", icon:Shield, id:"importance"},
+  {title:"Specilization", icon:Shield, id:"specilization"},
+  
+
 ]
 
 const mealPlanCategories = [
@@ -146,12 +160,27 @@ export default function AdminDashboard() {
     switch (activeView) {
       case "overview":
         return <OverviewContent setActiveView={setActiveView} />
-      case "auth-test":
-        return <AuthTest />
+      // case "auth-test":
+      //   return <AuthTest />
       case "about":
         return<AdminAbout/>
         case "banner":
           return<AdminBanner/>
+        case "benefits":
+          return<AdminBenefits/>
+          case "problem":
+            return<AdminProblems/>
+          case "MissionAndVision":
+          return<MissionAndVision/>
+          case "solution":
+            
+            return <AdminSolution/>
+          case "challenge":
+            return<ChallengeAdminPanel/>
+          case "importance":
+            return <ImportanceAdmin/>
+          case "specilization":
+            return<AdminSpecialization/>
       case "experts":
         return <ExpertsManager />
       case "testimonials":

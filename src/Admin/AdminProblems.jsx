@@ -120,11 +120,17 @@ const AdminProblems = () => {
               </div>
               <div>
                 <Label>Category</Label>
-                <Input
-                  value={form.category}
-                  onChange={(e) => setForm({ ...form, category: e.target.value })}
-                  required
-                />
+                <select
+  value={form.category}
+  onChange={(e) => setForm({ ...form, category: e.target.value })}
+  className="border p-2 rounded w-full"
+>
+  <option value="">Select Category</option>
+  <option value="weight-loss">Weight Loss</option>
+  <option value="weight-gain">Weight Gain</option>
+  <option value="stay-fit">Stay Fit</option>
+</select>
+
               </div>
               <div>
                 <Label>Description</Label>
